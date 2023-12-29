@@ -1,0 +1,22 @@
+div.PAGE {
+    height: 100vh;
+    gap: 5vw;
+    position: relative;
+
+    img.APP_LOGO {
+        width: 50.89vw;
+        object-fit: contain;
+    }
+
+    p.APP_TITLE {
+        font-size: 3rem;
+        font-weight: 800;
+    }
+
+    p.APP_VERSION {
+        font-size: 1.25rem;
+        font-weight: 500;
+        position: absolute;
+        bottom: 8.9vw;
+    }
+}

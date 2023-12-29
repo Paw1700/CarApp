@@ -1,7 +1,7 @@
 # <r>BUGLISTA
 *EMPTY FOR NOW*
 
-# <lb>[W.I.P] FOR 2.1.4
+# <lb>[W.I.P] FOR 2.2
 
 - [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
     - [ ] Usunięcie zależności związanych z edycją BETA
@@ -25,24 +25,44 @@
             - [ ] Car 
             - [ ] Routes List
             - [ ] Settings
-            - [ ] Splash Screen
+            - [x] Splash Screen
+        - [ ] Przepisanie HTML z optymalizacją CSS
+            - [ ] About App
+            - [ ] Important Update
+            - [ ] App First Configuration (Start Configuration)
+            - [ ] Backup
+            - [ ] Brand List
+            - [ ] Brand Create
+            - [ ] Car 
+            - [ ] Routes List
+            - [ ] Settings
+            - [x] Splash Screen
 - [ ] Stworzenie skryptu sortującego błedy w pliku JSON jak i typach
 - [ ] Sprawdzenie poprawności stylów i dark modu
-- [ ] Optymalizacja CSS
+    - [ ] About App
+    - [ ] Important Update
+    - [ ] App First Configuration (Start Configuration)
+    - [ ] Backup
+    - [ ] Brand List
+    - [ ] Brand Create
+    - [ ] Car 
+    - [ ] Routes List
+    - [ ] Settings
+    - [ ] Splash Screen
 - [ ] Dodanie napisu wersji na ekranie startowym
 - [ ] Wersjonowanie do wersji 2.1.4
 
 # <g>FUTURE FEATURE
 
-### <o>2.2
+### <o>2.3
 - Symulowanie ładowania auta
 - Zmiana interfejsu dodawania tras i ładowania
 
-### <o>2.3
+### <o>2.4
 - Synchronizacja danych aplikacji z serwerem backup, gdzie backup będzie bardziej zawansowany ponieważ podzielny na backup pełny jak i nie pełny
 - Dodawanie auta bez zdjęcia, oznacza ona również zmianę wygląd interfejsu
 
-### <o>2.4
+### <o>2.5
 - Historia auta, oznacza to zapisywane wszystkich tras auta i wyświetlanie różnych statystyk auta
 
 # <gr>WERSJONOWANIE
