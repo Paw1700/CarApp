@@ -1,0 +1,14 @@
+<div class="COMPONENT">
+    <p class="TITLE">{{ title }}</p>
+    <div class="COUNTER">
+        <button (click)="addValue(-0.1)" class="CHANGE_BTN"><img src="/assets/UI/arrow_left/black.webp" alt="Left arrow"></button>
+        <p class="VALUE">{{ value.toFixed(1) }}</p>
+        <button (click)="addValue(0.1)" class="CHANGE_BTN"><img src="/assets/UI/arrow_right/black.webp" alt="Right arrow"></button>
+    </div>
+    <div class="FAST_CHANGE">
+        <button (click)="addValue(-2.5)" class="FST_CHN_BTN">-2.5</button>
+        <button (click)="addValue(-0.5)" class="FST_CHN_BTN">-0.5</button>
+        <button (click)="addValue(0.5)" class="FST_CHN_BTN">0.5</button>
+        <button (click)="addValue(2.5)" class="FST_CHN_BTN">2.5</button>
+    </div>
+</div>

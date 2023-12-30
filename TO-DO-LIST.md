@@ -1,7 +1,7 @@
 # <r>BUGLISTA
 *EMPTY FOR NOW*
 
-# <lb>[W.I.P] FOR 2.2
+# <lb>[W.I.P] FOR 2.2 <o>**WIP**</o>
 
 - [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
     - [ ] Usunięcie zależności związanych z edycją BETA
@@ -18,7 +18,7 @@
         - [ ] Rozbicie na mniejsze komponenty
             - [ ] About App
             - [ ] Important Update
-            - [ ] App First Configuration (Start Configuration)
+            - [x] App First Configuration (Start Configuration)
             - [ ] Backup
             - [ ] Brand List
             - [ ] Brand Create
@@ -27,9 +27,15 @@
             - [ ] Settings
             - [x] Splash Screen
         - [ ] Przepisanie HTML z optymalizacją CSS
+            - [ ] UI
+                - [ ] Upper Bar
+                - [ ] Loading Screen
+                - [ ] Navigation Bar
+                - [ ] Warning Prompt
+                - [ ] Loaders 
             - [ ] About App
             - [ ] Important Update
-            - [ ] App First Configuration (Start Configuration)
+            - [x] App First Configuration (Start Configuration) <r>DON'T HAVE UPPER BAR</r>
             - [ ] Backup
             - [ ] Brand List
             - [ ] Brand Create

@@ -1,0 +1,41 @@
+div.COMPONENT {
+    width: 89vw;
+    gap: 5vw;
+
+    p.CHOOSE_OPTION_TEXT {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    div.OPTION_BTN {
+        width: 84vw;
+        height: 12.72vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5vw;
+        background-color: var(--default-accent-color);
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    div.LUB_BOX {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5vw;
+
+        div.LINE {
+            width: 34.3vw;
+            height: 0.25vw;
+            background-color: var(--font-color);
+        }
+
+        p {
+            font-size: .75rem;
+            font-weight: 600;
+        }
+    }
+}

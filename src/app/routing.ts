@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { SplashScreen } from './feature/splash_screen/splash_screen.page';
+import { StartConfiguration } from './feature/start_configuration/start_configuration.page';
 
 export const routes: Routes = [
     {
@@ -8,8 +9,8 @@ export const routes: Routes = [
         component: SplashScreen
     },
     {
-        path: '**',
+        path: 'start',
         pathMatch: "full",
-        redirectTo: ""
+        component: StartConfiguration 
     }
 ];

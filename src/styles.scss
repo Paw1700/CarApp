@@ -131,6 +131,28 @@ table {
 	border-spacing: 0;
 }
 
+button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+textarea {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    resize: none; /*remove the resize handle on the bottom right*/
+}
+
 /* CSS RESET */
 
 html,
@@ -138,6 +160,9 @@ body {
 	background-color: var(--app-theme);
 	font-family: 'Oxanium', sans-serif;
 	font-size: 16px;
+	letter-spacing: -0.32px;
+	line-height: normal;
+	text-align: center;
 	color: var(--font-color);
 }
 
@@ -159,6 +184,13 @@ body {
 
 div.PAGE {
 	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    justify-content: center;
+}
+
+div.COMPONENT {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
