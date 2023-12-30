@@ -1,0 +1,12 @@
+[
+    {
+        "id": "APP-RESET-ERROR",
+        "type": "FATAL",
+        "title": "Błąd resetowania aplikacji!"
+    },
+    {
+        "id": "DB-CONNECT-ERROR",
+        "type": "FATAL",
+        "title": "Błąd połączenia z bazą danych!"
+    }
+]

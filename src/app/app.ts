@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChildrenOutletContexts, RouterOutlet } from '@angular/router';
-import { UpperBar } from './UI/components/upper_bar.component';
+import { UpperBar } from './UI/upper_bar/upper_bar.component';
 import { AppService } from './service';
 import { AppApperance } from './services/apperance.service';
 import { animate, group, query, style, transition, trigger } from '@angular/animations';
+import { AppData } from './services/data/_main.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import { animate, group, query, style, transition, trigger } from '@angular/anim
   ],
   providers: [
     AppService,
-    AppApperance
+    AppApperance,
+    AppData
   ],
   animations: [
     trigger('routeAnimation', [

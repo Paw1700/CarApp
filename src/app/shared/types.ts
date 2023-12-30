@@ -1,1 +1,0 @@
-export type AppLocations = 'splashScreen' | 'home' | 'routes' | 'carsList' | 'newCar' | 'editCar' | 'settings' | 'carBrands' | 'newCarBrand' | 'editCarBrand' | 'startConfig' | 'backup' | 'aboutApp' | 'aboutApp/updated' | 'important'

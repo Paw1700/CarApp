@@ -1,12 +1,13 @@
 import { Injectable, inject } from "@angular/core";
 import { AppApperance } from "./services/apperance.service";
-import { AppLocations } from "./shared/types";
+import { AppLocations } from "./data/types";
 import { Router } from "@angular/router";
+import { AppData } from "./services/data/_main.service";
 
 @Injectable()
 export class AppService {
     private ROUTER = inject(Router)
-    constructor(public APPERANCE: AppApperance) { }
+    constructor(public APPERANCE: AppApperance, public DATA: AppData) { }
 
     async startApp(): Promise<void> {
         this.navigate('splashScreen')

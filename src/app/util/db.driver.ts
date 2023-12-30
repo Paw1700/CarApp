@@ -6,7 +6,7 @@ interface GenericObject {
     id: GenericObjectID
 }
 
-class IndexGeneratorData {
+export class IndexGeneratorData {
     constructor(
         public id: string,
         public storeName: string,
@@ -75,11 +75,11 @@ export class DatabaseManager {
                 openRequest.onsuccess = async () => {
                     this.db = openRequest.result
                     this.dbConnectionExist = true
-                    if (clearIndex) {
-                        await this.CLEAR_INDEX_DATA()
-                    }
                     try {
-                        await this.CHECK_INDEX_DATA_INTEGRITY()
+                        if (clearIndex) {
+                            await this.CLEAR_INDEX_DATA()
+                            await this.CHECK_INDEX_DATA_INTEGRITY()
+                        }
                         console.log('DB initiated!')
                         resolve()
                     } catch {
@@ -262,8 +262,12 @@ export class DatabaseManager {
 
     public EXPORT_IGD(): Promise<IndexGeneratorData[]> {
         return new Promise(async (resolve, reject) => {
-            const igd = await this.getAllObject<IndexGeneratorData>(this.IGDStoreName)
-            resolve(igd)
+            try {
+                const igd = await this.getAllObject<IndexGeneratorData>(this.IGDStoreName)
+                resolve(igd)
+            } catch {
+                reject()
+            }
         })
     }
 

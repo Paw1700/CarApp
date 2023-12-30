@@ -6,7 +6,7 @@ import { UseBackupComponent } from "./components/use_backup/use_backup.component
 import { NgUnsubscriber } from "../../util/ngUnsubscriber";
 import { takeUntil } from "rxjs";
 import { animate, state, style, transition, trigger } from "@angular/animations";
-import { UpperBar } from "../../UI/components/upper_bar.component";
+import { UpperBar } from "../../UI/upper_bar/upper_bar.component";
 import { UpperBarModes } from "../../shared/models/upper-bar-state.model";
 
 @Component({

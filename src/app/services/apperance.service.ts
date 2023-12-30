@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { AppLocations } from "../shared/types";
+import { UpperBarState } from "../UI/upper_bar/upper_bar.component";
 
 @Injectable()
 export class AppApperance {
@@ -100,18 +100,7 @@ export class AppApperance {
     }
 }
 
-export type UpperBarModes = 'small' | 'big' | 'hidden'
-
 export type BottomBarElements = 'selectedCar' | 'routes' | 'cars' | 'settings' | null
-
-export class UpperBarState {
-    constructor(
-        public main_title = '',
-        public seconde_title = '',
-        public bar_mode: UpperBarModes = 'hidden',
-        public return_location: AppLocations | null = null
-    ) { }
-}
 
 export class BottomBarState {
     constructor(
