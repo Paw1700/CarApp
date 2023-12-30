@@ -1,6 +1,7 @@
 <div class="PAGE">
-    <!-- <p class="WELCOME">Witaj!</p> -->
-    <!-- <choose_option /> -->
-    <!-- <fresh_start /> -->
+    <p [@welcome_text]="view_mode" class="WELCOME">Witaj!</p>
+    <upper_bar (click)="returnToStart()" [detachedMode]="true" [main_text]="bar_main_text" [bar_mode]="bar_mode" [second_text]="''" />
+    <choose_option />
+    <fresh_start />
     <use-backup />
 </div>

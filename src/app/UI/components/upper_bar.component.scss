@@ -5,16 +5,16 @@ div.UPPER_BAR {
     position: fixed;
     top: 5vw;
     left: 5vw;
-    z-index: 1;
+    z-index: 3;
 
     div.RETURN {
-        width: 30%;
+        width: 50%;
         height: 100%;
         position: absolute;
         display: flex;
         flex-direction: row;
         align-items: center;
-        z-index: 2;
+        z-index: 4;
 
         img.RETURN_ARROW {
             width: 2.95vw;

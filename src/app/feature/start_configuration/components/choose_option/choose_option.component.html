@@ -1,10 +1,10 @@
-<div class="COMPONENT">
-    <p class="CHOOSE_OPTION_TEXT">Wybierz sposób konfiguracji</p>
-    <div class="OPTION_BTN">OD NOWA</div>
+<div [@component]="view_mode" class="COMPONENT">
+    <p class="CHOOSE_OPTION_TEXT">Wybierz sposób konfiguracji aplikacji</p>
+    <button (click)="chooseOption('fresh_start')" class="OPTION_BTN">OD NOWA</button>
     <div class="LUB_BOX">
         <div class="LINE"></div>
         <p>LUB</p>
         <div class="LINE"></div>
     </div>
-    <div class="OPTION_BTN">KOPIA ZAPASOWA</div>
+    <button (click)="chooseOption('backup')" class="OPTION_BTN">KOPIA ZAPASOWA</button>
 </div>

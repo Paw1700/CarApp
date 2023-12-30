@@ -1,9 +1,9 @@
-<div class="COMPONENT">
-    @if (view_mode === 'insert') {
+<div [@component]="view_mode" class="COMPONENT">
+    @if (view_mode_backup === 'insert') {
     <p class="INSERT_BACKUP_TEXT_PROMPT">Wykorzystaj tekstową kopię zapasową, wklejąc ją do pola poniżej</p>
     <textarea class="BACKUP_TEXT_INSERT_BOX"></textarea>
     }
-    @if (view_mode === 'preview') {
+    @if (view_mode_backup === 'preview') {
     <p class="INFO_DATA"><span>Data utworzenia kopii:</span> 12-12-2023</p>
     <p class="INFO_DATA"><span>Kopia z wersji:</span> 2.1.3</p>
     <p class="INFO_DATA"><span>Ilość aut:</span> 3</p>

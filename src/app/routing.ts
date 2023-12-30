@@ -6,11 +6,17 @@ export const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        component: SplashScreen
+        component: SplashScreen,
+        data: {
+            animState: 'splashScreen'
+        }
     },
     {
         path: 'start',
         pathMatch: "full",
-        component: StartConfiguration 
+        component: StartConfiguration,
+        data: {
+            animState: 'startConfig'
+        }
     }
 ];

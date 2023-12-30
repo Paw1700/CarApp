@@ -1,11 +1,13 @@
 div.PAGE {
-    height: 100vh;
-    position: relative;
 
     p.WELCOME {
         font-size: 3rem;
         font-weight: 800;
         position: absolute;
         top: 5vw;
+    }
+
+    .POS_ABS {
+        position: absolute;
     }
 }

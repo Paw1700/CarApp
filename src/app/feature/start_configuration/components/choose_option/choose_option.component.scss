@@ -1,13 +1,17 @@
 div.COMPONENT {
     width: 89vw;
     gap: 5vw;
+    position: absolute;
+    top: 0;
+    left: 5.5vw;
+    height: 100vh;
 
     p.CHOOSE_OPTION_TEXT {
         font-size: 1.5rem;
         font-weight: 600;
     }
 
-    div.OPTION_BTN {
+    button.OPTION_BTN {
         width: 84vw;
         height: 12.72vw;
         display: flex;

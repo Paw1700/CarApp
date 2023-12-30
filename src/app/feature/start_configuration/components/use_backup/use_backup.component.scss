@@ -1,6 +1,10 @@
 div.COMPONENT {
     width: 89vw;
     gap: 5vw;
+    position: absolute;
+    left: 100vw;
+    top: 0;
+    height: 100vh;
 
     p.INSERT_BACKUP_TEXT_PROMPT {
         width: 100%;

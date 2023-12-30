@@ -1,0 +1,7 @@
+<div [@upper_bar]="bar_mode" class="UPPER_BAR">
+    <div (click)="navigate()" class="RETURN">
+        <img [@arrow]="bar_mode" class="RETURN_ARROW" src="/assets/UI/arrow_left/black.webp" alt="Return arrow">
+        <p [@main_text]="bar_mode" class="MAIN_TEXT">{{ main_text }}</p>
+    </div>
+    <p [@second_text]="bar_mode" class="SECOND_TEXT">{{ second_text }}</p>
+</div>
