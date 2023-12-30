@@ -10,6 +10,7 @@ export class AppService {
 
     async startApp(): Promise<void> {
         this.navigate('splashScreen')
+        this.APPERANCE.watchForDarkModeChange()
         setTimeout(() => {
             this.navigate('startConfig')
         }, 500)

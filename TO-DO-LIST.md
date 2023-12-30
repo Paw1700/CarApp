@@ -1,7 +1,7 @@
 # <r>BUGLISTA
 *EMPTY FOR NOW*
 
-# <lb>[W.I.P] FOR 2.2 
+# <lb>[W.I.P] FOR 2.2 <o>**WIP**</o>
 
 - [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
     - [ ] Usunięcie zależności związanych z edycją BETA
@@ -10,13 +10,13 @@
         - [ ] **SERVICES**
             - [ ] Refaktoring zgodnie z podejściem 
                     Komponent => Serwis strony => Serwis aplikacji/podmiotu
-                - [ ] App <o>**WIP**</o>
+                - [ ] App 
                 - [ ] Data
                     - [ ] Car
                     - [ ] Car Brand
                     - [ ] Route
                 - [ ] State
-                - [ ] Apperance
+                - [x] Apperance
                 - [ ] Backup
                 - [ ] Validator
             - [ ] Sprawdź poprawność działania serwisu walidatora
