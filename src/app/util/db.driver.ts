@@ -54,6 +54,7 @@ export class DatabaseManager {
             (resolve, reject) => {
                 if(this.dbConnectionExist) {
                     reject('DB arleady exist!')
+                    return 
                 }
                 const openRequest = this.IndexedDB.open(dbName, dbVersion)
                 openRequest.onerror = () => {

@@ -3,6 +3,7 @@ import { DatabaseManager } from "../../util/db.driver";
 import ERRORS_JSON from "../../data/errors.json"
 import { ErrorID } from "../../data/types";
 import { ErrorModel } from "../../models/error.model";
+import { CarBrandService } from "./car_brand.service";
 
 export class DB_STORES {
     constructor(
@@ -22,7 +23,7 @@ export class LS_STORES {
 
 @Injectable()
 export class AppData {
-    constructor (private DB: DatabaseManager) { }
+    constructor (private DB: DatabaseManager, public CAR_BRAND: CarBrandService) { }
 
     private readonly DB_NAME = 'CarApp'
     private readonly DB_VERSION = 1
@@ -30,6 +31,9 @@ export class AppData {
     private readonly LS_STORES = new LS_STORES()
     private readonly ERRORS: ErrorModel[] = ERRORS_JSON
 
+    /**
+     * It's start application data system. If failed it returns error code in reject.
+     */
     start(): Promise<void> {
         return new Promise(async (resolve, reject) => {
             this.DB.initLS(Object.getOwnPropertyNames(this.LS_STORES))
@@ -42,6 +46,9 @@ export class AppData {
         })
     }
 
+    /**
+     * That function deletes all application data. If failed it returns error code in reject.
+     */
     reset(): Promise<void> {
         return new Promise(async (resolve, reject) => {
             try {
@@ -54,6 +61,10 @@ export class AppData {
         })
     }
 
+    /**
+     * It's saves app version to localStorage
+     * @param version string of version you want to save or null if you want clear it
+     */
     saveAppVersion(version: string | null): void {
         if (version === null) {
             version = ''
@@ -61,10 +72,16 @@ export class AppData {
         this.DB.LS_insertData(this.LS_STORES.usedAppVersion, version)
     }
 
+    /**
+     * @returns saved app version in string or null if it wasn't saved 
+     */
     getAppVersion(): string | null {
         return this.DB.LS_getData(this.LS_STORES.usedAppVersion)
     }
 
+    /**
+     * @returns choosed car id in application in form of string, if there is not choosed one it returns null
+     */
     getChoosedCarID(): string | null {
         const id = this.DB.LS_getData(this.LS_STORES.choosedCarID)
         if (id !== '' || id !== null) {
@@ -74,6 +91,10 @@ export class AppData {
         }
     }
 
+    /**
+     * It's saves car id you want to select as used actually
+     * @param carID id of car or null if want to deselect
+     */
     saveChoosedCarID(carID: string | null): void {
         if (carID === null) {
             carID = ''
@@ -81,6 +102,10 @@ export class AppData {
         this.DB.LS_insertData(this.LS_STORES.choosedCarID, carID)
     }
 
+    /**
+     * @param errID id of error you want get
+     * @returns error if exist some error data connect wit errID
+     */
     getError(errID: ErrorID): ErrorModel | undefined {
         return this.ERRORS.find(err => err.id === errID)
     }

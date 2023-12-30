@@ -13,12 +13,12 @@
                 - [ ] App 
                 - [ ] Data
                     - [ ] Car
-                    - [ ] Car Brand <o>**WIP**</o>
+                    - [x] Car Brand
                     - [ ] Route
                 - [ ] State
                 - [x] Apperance
                 - [ ] Backup
-                - [ ] Validator
+                - [ ] Validator <o>**WIP**</o>
             - [ ] Sprawdź poprawność działania serwisu walidatora
             - [ ] Ustandaryzuj działanie backupu w zakresie wersji i wczytywania danych backupu
     - [ ] **FEATURE**

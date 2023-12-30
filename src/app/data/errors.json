@@ -8,5 +8,37 @@
         "id": "DB-CONNECT-ERROR",
         "type": "FATAL",
         "title": "Błąd połączenia z bazą danych!"
+    },
+    {
+        "id": "CAR_BRAND-GET-ERROR",
+        "type": "MAIN",
+        "title": "Błąd pobrania danych marek z DB!"
+    }, 
+    {
+        "id": "CAR_BRAND-VALIDATION-ERROR",
+        "type": "MAIN",
+        "title": "Błąd walidacji marki"
+    },
+    {
+        "id": "CAR_BRAND-VALIDATION-ERROR-NAME",
+        "type": "MAIN",
+        "title": "Błąd walidacji marki",
+        "desc": "Nie podano lub nieprawidłowy format nazwy marki!"
+    },
+    {
+        "id": "CAR_BRAND-VALIDATION-ERROR-IMAGE",
+        "type": "MAIN",
+        "title": "Błąd walidacji marki",
+        "desc": "Nie podano odpowiednich log marki auta!"
+    },
+    {
+        "id": "CAR_BRAND-SAVE-ERROR",
+        "type": "MAIN",
+        "title": "Błąd zapisania marki"
+    },
+    {
+        "id": "CAR_BRAND-DELETE-ERROR",
+        "type": "MAIN",
+        "title": "Błąd usunięcia marki"
     }
 ]

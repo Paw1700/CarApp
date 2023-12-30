@@ -6,6 +6,8 @@ import { AppService } from './service';
 import { AppApperance } from './services/apperance.service';
 import { animate, group, query, style, transition, trigger } from '@angular/animations';
 import { AppData } from './services/data/_main.service';
+import { CarBrandService } from './services/data/car_brand.service';
+import { AppValidator } from './services/validator.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,9 @@ import { AppData } from './services/data/_main.service';
   providers: [
     AppService,
     AppApperance,
-    AppData
+    AppData,
+    AppValidator,
+    CarBrandService
   ],
   animations: [
     trigger('routeAnimation', [
