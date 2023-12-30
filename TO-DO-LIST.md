@@ -10,6 +10,15 @@
         - [ ] **SERVICES**
             - [ ] Refaktoring zgodnie z podejściem 
                     Komponent => Serwis strony => Serwis aplikacji/podmiotu
+                - [ ] App
+                - [ ] Data
+                    - [ ] Car
+                    - [ ] Car Brand
+                    - [ ] Route
+                - [ ] State
+                - [ ] Apperance
+                - [ ] Backup
+                - [ ] Validator
             - [ ] Sprawdź poprawność działania serwisu walidatora
             - [ ] Ustandaryzuj działanie backupu w zakresie wersji i wczytywania danych backupu
     - [ ] **FEATURE**
@@ -28,7 +37,7 @@
             - [x] Splash Screen
         - [ ] Przepisanie HTML z optymalizacją CSS
             - [ ] UI
-                - [ ] Upper Bar
+                - [x] Upper Bar <r>NEED CONNECT WITH APPERANCE STATE MANAGMENT</r>
                 - [ ] Loading Screen
                 - [ ] Navigation Bar
                 - [ ] Warning Prompt
