@@ -2,12 +2,12 @@ export class CarBrand {
     constructor(
         public id: string = '',
         public name: string = '',
-        public brandImageSet: {
+        public brand_image_set: {
             default: string,
-            forDarkMode: string | null
+            for_dark_mode: string | null
         } = {
             default: '',
-            forDarkMode: null
+            for_dark_mode: null
         }
     ) { }
 }

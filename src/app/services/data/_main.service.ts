@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import { DatabaseManager } from "../../util/db.driver";
 import ERRORS_JSON from "../../data/errors.json"
-import { ErrorID } from "../../data/types";
+import { ErrorID } from "../../models/error.model";
 import { ErrorModel } from "../../models/error.model";
 import { CarBrandService } from "./car_brand.service";
+import { CarService } from "./car.service";
+import { RouteService } from "./routes.service";
 
 export class DB_STORES {
     constructor(
@@ -23,7 +25,7 @@ export class LS_STORES {
 
 @Injectable()
 export class AppData {
-    constructor (private DB: DatabaseManager, public CAR_BRAND: CarBrandService) { }
+    constructor (private DB: DatabaseManager, public CAR_BRAND: CarBrandService, public CAR: CarService, public ROUTE: RouteService) { }
 
     private readonly DB_NAME = 'CarApp'
     private readonly DB_VERSION = 1

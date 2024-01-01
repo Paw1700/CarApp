@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { Component, Input, OnInit, inject } from "@angular/core";
-import { AppLocations } from "../../data/types";
+import { AppLocations } from "../../service";
 import { AppService } from "../../service";
 
 @Component({

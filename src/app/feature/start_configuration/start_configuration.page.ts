@@ -7,7 +7,7 @@ import { NgUnsubscriber } from "../../util/ngUnsubscriber";
 import { takeUntil } from "rxjs";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { UpperBar } from "../../UI/upper_bar/upper_bar.component";
-import { UpperBarModes } from "../../shared/models/upper-bar-state.model";
+import { UpperBarModes } from "../../UI/upper_bar/upper_bar.component";
 
 @Component({
     standalone: true,

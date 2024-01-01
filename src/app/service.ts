@@ -1,6 +1,5 @@
 import { Injectable, inject } from "@angular/core";
 import { AppApperance } from "./services/apperance.service";
-import { AppLocations } from "./data/types";
 import { Router } from "@angular/router";
 import { AppData } from "./services/data/_main.service";
 
@@ -42,3 +41,5 @@ export class AppService {
         }
     }
 }
+
+export type AppLocations = 'splashScreen' | 'home' | 'routes' | 'carsList' | 'newCar' | 'editCar' | 'settings' | 'carBrands' | 'newCarBrand' | 'editCarBrand' | 'startConfig' | 'backup' | 'aboutApp' | 'aboutApp/updated' | 'important'

@@ -8,6 +8,9 @@ import { animate, group, query, style, transition, trigger } from '@angular/anim
 import { AppData } from './services/data/_main.service';
 import { CarBrandService } from './services/data/car_brand.service';
 import { AppValidator } from './services/validator.service';
+import { CarService } from './services/data/car.service';
+import { DatabaseManager } from './util/db.driver';
+import { RouteService } from './services/data/routes.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +25,10 @@ import { AppValidator } from './services/validator.service';
     AppApperance,
     AppData,
     AppValidator,
-    CarBrandService
+    CarBrandService,
+    CarService,
+    DatabaseManager,
+    RouteService
   ],
   animations: [
     trigger('routeAnimation', [

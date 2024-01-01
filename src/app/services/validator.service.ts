@@ -1,8 +1,13 @@
 import { DB_STORES } from './data/_main.service';
 import { Injectable } from "@angular/core";
 import { DatabaseManager } from "../util/db.driver";
-import { ErrorID } from '../data/types';
+import { ErrorID } from '../models/error.model';
 import { CarBrand } from '../models/car_brand.model';
+import { CarDBModel } from '../models/car.model';
+import { CombustionEngine, ElectricEngine } from '../models/engine.model';
+import { Gearbox } from '../models/gearbox.model';
+import { Insurance } from '../models/insurance.model';
+import { Route } from '../models/route.model';
 
 @Injectable()
 export class AppValidator {
@@ -17,8 +22,185 @@ export class AppValidator {
         if (!this.hasValue(car_brand.name, 'string')) {
             return { pass: false, reason: 'Nie podano lub nieprawidłowy format nazwy marki!', errCode: "CAR_BRAND-VALIDATION-ERROR-NAME" }
         }
-        if (!this.hasValue(car_brand.brandImageSet.default, 'string')) {
+        if (!this.hasValue(car_brand.brand_image_set.default, 'string')) {
             return { pass: false, reason: 'Nie podano odpowiedno log marki auta!', errCode: "CAR_BRAND-VALIDATION-ERROR-IMAGE" }
+        }
+        return { pass: true }
+    }
+
+    validateCar(car: CarDBModel): Promise<ValidationResult> {
+        return new Promise(async resolve => {
+            if (!this.hasValue(car.id, 'string')) {
+                resolve({ pass: false, reason: 'Błąd walidacji pojazdu, brak carID!', errCode: "CAR-VALIDATION-ERROR" })
+            }
+            if (this.hasValue(car.brandId, 'string')) {
+                const carBrandsID = await this.DB.getAllObject<CarBrand>(this.DB_STORES.carBrands)
+                let brandIDExists = false
+                carBrandsID.forEach(
+                    brand => {
+                        if (brand.id === car.brandId) {
+                            brandIDExists = true
+                        }
+                    }
+                )
+                if (!brandIDExists) {
+                    resolve({ pass: false, reason: 'Nie znaleziono w DB tego brandID!', errCode: "CAR-VALIDATION-ERROR-BRAND_NOT_FOUND" })
+                }
+            } else {
+                resolve({ pass: false, reason: 'Nie podano lub nieprawidłowy format brandID!', errCode: "CAR-VALIDATION-ERROR-BRAND" })
+            }
+            if (!this.hasValue(car.model, 'string')) {
+                resolve({ pass: false, reason: 'Nie podano lub nieprawidłowy format modelu!', errCode: "CAR-VALIDATION-ERROR-MODEL" })
+            }
+            if (car.mileage.actual === null || car.mileage.actual === undefined || car.mileage.at_review === null || car.mileage.at_review === undefined) {
+                resolve({ pass: false, reason: 'Nie podano lub nieprawidłowy format przebiegu!', errCode: "CAR-VALIDATION-ERROR-MILEAGE" })
+            }
+            if (!(car.type === "Combustion" || car.type === 'Electric' || car.type === 'Hybrid')) {
+                resolve({ pass: false, reason: "Nie podano lub nieprawidłowy format typu pojazdu!", errCode: "CAR-VALIDATION-ERROR-TYPE" })
+            }
+            //* VALIDATION CAR ENGINES
+            switch (car.type) {
+                case "Hybrid":
+                    const combEngValidResult = this.validateCombustionEngine(car.engine.combustion)
+                    const elecEngValidResult = this.validateElectricEngine(car.engine.electric)
+                    if (!combEngValidResult.pass) {
+                        resolve({ pass: false, reason: combEngValidResult.reason, errCode: combEngValidResult.errCode })
+                    }
+                    if (!elecEngValidResult.pass) {
+                        resolve({ pass: false, reason: elecEngValidResult.reason, errCode: elecEngValidResult.errCode })
+                    }
+                    break;
+                case "Combustion":
+                    const cEngValidResult = this.validateCombustionEngine(car.engine.combustion)
+                    if (!cEngValidResult.pass) {
+                        resolve({ pass: false, reason: cEngValidResult.reason, errCode: cEngValidResult.errCode })
+                    }
+                    break;
+                case "Electric":
+                    const eEngValidResult = this.validateElectricEngine(car.engine.electric)
+                    if (!eEngValidResult.pass) {
+                        resolve({ pass: false, reason: eEngValidResult.reason, errCode: eEngValidResult.errCode })
+                    }
+                    break;
+            }
+            const gearboxValidResult = this.validateGearbox(car.gearbox)
+            if (!gearboxValidResult.pass) {
+                resolve({ pass: false, reason: gearboxValidResult.reason, errCode: gearboxValidResult.errCode })
+            }
+            if (!(car.drive_type === 'AWD' || car.drive_type === 'FWD' || car.drive_type === "RWD")) {
+                resolve({ pass: false, reason: "Nie podano lub nieprawidłowy format rodzaju napędu!", errCode: "CAR-VALIDATION-ERROR-DRIVE_TYPE" })
+            }
+            const insuranceValidResult = this.validateInsurance(car.insurance)
+            if (!insuranceValidResult.pass) {
+                resolve({ pass: false, reason: insuranceValidResult.reason, errCode: insuranceValidResult.errCode })
+            }
+            if (!this.hasValue(car.tech_review_ends, 'string')) {
+                resolve({ pass: false, reason: "Nie podano lub nieprawidłowy format daty końca przeglądu!", errCode: "CAR-VALIDATION-ERROR-TECH_REVIEW_END_DATE" })
+            }
+            if (!this.hasValue(car.color.accent, 'string') || !this.hasValue(car.color.theme, 'string')) {
+                resolve({ pass: false, reason: "Nie podano lub nieprawidłowy format kolorów motywu auta!", errCode: "CAR-VALIDATION-ERROR-COLOR" })
+            }
+            if (!this.hasValue(car.photo.side, 'string')) {
+                resolve({ pass: false, reason: 'Nie podano lub nieprawidłowy format zdjęcia z boku auta!', errCode: "CAR-VALIDATION-ERROR-PHOTO_SIDE" })
+            }
+            if (!this.hasValue(car.photo.front_left, 'string')) {
+                resolve({ pass: false, reason: 'Nie podano lub nieprawidłowy format zdjęcia z lewego przodu auta!', errCode: "CAR-VALIDATION-ERROR-PHOTO_FRONT_LEFT" })
+            }
+            resolve({ pass: true })
+        })
+    }
+
+    validateCombustionEngine(engine: CombustionEngine): ValidationResult {
+        if (!this.hasValue(engine.power, 'number')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format mocy silnika!', errCode: "ENGINE-VALIDATION-ERROR-POWER" }
+        }
+        if (!this.hasValue(engine.torque, 'number')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format moment obrotowy silnika!', errCode: "ENGINE-VALIDATION-ERROR-TORQUE" }
+        }
+        if (!this.hasValue(engine.volume, 'number')) {
+            return { pass: false, reason: 'Nie poadno lub nieprawidłowy formar pojemności silnika spalinowego', errCode: "ENGINE-VALIDATION-ERROR-VOLUME" }
+        }
+        if (!this.hasValue(engine.avgFuelUsage, 'number')) {
+            return { pass: false, reason: 'Nie poadno lub nieprawidłowy formar średniego spalania silnika spalinowego', errCode: "ENGINE-VALIDATION-ERROR-AVG_USAGE" }
+        }
+        if (!(engine.fuelType === 'B' || engine.fuelType === 'D')) {
+            return { pass: false, reason: 'Nie poadno lub nieprawidłowy formar paliwa silnika spalinowego', errCode: "ENGINE-VALIDATION-ERROR-FUEL_TYPE" }
+        }
+        if (!this.hasValue(engine.fuelTankVolume, 'number')) {
+            return {pass: false, reason: "Nie podano lub nieprawidłowy format pojemności baku", errCode: "CAR-VALIDATION-ERROR-FUEL_TANK_VOLUME"}
+        }
+        if (!this.hasValue(engine.pistonAmount, 'number')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format ilości tłoków!', errCode: "ENGINE-VALIDATION-ERROR-PISTON_AMOUNT" }
+        }
+        if (!(engine.pistonDesign === "B" || engine.pistonDesign === "R" || engine.pistonDesign === "V")) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format rodzaju ułozenia tłoków!', errCode: "ENGINE-VALIDATION-ERROR-PISTON_DESIGN" }
+        }
+        return { pass: true }
+    }
+
+    validateElectricEngine(engine: ElectricEngine): ValidationResult {
+        if (!(engine.energyStorage === 'B' || engine.energyStorage === 'H')) {
+            return { pass: false, reason: "Nie podano lub nieprawidłowy format rodzaju energii do silnika elektrycznego!", errCode: "ENGINE-VALIDATION-ERROR-ENERGY_SOURCE" }
+        }
+        if (!this.hasValue(engine.energyStorageVolume, 'number')) {
+            return { pass: false, reason: "Nie podano lub nieprawidłowy format pojemności magazynu energi do silnika elektrycznego!", errCode: "ENGINE-VALIDATION-ERROR-ENERGY_SOURCE_VOLUME" }
+        }
+        if (!this.hasValue(engine.energyAvgUsage, 'number')) {
+            return { pass: false, reason: "Nie podano lub nieprawidłowy format średniego zużycia energi do silnika elektrycznego!", errCode: "ENGINE-VALIDATION-ERROR-ENERGY_AVG_USAGE" }
+        }
+        if (!this.hasValue(engine.power, 'number')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format mocy silnika!', errCode: "ENGINE-VALIDATION-ERROR-POWER" }
+        }
+        if (!this.hasValue(engine.torque, 'number')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format moment obrotowy silnika!', errCode: "ENGINE-VALIDATION-ERROR-TORQUE" }
+        }
+        return { pass: true }
+    }
+
+    validateGearbox(gearbox: Gearbox): ValidationResult {
+        if (!this.hasValue(gearbox.gearsAmount, 'number')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format ilości biegów!', errCode: "GEARBOX-VALIDATION-ERROR-GEARS_AMOUNT" }
+        }
+        if (!(gearbox.type === "AT" || gearbox.type === "MT" || gearbox.type === 'AT-CVT')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format typu skrzyni biegów!', errCode: "GEARBOX-VALIDATION-ERROR-GEAR_TYPE" }
+        }
+        return { pass: true }
+    }
+
+    validateInsurance(insurance: Insurance): ValidationResult {
+        if (!this.hasValue(insurance.name, 'string')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format nazwy ubezpieczyciela!', errCode: 'INSURANCE-VALIDATION-ERROR-NAME' }
+        }
+        if (!this.hasValue(insurance.startDate, 'string')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format daty startu ubezpieczenia!', errCode: 'INSURANCE-VALIDATION-ERROR-START_DATE' }
+        }
+        if (!this.hasValue(insurance.endsDate, 'string')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format daty końca ubezpieczenia!', errCode: "INSURANCE-VALIDATION-ERROR-END_DATE" }
+        }
+        return { pass: true }
+    }
+
+    public validateRoute(route: Route): ValidationResult {
+        if (!this.hasValue(route.id, 'string')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format routeID!', errCode: "ROUTE-VALIDATION-ERROR" }
+        }
+        if (!this.hasValue(route.carID, 'string')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format carID!', errCode: "ROUTE-VALIDATION-ERROR" }
+        }
+        if (!this.hasValue(route.date, 'string')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format daty trasy!', errCode: "ROUTE-VALDIATION-ERROR-DATE" }
+        }
+        if (!this.hasValue(route.distance, 'number')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format dystansu trasy!', errCode: "ROUTE-VALIDATION-ERROR-DISTANCE" }
+        }
+        if (!this.hasValue(route.original_avg_fuel_usage, 'number')) {
+            return { pass: false, reason: 'Nie podano lub nieprawidłowy format oryginalnego spalania na trasie!', errCode: "ROUTE-VALIDATION-ERROR-ORIGINAL_AVG_USAGE" }
+        }
+        if (route.usage.combustion.include && !this.hasValue(route.usage.combustion.amount, 'number')) {
+            return { pass: false, reason: 'Spalanie silnika spalinowego zerowe chociaż uwzględniane w obliczeniach!', errCode: 'ROUTE-VALIDATION-ERROR-COMBUSTION_HAS_ZERO_VALUE' }
+        }
+        if (route.usage.electric.include && !this.hasValue(route.usage.electric.amount, 'number')) {
+            return { pass: false, reason: 'Zużycie energii silnika elektrycznego zerowe chociaż uwzględniane w obliczeniach!', errCode: 'ROUTE-VALIDATION-ERROR-COMBUSTION_HAS_ZERO_VALUE' }
         }
         return { pass: true }
     }

@@ -10,6 +10,11 @@
         "title": "Błąd połączenia z bazą danych!"
     },
     {
+        "id": "DB-SAVE-ERROR",
+        "type": "MAIN",
+        "title": "Błąd zapisywania danych do bazdy danych!"
+    },
+    {
         "id": "CAR_BRAND-GET-ERROR",
         "type": "MAIN",
         "title": "Błąd pobrania danych marek z DB!"
@@ -40,5 +45,237 @@
         "id": "CAR_BRAND-DELETE-ERROR",
         "type": "MAIN",
         "title": "Błąd usunięcia marki"
+    },
+    {
+        "id": "CAR-GET-ERROR",
+        "type": "MAIN",
+        "title": "Błąd pobrania danych auta z DB!"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-BRAND_NOT_FOUND",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie znaleziono w DB tego brandID!"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-BRAND",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format brandID!"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-MODEL",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format nazwa modelu"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-MILEAGE",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format przebiegu"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-TYPE",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format typu pojazdu!"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-DRIVE_TYPE",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format rodzaju napędu!"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-TECH_REVIEW_END_DATE",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format daty końca przeglądu!"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-COLOR",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format kolorów motywu auta!"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-PHOTO_FRONT_LEFT",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format zdjęcia z lewego przodu auta!"
+    },
+    {
+        "id": "CAR-VALIDATION-ERROR-PHOTO_SIDE",
+        "type": "MAIN",
+        "title": "Błąd walidacji pojazdu",
+        "desc": "Nie podano lub nieprawidłowy format zdjęcia z boku auta!"
+    },
+    {
+        "id": "INSURANCE-VALIDATION-ERROR",
+        "type": "MAIN",
+        "title": "Błąd walidacji ubezpieczenia"
+    },
+    {
+        "id": "INSURANCE-VALIDATION-ERROR-NAME",
+        "type": "MAIN",
+        "title": "Błąd walidacji ubezpieczenia",
+        "desc": "Nie podano lub nieprawidłowy format nazwy ubezpieczyciela!"
+    },
+    {
+        "id": "INSURANCE-VALIDATION-ERROR-START_DATE",
+        "type": "MAIN",
+        "title": "Błąd walidacji ubezpieczenia",
+        "desc": "Nie podano lub nieprawidłowy format daty startu ubezpieczenia!"
+    },
+    {
+        "id": "INSURANCE-VALIDATION-ERROR-END_DATE",
+        "type": "MAIN",
+        "title": "Błąd walidacji ubezpieczenia",
+        "desc": "Nie podano lub nieprawidłowy format daty końca ubezpieczenia!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-FUEL_TYPE",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format typu paliwa!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-PISTON_AMOUNT",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format ilości tłoków!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-PISTON_DESIGN",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format rodzaju ułozenia tłoków!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-POWER",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format mocy silnika!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-TORQUE",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format moment obrotowy silnika!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-VOLUME",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format pojemności silnika spalinowego!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-AVG_USAGE",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format średniego spalania silnika!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-ENERGY_SOURCE",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format rodzaju energii do silnika elektrycznego!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-ENERGY_SOURCE_VOLUME",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format pojemności magazynu energi do silnika elektrycznego!"
+    },
+    {
+        "id": "ENGINE-VALIDATION-ERROR-ENERGY_AVG_USAGE",
+        "type": "MAIN",
+        "title": "Błąd walidacji silnika",
+        "desc": "Nie podano lub nieprawidłowy format średniego zużycia energi do silnika elektrycznego!"
+    },
+    {
+        "id": "GEARBOX-VALIDATION-ERROR",
+        "type": "MAIN",
+        "title": "Błąd walidacji skrzynii biegów!"
+    },
+    {
+        "id": "GEARBOX-VALIDATION-ERROR-GEARS_AMOUNT",
+        "type": "MAIN",
+        "title": "Błąd walidacji skrzynii biegów!",
+        "desc": "Nie podano lub nieprawidłowy format ilości biegów!"
+    },
+    {
+        "id": "GEARBOX-VALIDATION-ERROR-GEAR_TYPE",
+        "type": "MAIN",
+        "title": "Błąd walidacji skrzynii biegów!",
+        "desc": "Nie podano lub nieprawidłowy format typu skrzyni biegów!"
+    },
+    {
+        "id": "CAR-DELETE-ERROR",
+        "type": "MAIN",
+        "title": "Błąd usuwania auta z bazy danych"
+    },
+    {
+        "id": "ROUTE-GET-ERROR",
+        "type": "MAIN",
+        "title": "Błąd otrzymania trasy"
+    },
+    {
+        "id": "ROUTE-VALIDATION-ERROR",
+        "type": "MAIN",
+        "title": "Błąd waldiacji danych trasy!"
+    },
+    {
+        "id": "ROUTE-VALIDATION-ERROR-DISTANCE",
+        "type": "MAIN",
+        "title": "Błąd walidacji trasy",
+        "desc": "Nie podano lub nieprawidłowy format dystansu trasy!"
+    },
+    {
+        "id": "ROUTE-VALIDATION-ERROR-ORIGINAL_AVG_USAGE",
+        "type": "MAIN",
+        "title": "Błąd walidacji trasy",
+        "desc": "Nie podano lub nieprawidłowy format oryginalnego spalania na trasie!"
+    },
+    {
+        "id": "ROUTE-VALIDATION-ERROR-AVG_FUEL",
+        "type": "MAIN",
+        "title": "Błąd walidacji trasy",
+        "desc": "Nie podano lub nieprawidłowy format średniego spalania!"
+    },
+    {
+        "id": "ROUTE-VALIDATION-ERROR-AVG_USAGE",
+        "type": "MAIN",
+        "title": "Błąd walidacji trasy",
+        "desc": "Nie podano lub nieprawidłowy format średniego zużycia!"
+    },
+    {
+        "id": "ROUTE-VALDIATION-ERROR-DATE",
+        "type": "MAIN",
+        "title": "Błąd walidacji trasy",
+        "desc": "Nie podano lub nieprawidłowy format daty!"
+    },
+    {
+        "id": "ROUTE-VALIDATION-ERROR-COMBUSTION_HAS_ZERO_VALUE",
+        "type": "MAIN",
+        "title": "Błąd walidacji trasy",
+        "desc": "Spalanie silnika spalinowego zerowe chociaż uwzględniane w obliczeniach!"
+    },
+    {
+        "id": "ROUTE-VALIDATION-ERROR-ELECTRIC_HAS_ZERO_VALUE",
+        "type": "MAIN",
+        "title": "Błąd walidacji trasy",
+        "desc": "Zużycie energii silnika elektrycznego zerowe chociaż uwzględniane w obliczeniach!"
     }
 ]

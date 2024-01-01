@@ -1,7 +1,7 @@
 # <r>BUGLISTA
 *EMPTY FOR NOW*
 
-# <lb>[W.I.P] FOR 2.2 
+# <lb>NEED FOR 2.2 <o>**WIP**</o>
 
 - [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
     - [ ] Usunięcie zależności związanych z edycją BETA
@@ -12,13 +12,13 @@
                     Komponent => Serwis strony => Serwis aplikacji/podmiotu
                 - [ ] App 
                 - [ ] Data
-                    - [ ] Car
+                    - [x] Car 
                     - [x] Car Brand
-                    - [ ] Route
+                    - [x] Route
                 - [ ] State
                 - [x] Apperance
                 - [ ] Backup
-                - [ ] Validator <o>**WIP**</o>
+                - [x] Validator 
             - [ ] Sprawdź poprawność działania serwisu walidatora
             - [ ] Ustandaryzuj działanie backupu w zakresie wersji i wczytywania danych backupu
     - [ ] **FEATURE**

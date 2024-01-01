@@ -1,3 +1,0 @@
-export type AppLocations = 'splashScreen' | 'home' | 'routes' | 'carsList' | 'newCar' | 'editCar' | 'settings' | 'carBrands' | 'newCarBrand' | 'editCarBrand' | 'startConfig' | 'backup' | 'aboutApp' | 'aboutApp/updated' | 'important'
-
-export type ErrorID = "APP-RESET-ERROR" | "CAR_BRAND-GET-ERROR" | "CAR_BRAND-VALIDATION-ERROR" | "CAR_BRAND-VALIDATION-ERROR-NAME" | "CAR_BRAND-VALIDATION-ERROR-IMAGE" | "CAR_BRAND-SAVE-ERROR" | "CAR_BRAND-DELETE-ERROR" | "DB-CONNECT-ERROR"
