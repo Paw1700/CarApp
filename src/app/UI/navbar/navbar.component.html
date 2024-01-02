@@ -1,0 +1,34 @@
+<div [@navbar]="bar_state.show" class="NAVBAR">
+    <div
+        class="BAR_ELEMENT"
+        [class.SELECTED]="bar_state.selected_element === 'selectedCar'"
+        (click)="navigate('home')"
+    >
+        <img [src]="selected_car_image" />
+        <p>Strona główna</p>
+    </div>
+    <div
+        class="BAR_ELEMENT"
+        [class.SELECTED]="bar_state.selected_element === 'routes'"
+        (click)="navigate('routes')"
+    >
+        <img [src]="'/assets/UI/route/' + image_color_mode + '.webp'" />
+        <p>Trasy</p>
+    </div>
+    <div
+        class="BAR_ELEMENT"
+        [class.SELECTED]="bar_state.selected_element === 'cars'"
+        (click)="navigate('carsList')"
+    >
+        <img [src]="'/assets/UI/car/' + image_color_mode + '.webp'" />
+        <p>Pojazdy</p>
+    </div>
+    <div
+        class="BAR_ELEMENT"
+        [class.SELECTED]="bar_state.selected_element === 'settings'"
+        (click)="navigate('settings')"
+    >
+        <img [src]="'/assets/UI/settings/' + image_color_mode + '.webp'" />
+        <p>Ustawienia</p>
+    </div>
+</div>

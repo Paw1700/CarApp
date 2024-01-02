@@ -1,0 +1,43 @@
+div.NAVBAR {
+    width: 100vw;
+    height: 31.8vw;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+
+    div.BAR_ELEMENT {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 14.5vw;
+        height: 9.5vh;
+        opacity: 0.2;
+        transition-duration: 0.25s;
+
+        img {
+            width: 10.18vw;
+            height: 10.18vw;
+            object-fit: contain;
+        }
+
+        p {
+            font-size: 0.75rem;
+            text-align: center;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            height: 7.6vw;
+            display: flex;
+            align-items: center;
+        }
+
+        &.SELECTED {
+            opacity: 1;
+        }
+    }
+}

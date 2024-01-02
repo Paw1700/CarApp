@@ -11,13 +11,15 @@ import { CarService } from './services/data/car.service';
 import { DatabaseManager } from './util/db.driver';
 import { RouteService } from './services/data/routes.service';
 import { AppState } from './services/state.service';
+import { NavBar } from './UI/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     CommonModule,
-    RouterOutlet
+    RouterOutlet,
+    NavBar
   ],
   providers: [
     AppService,
@@ -54,6 +56,7 @@ import { AppState } from './services/state.service';
   <div [@routeAnimation]="getRouteAnimationData()">
     <router-outlet />
   </div>
+  <navbar />
   `,
   styles: ``
 })

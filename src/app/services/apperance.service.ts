@@ -93,7 +93,7 @@ export class AppApperance {
      */
     public hideNavBar(bool: boolean) {
         const state = this.bottom_bar_state$.value
-        state.show = bool
+        state.show = !bool
         this.bottom_bar_state$.next(state)
     }
 }

@@ -39,7 +39,7 @@
             - [ ] UI
                 - [x] Upper Bar
                 - [ ] Loading Screen
-                - [ ] Navigation Bar <o>**WIP**</o>
+                - [x] Navigation Bar
                 - [ ] Warning Prompt
                 - [ ] Loaders 
             - [ ] About App
