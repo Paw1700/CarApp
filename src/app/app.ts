@@ -15,7 +15,7 @@ import { RouteService } from './services/data/routes.service';
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     RouterOutlet
   ],
   providers: [
@@ -43,7 +43,7 @@ import { RouteService } from './services/data/routes.service';
             animate('500ms ease-in-out', style({
               opacity: 0
             }))
-          ], {optional: true})
+          ], { optional: true })
         ])
       ]),
     ])
@@ -53,7 +53,7 @@ import { RouteService } from './services/data/routes.service';
     <router-outlet />
   </div>
   `,
-  styles: `` 
+  styles: ``
 })
 export class AppComponent {
   constructor(private APP: AppService, private contexts: ChildrenOutletContexts) {
