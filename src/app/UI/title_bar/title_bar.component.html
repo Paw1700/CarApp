@@ -1,0 +1,13 @@
+@if (title_mode === 'BIG') {
+    <div class="TITLE MAIN" >
+        <p>{{ title_content }}</p>
+    </div>
+}
+@if (title_mode === 'SMALL') {
+    <div class="SMALL_TITLE MAIN">
+        <!-- @if (show_return_arrow) { -->
+            <img [src]="'/assets/UI/arrow_left/' + image_color_mode + '.webp'" alt="Left back arrow">
+        <!-- } -->
+        <p>{{ title_content }}</p>
+    </div>
+}

@@ -1,6 +1,8 @@
 <div class="PAGE">
     <p [@welcome_text]="view_mode" class="WELCOME">Witaj!</p>
-    <upper_bar (click)="returnToStart()" [detachedMode]="true" [main_text]="bar_main_text" [bar_mode]="bar_mode" [second_text]="''" />
+    @if (view_mode !== 'start') {
+        <title-bar (click)="returnToStart()" [title_content]="'Wróc'" [title_mode]="'SMALL'"/>
+    }
     <choose_option />
     <fresh_start />
     <use-backup />

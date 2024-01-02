@@ -22,7 +22,7 @@ div.COMPONENT {
         button.CHANGE_BTN {
             width: 30%;
             height: 16vw;
-            background-color: #E9E8EA;
+            background-color: var(--app-elements-bg);
             border-radius: 2.5vw;
             display: flex;
             align-items: center;
@@ -31,6 +31,22 @@ div.COMPONENT {
             img {
                 height: 12.7vw;
                 object-fit: contain;
+                
+                &.LEFT_ARROW {
+                    content: url('/assets/UI/arrow_left/black.webp');
+
+                    @media (prefers-color-scheme: dark) {
+                        content: url('/assets/UI/arrow_left/white.webp');
+                    }
+                }
+
+                &.RIGHT_ARROW {
+                    content: url('/assets/UI/arrow_right/black.webp');
+
+                    @media (prefers-color-scheme: dark) {
+                        content: url('/assets/UI/arrow_right/white.webp');
+                    }
+                }
             }
         }
 

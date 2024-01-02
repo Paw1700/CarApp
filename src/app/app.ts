@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChildrenOutletContexts, RouterOutlet } from '@angular/router';
-import { UpperBar } from './UI/upper_bar/upper_bar.component';
 import { AppService } from './service';
 import { AppApperance } from './services/apperance.service';
 import { animate, group, query, style, transition, trigger } from '@angular/animations';
@@ -17,8 +16,7 @@ import { RouteService } from './services/data/routes.service';
   standalone: true,
   imports: [
     CommonModule, 
-    RouterOutlet,
-    UpperBar
+    RouterOutlet
   ],
   providers: [
     AppService,
@@ -51,7 +49,6 @@ import { RouteService } from './services/data/routes.service';
     ])
   ],
   template: `
-  <upper_bar />
   <div [@routeAnimation]="getRouteAnimationData()">
     <router-outlet />
   </div>

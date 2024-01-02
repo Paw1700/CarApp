@@ -1,0 +1,35 @@
+div.MAIN {
+    width: 90vw;
+    margin-block: 2.5vh;
+    margin-inline: 5vw;
+}
+
+div.TITLE {
+    height: 7.44vh;
+    width: 90vw;
+
+    p {
+        font-size: 3rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+}
+
+div.SMALL_TITLE {
+    height: 3.78vh;
+    display: flex;
+    flex-direction: row;
+    gap: 2.5vw;
+    align-items: center;
+    justify-content: left;
+
+    p {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    img {
+        height: 1.5rem;
+    }
+}

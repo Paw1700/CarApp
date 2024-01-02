@@ -1,13 +1,16 @@
 div.PAGE {
 
+    title-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+    }
+
     p.WELCOME {
         font-size: 3rem;
         font-weight: 800;
         position: absolute;
         top: 5vw;
-    }
-
-    .POS_ABS {
-        position: absolute;
     }
 }

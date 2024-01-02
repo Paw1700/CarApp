@@ -37,7 +37,7 @@
             - [x] Splash Screen
         - [ ] Przepisanie HTML z optymalizacją CSS
             - [ ] UI
-                - [x] Upper Bar <r>NAVIGATION FUN EMPTY</r>
+                - [x] Upper Bar
                 - [ ] Loading Screen
                 - [ ] Navigation Bar
                 - [ ] Warning Prompt

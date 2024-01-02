@@ -168,6 +168,7 @@ body {
 
 :root {
 	--app-theme: #F2F2F6;
+	--app-elements-bg: #E9E8EA;
 	--app-elements: white;
 	--font-color: black;
 	--default-accent-color: #00A410;
@@ -177,6 +178,7 @@ body {
 
 	@media (prefers-color-scheme: dark) {
 		--app-theme: black;
+		--app-elements-bg: #282828;
 		--app-elements: rgb(28, 28, 30);
 		--font-color: white;
 	}

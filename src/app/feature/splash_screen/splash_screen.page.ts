@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
+import { AppService } from "../../service";
 
 @Component({
     standalone: true,
@@ -7,5 +8,6 @@ import { Component } from "@angular/core";
     styleUrl: './splash_screen.page.scss'
 })
 export class SplashScreen {
-
+    private APP = inject(AppService)
+    image_color_mode = this.APP.APPERANCE.checkIsDarkMode() ? 'white' : 'black'
 }

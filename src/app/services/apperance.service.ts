@@ -1,10 +1,8 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { UpperBarState } from "../UI/upper_bar/upper_bar.component";
 
 @Injectable()
 export class AppApperance {
-    upper_bar_state$ = new BehaviorSubject<UpperBarState>(new UpperBarState())
     bottom_bar_state$ = new BehaviorSubject<BottomBarState>(new BottomBarState())
     dark_mode_state$ = new BehaviorSubject<boolean>(false)
 
