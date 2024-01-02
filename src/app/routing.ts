@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { SplashScreen } from './feature/splash_screen/splash_screen.page';
 import { StartConfiguration } from './feature/start_configuration/start_configuration.page';
 import { HomePage } from './feature/home_page/home_page.component';
+import { SettingsPage } from './feature/settings_page/settings_page.component';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,14 @@ export const routes: Routes = [
         component: HomePage,
         data: {
             animState: 'home'
+        }
+    },
+    {
+        path: 'settings',
+        pathMatch: "full",
+        component: SettingsPage,
+        data: {
+            animState: 'settings'
         }
     }
 ];

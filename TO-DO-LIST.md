@@ -51,7 +51,7 @@
             - [ ] Car List 
             - [ ] Home Page <o>**WIP**</o>
             - [ ] Routes List
-            - [ ] Settings
+            - [x] Settings
             - [x] Splash Screen
 - [ ] Stworzenie skryptu sortującego błedy w pliku JSON jak i typach
 - [ ] Sprawdzenie poprawności stylów i dark modu

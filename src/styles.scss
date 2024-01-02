@@ -206,3 +206,11 @@ div.COMPONENT {
 	align-items: center;
     justify-content: center;
 }
+
+div.LIST {
+	display: flex;
+	gap: 2.5vw;
+	flex-direction: column;
+	align-items: center;
+    justify-content: center;
+}
