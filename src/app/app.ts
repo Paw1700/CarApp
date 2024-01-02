@@ -32,7 +32,7 @@ import { AppState } from './services/state.service';
   ],
   animations: [
     trigger('routeAnimation', [
-      transition('splashScreen => *', [
+      transition('splashScreen => *, startConfig => home', [
         group([
           query(":enter", [
             style({ zIndex: 1, opacity: 0 }),
@@ -47,7 +47,7 @@ import { AppState } from './services/state.service';
             }))
           ], { optional: true })
         ])
-      ]),
+      ])
     ])
   ],
   template: `

@@ -42,15 +42,20 @@ import { Loader } from '../../../../UI/loaders/loader.component';
 })
 export class FreshStartComponent extends NgUnsubscriber implements OnInit {
     private PS = inject(StartConfigurationPageService);
-    private APP = inject(AppService)
+    private APP = inject(AppService);
 
     avg_fuel_usage = 0;
     view_mode: StartConfigViewModes = 'start';
-    data_fetching = false
-    loader_size = window.innerWidth * 0.05
+    data_fetching = false;
+    error = false;
+    error_message = 'BŁĄD'
+    loader_size = window.innerWidth * 0.05;
 
     handleCounterChange(value: number): void {
         this.avg_fuel_usage = value;
+        if (this.error) {
+            this.error = false;
+        }
     }
 
     ngOnInit(): void {
@@ -62,7 +67,14 @@ export class FreshStartComponent extends NgUnsubscriber implements OnInit {
     }
 
     saveConfig(): void {
-        this.data_fetching = true
-        this.APP.firstConfigureApp(this.avg_fuel_usage)
+        this.data_fetching = true;
+        setTimeout(() => {
+            if (this.avg_fuel_usage > 0) {
+                this.APP.firstConfigureApp(this.avg_fuel_usage);
+            } else {
+                this.data_fetching = false;
+                this.error = true;
+            }
+        }, 1000)
     }
 }

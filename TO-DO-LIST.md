@@ -39,7 +39,7 @@
             - [ ] UI
                 - [x] Upper Bar
                 - [ ] Loading Screen
-                - [ ] Navigation Bar
+                - [ ] Navigation Bar <o>**WIP**</o>
                 - [ ] Warning Prompt
                 - [ ] Loaders 
             - [ ] About App
@@ -48,7 +48,8 @@
             - [ ] Backup
             - [ ] Brand List
             - [ ] Brand Create
-            - [ ] Car 
+            - [ ] Car List 
+            - [ ] Home Page <o>**WIP**</o>
             - [ ] Routes List
             - [ ] Settings
             - [x] Splash Screen

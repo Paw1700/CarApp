@@ -21,5 +21,17 @@ div.COMPONENT {
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: 0.35s ease-in-out;
+
+        &.ERROR {
+            background-color: red;
+        }
+    }
+
+    p.ERROR_MESSAGE {
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-align: center;
+        color: red;
     }
 }

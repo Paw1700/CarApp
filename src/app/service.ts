@@ -22,7 +22,7 @@ export class AppService {
     firstConfigureApp(fuel_config: number): void {
         this.DATA.saveFuelConfig(fuel_config)
         setTimeout(() =>{
-            // this.navigate('home')
+            this.navigate('home')
             console.log('NAVIGATE AWAY!');
         }, 1500)
     }
@@ -36,6 +36,8 @@ export class AppService {
                 this.ROUTER.navigateByUrl('/start')
                 break
             case "home":
+                this.ROUTER.navigateByUrl('/home')
+                break
             case "routes":
             case "carsList":
             case "newCar":
