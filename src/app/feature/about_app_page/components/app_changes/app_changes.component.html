@@ -1,0 +1,12 @@
+<div class="COMPONENT">
+    <p class="TITLE">Opis zmian</p>
+    @for (imp of this.importans; track imp.id) {
+        <feature style="width: 100%;" [feature]="imp" [type]="'important'"/>
+    }
+    @for (feat of this.features; track feat.id) {
+        <feature style="width: 100%;" [feature]="feat" [type]="'feature'" />
+    }
+    @for (fix of this.fixes; track fix.id) {
+        <feature style="width: 100%;" [feature]="fix" [type]="'fix'" />
+    }
+</div>

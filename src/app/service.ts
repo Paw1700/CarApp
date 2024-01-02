@@ -64,21 +64,25 @@ export class AppService {
                 this.APPERANCE.hideNavBar(false);
                 break;
             case 'carsList':
-                this.APPERANCE.setNavBarSelectedElement('cars')
-                this.APPERANCE.hideNavBar(false)
+                this.APPERANCE.setNavBarSelectedElement('cars');
+                this.APPERANCE.hideNavBar(false);
                 break;
             case 'settings':
-                this.ROUTER.navigateByUrl('/settings')
+                this.ROUTER.navigateByUrl('/settings');
                 this.APPERANCE.setNavBarSelectedElement('settings');
                 this.APPERANCE.hideNavBar(false);
                 break;
+            case 'aboutApp':
+                this.ROUTER.navigateByUrl('/aboutApp');
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
+                break
             case 'newCar':
             case 'editCar':
             case 'carBrands':
             case 'newCarBrand':
             case 'editCarBrand':
             case 'backup':
-            case 'aboutApp':
             case 'aboutApp/updated':
             case 'important':
                 break;

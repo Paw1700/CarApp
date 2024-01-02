@@ -1,7 +1,7 @@
 <div class="PAGE">
     <title-bar [title_content]="'Ustawienia'" [title_mode]="'BIG'"/>
     <div class="LIST">
-        <btn [height_in_vw]="btn_dimenstion.height" [width_in_vw]="btn_dimenstion.width" [border_radius_in_vw]="btn_dimenstion.border_radius">
+        <btn (click)="APP.navigate('aboutApp')" [height_in_vw]="btn_dimenstion.height" [width_in_vw]="btn_dimenstion.width" [border_radius_in_vw]="btn_dimenstion.border_radius">
             O aplikacji
         </btn>
         <btn [height_in_vw]="btn_dimenstion.height" [width_in_vw]="btn_dimenstion.width" [border_radius_in_vw]="btn_dimenstion.border_radius">

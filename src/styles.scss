@@ -188,13 +188,14 @@ body {
 div.PAGE {
 	width: 100vw;
 	height: 100vh;
+	background-color: var(--app-theme);
 	overflow-y: scroll;
 	overflow-x: hidden;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
     justify-content: center;
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	z-index: 1;

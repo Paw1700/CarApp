@@ -38,14 +38,49 @@ import { NavBar } from './UI/navbar/navbar.component';
         group([
           query(":enter", [
             style({ zIndex: 1, opacity: 0 }),
-            animate('500ms ease-in-out', style({
+            animate('350ms ease-in-out', style({
               opacity: 1
             }))
           ]),
           query(":leave", [
             style({ zIndex: 2, opacity: 1 }),
-            animate('500ms ease-in-out', style({
+            animate('350ms ease-in-out', style({
               opacity: 0
+            }))
+          ], { optional: true })
+        ])
+      ]),
+
+      //* SLIDE TO LEFT
+      transition("settings => aboutApp", [
+        group([
+          query(":enter", [
+            style({ zIndex: 2, position: 'absolute', left: '100vw', top: 0 }),
+            animate('350ms ease-out', style({
+              left: 0
+            }))
+          ], { optional: true }),
+          query(":leave", [
+            style({ zIndex: 1, position: 'absolute', left: 0, top: 0 }),
+            animate('350ms ease-in', style({
+              
+            }))
+          ], { optional: true })
+        ])
+      ]),
+
+      //* SLIDE RIGHT
+      transition("aboutApp => settings", [
+        group([
+          query(":enter", [
+            style({ zIndex: 1, position: 'absolute', left: 0, top: 0 }),
+            animate('350ms ease-out', style({
+            }))
+          ], { optional: true }),
+          query(":leave", [
+            style({ zIndex: 2, position: 'absolute', left: 0, top: 0 }),
+            animate('350ms ease-in', style({
+              left: '100vw'
             }))
           ], { optional: true })
         ])

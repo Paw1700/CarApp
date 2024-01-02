@@ -1,7 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { TitleBar } from "../../UI/title_bar/title_bar.component";
 import { ButtonComponent } from "../../UI/button/button.component";
 import { FuelConfigEditComponent } from "./components/fuel_config_edit.component";
+import { AppService } from "../../service";
 
 @Component({
     selector: 'settings-page',
@@ -11,6 +12,8 @@ import { FuelConfigEditComponent } from "./components/fuel_config_edit.component
     styleUrl: './settings_page.component.scss'
 })
 export class SettingsPage {
+    APP = inject(AppService)
+
     btn_dimenstion = {
         width: 86.5,
         height: 10.17,
