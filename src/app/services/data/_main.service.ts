@@ -112,5 +112,25 @@ export class AppData {
         return this.ERRORS.find(err => err.id === errID)
     }
 
+    /**
+     * Sets fuel config value in DB
+     * @param fuel_config value of average car usage
+     */
+    saveFuelConfig(fuel_config: number): void {
+        this.DB.LS_insertData(this.LS_STORES.fuelConfigAvgUsage, fuel_config.toFixed(1))
+    }
+
+    /**
+     * @returns value of fuel config
+     */
+    getFuelConfig(): number | null {
+        const fc_value = this.DB.LS_getData(this.LS_STORES.fuelConfigAvgUsage)
+        if (fc_value === null || fc_value === '' || Number.isNaN(fc_value)) {
+            return null
+        } else {
+            return Number(fc_value)
+        }
+    }
+
     //? getIGD and setIGD maybe not be necesary
 }

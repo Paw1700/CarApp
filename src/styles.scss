@@ -172,9 +172,10 @@ body {
 	--app-elements: white;
 	--font-color: black;
 	--default-accent-color: #00A410;
+	--font: 'Montserrat';
+	
 	--accent-color: #00A410;
 	--theme-color: white;
-	--font: 'Montserrat';
 
 	@media (prefers-color-scheme: dark) {
 		--app-theme: black;

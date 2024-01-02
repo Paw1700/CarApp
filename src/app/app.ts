@@ -10,6 +10,7 @@ import { AppValidator } from './services/validator.service';
 import { CarService } from './services/data/car.service';
 import { DatabaseManager } from './util/db.driver';
 import { RouteService } from './services/data/routes.service';
+import { AppState } from './services/state.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ import { RouteService } from './services/data/routes.service';
     CarBrandService,
     CarService,
     DatabaseManager,
-    RouteService
+    RouteService,
+    AppState
   ],
   animations: [
     trigger('routeAnimation', [
