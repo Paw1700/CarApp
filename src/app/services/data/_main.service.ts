@@ -86,7 +86,7 @@ export class AppData {
      */
     getChoosedCarID(): string | null {
         const id = this.DB.LS_getData(this.LS_STORES.choosedCarID)
-        if (id !== '' || id !== null) {
+        if (id !== '' && id !== null) {
             return id
         } else {
             return null
