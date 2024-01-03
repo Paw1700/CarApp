@@ -60,6 +60,9 @@ export class CarBrandService {
                     reject("CAR_BRAND-SAVE-ERROR")
                 }
             } else {
+                if (!updateMode) {
+                    await this.DB.RELEASE_INDEX(this.DB_STORE, brand.id)
+                }
                 console.error(validation_result.reason)
                 reject(validation_result.errCode)
             }

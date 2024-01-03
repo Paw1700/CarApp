@@ -1,0 +1,12 @@
+<div class="PAGE">
+    <title-bar (click)="APP.navigate('settings')" [title_content]="'Lista marek'" [title_mode]="'SMALL'"/>
+    <btn (click)="APP.navigate('newCarBrand')" [btn_type]="'accent'" [border_radius_in_vw]="btn_dimensions.border_radius" [height_in_vw]="btn_dimensions.height" [width_in_vw]="btn_dimensions.width"> 
+        <img class="PLUS_IMAGE" src="/assets/UI/plus/white.webp">
+        Nowa marka
+    </btn>
+    <div class="LIST">
+        @for (brand of brands; track brand.id) {
+            <brand-list-item [car_brand]="brand" [dark_mode_bool]="dark_mode"/>
+        }
+    </div>
+</div>

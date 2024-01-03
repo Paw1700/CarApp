@@ -76,11 +76,19 @@ export class AppService {
                 this.ROUTER.navigateByUrl('/aboutApp');
                 this.APPERANCE.setNavBarSelectedElement(null);
                 this.APPERANCE.hideNavBar(true);
+                break;
+            case 'carBrands':
+                this.ROUTER.navigateByUrl('/brandList');
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
+                break;
+            case 'newCarBrand':
+                this.ROUTER.navigateByUrl('/brandList/create');
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
                 break
             case 'newCar':
             case 'editCar':
-            case 'carBrands':
-            case 'newCarBrand':
             case 'editCarBrand':
             case 'backup':
             case 'aboutApp/updated':

@@ -24,6 +24,7 @@ import { Component, Input } from '@angular/core';
             background-color: var(--app-elements);
             font-size: 1rem;
             font-weight: 700;
+            gap: 2.5vw;
 
             &.ACCENT {
                 background-color: var(--accent-color);

@@ -4,6 +4,8 @@ import { StartConfiguration } from './feature/start_configuration/start_configur
 import { HomePage } from './feature/home_page/home_page.component';
 import { SettingsPage } from './feature/settings_page/settings_page.component';
 import { AboutAppPage } from './feature/about_app_page/about_app_page.component';
+import { BrandListPage } from './feature/brand_list_page/brand_list_page.component';
+import { CreateBrandPage } from './feature/create_brand_page/create_brand_page.component';
 
 export const routes: Routes = [
     {
@@ -44,6 +46,22 @@ export const routes: Routes = [
         component: AboutAppPage,
         data: {
             animState: 'aboutApp'
+        }
+    },
+    {
+        path: 'brandList',
+        pathMatch: "full",
+        component: BrandListPage,
+        data: {
+            animState: 'brandList'
+        }
+    },
+    {
+        path: 'brandList/create',
+        pathMatch: "full",
+        component: CreateBrandPage,
+        data: {
+            animState: 'createBrand'
         }
     }
 ];

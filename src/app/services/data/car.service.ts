@@ -79,6 +79,9 @@ export class CarService {
                     await this.DB.insertObject<CarDBModel>(this.DB_STORES.cars, car)
                     resolve()
                 } else {
+                    if (!updateMode) {
+                        await this.DB.RELEASE_INDEX(this.DB_STORES.cars, car.id)
+                    }
                     console.error(validationResult.reason)
                     reject(validationResult.errCode)
                 }

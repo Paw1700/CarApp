@@ -4,9 +4,7 @@
 # <lb>NEED FOR 2.2 <o>**WIP**</o>
 
 - [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
-    - [ ] Usunięcie zależności związanych z edycją BETA
     - [ ] **CORE**
-        - [ ] Przenieść folder UI do feature
         - [ ] **SERVICES**
             - [ ] Refaktoring zgodnie z podejściem 
                     Komponent => Serwis strony => Serwis aplikacji/podmiotu
@@ -30,7 +28,7 @@
             - [x] App First Configuration (Start Configuration)
             - [ ] Backup
             - [ ] Brand List
-            - [ ] Brand Create
+            - [x] Brand Create
             - [ ] Car 
             - [ ] Routes List
             - [ ] Settings
@@ -46,8 +44,8 @@
             - [ ] Important Update
             - [x] App First Configuration (Start Configuration)
             - [ ] Backup
-            - [ ] Brand List
-            - [ ] Brand Create
+            - [ ] Brand List <o>**WIP**</o>
+            - [x] Brand Create
             - [ ] Car List 
             - [ ] Home Page <o>**WIP**</o>
             - [ ] Routes List
@@ -65,8 +63,8 @@
     - [ ] Routes List
     - [ ] Settings
     - [ ] Splash Screen
-- [ ] Dodanie napisu wersji na ekranie startowym
-- [ ] Wersjonowanie do wersji 2.1.4
+- [x] Dodanie napisu wersji na ekranie startowym
+- [ ] Zamienie starych oddzielnych komponentów na komponenty z UI
 
 # <g>FUTURE FEATURE
 

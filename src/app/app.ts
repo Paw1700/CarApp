@@ -52,7 +52,7 @@ import { NavBar } from './UI/navbar/navbar.component';
       ]),
 
       //* SLIDE TO LEFT
-      transition("settings => aboutApp", [
+      transition("settings => aboutApp, settings => brandList, brandList => createBrand", [
         group([
           query(":enter", [
             style({ zIndex: 2, position: 'absolute', left: '100vw', top: 0 }),
@@ -70,7 +70,7 @@ import { NavBar } from './UI/navbar/navbar.component';
       ]),
 
       //* SLIDE RIGHT
-      transition("aboutApp => settings", [
+      transition("aboutApp => settings, brandList => settings, createBrand => brandList", [
         group([
           query(":enter", [
             style({ zIndex: 1, position: 'absolute', left: 0, top: 0 }),

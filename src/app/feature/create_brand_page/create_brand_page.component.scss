@@ -1,0 +1,25 @@
+div.PAGE {
+    justify-content: flex-start;
+    gap: 2.5vw;
+
+    .LOGO_PICKER {
+        width: 89vw;
+    }
+
+    input.BRAND_NAME_INPUT {
+        width: 79vw;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-radius: 2.5vw;
+        background-color: var(--app-elements);
+        padding: 2.5vw 5vw;
+
+        &::placeholder {
+            opacity: .5;
+        }
+
+        &.ERROR {
+            border: 1px solid red;
+        }
+    }
+}

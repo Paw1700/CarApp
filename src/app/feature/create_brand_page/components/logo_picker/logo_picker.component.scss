@@ -1,0 +1,92 @@
+div.COMPONENT {
+    width: 100%;
+    gap: 2.5vw;
+
+    p.TITLE {
+        font-size: 1.5rem;
+        font-weight: 700;
+        width: 100%;
+        text-align: start;
+    }
+
+    p.IMAGE_REQ {
+        font-size: .75rem;
+        font-weight: 500;
+        width: 100%;
+        text-align: center;
+    }
+
+    div.PICKER {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: var(--app-elements);
+        border-radius: 2.5vw;
+        gap: 2.5vw;
+        padding-block: 2.5vw;
+
+        div.PHOTO {
+            width: 90%;
+            height: 40vw;
+            border-radius: 2.5vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--app-elements-bg);
+            position: relative;
+
+            &.WHITE {
+                background-color: var(--app-elements-bg-light);
+                color: var(--font-color-light);
+            }
+
+            &.DARK {
+                background-color: var(--app-elements-bg-dark);
+                color: var(--font-color-dark);
+            }
+
+            img {
+                height: 90%;
+                width: 90%;
+                object-fit: contain;
+            }
+
+            p.ERROR {
+                font-size: 1rem;
+                width: 80%;
+                text-align: center;
+                font-weight: 500;
+                color: red;
+            }
+
+            input[type='file'] {
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+
+        div.BREAK_LINE {
+            width: 90%;
+            height: .25vw;
+            background-color: var(--font-color);
+        }
+    }
+
+    div.NOT_USE_DARK_MODE_OPTION {
+        width: 100%;
+        display: flex;
+        gap: 2.5vw;
+        align-items: center;
+
+        p {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+    }
+}

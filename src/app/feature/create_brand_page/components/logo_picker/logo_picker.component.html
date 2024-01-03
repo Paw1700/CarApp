@@ -1,0 +1,39 @@
+<div class="COMPONENT">
+    <p class="TITLE">Logo marki</p>
+    <p class="IMAGE_REQ">Zdjęcie musi być nie większe niż 50kB oraz być w formacie webp!</p>
+    <div class="PICKER">
+        <div class="PHOTO WHITE">
+            @if (main_logo === null && !not_use_dark_mode && !error[0].file_size && !error[0].image_type) {
+                Przystosowane do motywu jasnego
+            } @else if (error[0].file_size) {
+                <p class="ERROR">Rozmiar zdjęcia loga nie może być większy niż 50kB!</p>
+            } @else if (error[0].image_type) {
+                <p class="ERROR">Rozmiar zdjęcia loga musi być w formacie webp!</p>
+            } @else if (not_use_dark_mode) {
+                Logo
+            } @else {
+                <img [src]="main_logo">
+            }
+            <input (change)="handleInputImage(false, $event)" type="file">
+        </div>
+        @if (!not_use_dark_mode) {
+            <div class="BREAK_LINE"></div>
+            <div class="PHOTO DARK">
+                @if (dark_mode_logo === null && !error[1].file_size && !error[1].image_type) {
+                    Przystosowane do motywu ciemniego
+                } @else if (error[1].file_size) {
+                    <p class="ERROR">Rozmiar zdjęcia loga nie może być większy niż 50kB!</p>
+                } @else if (error[1].image_type) {
+                    <p class="ERROR">Rozmiar zdjęcia loga musi być w formacie webp!</p>
+                } @else {
+                    <img [src]="dark_mode_logo">
+                }
+                <input (change)="handleInputImage(true, $event)" type="file">
+            </div>
+        }
+    </div>
+    <div (click)="toogleNotUseDarkMode()" class="NOT_USE_DARK_MODE_OPTION">
+        <input [(ngModel)]="not_use_dark_mode" type="checkbox" />
+        <p>Nie używaj dla motywu ciemniego</p>
+    </div>
+</div>

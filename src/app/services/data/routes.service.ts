@@ -65,6 +65,9 @@ export class RouteService {
                     reject("DB-SAVE-ERROR")
                 }
             } else {
+                if (!updateMode) {
+                    await this.DB.RELEASE_INDEX(this.DB_STORE, route.id)
+                }
                 reject(validation_result.errCode)
                 console.warn(validation_result.reason);
             }
