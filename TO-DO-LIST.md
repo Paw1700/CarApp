@@ -27,7 +27,7 @@
             - [ ] Important Update
             - [x] App First Configuration (Start Configuration)
             - [ ] Backup
-            - [ ] Brand List
+            - [x] Brand List
             - [x] Brand Create
             - [ ] Car 
             - [ ] Routes List
@@ -44,7 +44,7 @@
             - [ ] Important Update
             - [x] App First Configuration (Start Configuration)
             - [ ] Backup
-            - [ ] Brand List <o>**WIP**</o>
+            - [x] Brand List
             - [x] Brand Create
             - [ ] Car List 
             - [ ] Home Page <o>**WIP**</o>

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
     template: `
         <div [ngStyle]="{width: width_in_vw+'vw'}" class="INPUT_BOX">
             <p [class.ACTIVE]="input_active" class="INPUT_TITLE">{{ title }}</p>
-            <input [(ngModel)]="input_value" (focus)="toogleInput(true)" (blur)="toogleInput(false); emitValue()" [class.ACTIVE]="input_active" type="text">
+            <input [(ngModel)]="value" (focus)="toogleInput(true)" (blur)="toogleInput(false); emitValue()" [class.ACTIVE]="input_active" type="text">
         </div>
     `,
     styles: `
@@ -51,16 +51,19 @@ import { FormsModule } from '@angular/forms';
         }
     `
 })
-export class TextInputComponent {
+export class TextInputComponent implements OnInit{
     @Input({required: true}) title = ''
-    // @Input()
     @Input() width_in_vw = 89
+    @Input() value = ''
     @Output() valueChange = new EventEmitter<string>()
     input_active = false
-    input_value = ''
+
+    ngOnInit(): void {
+        this.checkIfInputWasSetted()   
+    }
 
     toogleInput(value: boolean): void {
-        if (this.input_value !== '') {
+        if (this.value !== '') {
             this.input_active = true;
         } else {
             this.input_active = value
@@ -68,6 +71,12 @@ export class TextInputComponent {
     }
 
     emitValue() {
-        this.valueChange.emit(this.input_value)
+        this.valueChange.emit(this.value)
+    }
+
+    private checkIfInputWasSetted() {
+        setTimeout(() => {
+            this.toogleInput(false)
+        }, 50)
     }
 }

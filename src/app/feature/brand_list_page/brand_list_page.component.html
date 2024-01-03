@@ -6,7 +6,9 @@
     </btn>
     <div class="LIST">
         @for (brand of brands; track brand.id) {
-            <brand-list-item [car_brand]="brand" [dark_mode_bool]="dark_mode"/>
+            <scroll-able-bar style="width: 100%; height: 20vw;" [first_option]="scroll_abl_option[0]" [first_option_return_value]="brand.id" (first_option_pressed)="handleEditRequest($event)" [second_option_return_value]="brand.id" (second_option_pressed)="handleDeleteRequest($event)" [second_option]="scroll_abl_option[1]">
+                <brand-list-item style="width: 100%;" [car_brand]="brand" [dark_mode_bool]="dark_mode"/>
+            </scroll-able-bar>
         }
     </div>
 </div>

@@ -1,20 +1,26 @@
-import { Component, inject } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { TitleBar } from "../../UI/title_bar/title_bar.component";
 import { AppService } from "../../service";
 import { LogoPickerComponent } from "./components/logo_picker/logo_picker.component";
 import { ButtonComponent, ButtonTypes } from "../../UI/button/button.component";
 import { TextInputComponent } from "../../UI/forms/text_input.component";
 import { Loader } from "../../UI/loaders/loader.component";
-import { CarBrand } from "../../models/car_brand.model";
+import { NgUnsubscriber } from "../../util/ngUnsubscriber";
+import { ActivatedRoute } from "@angular/router";
+import { takeUntil } from "rxjs";
+import { CreateBrandPageService } from "./create_brand_page.service";
 
 @Component({
     selector: 'create-brand-page',
     standalone: true,
     imports: [TitleBar, LogoPickerComponent, ButtonComponent, TextInputComponent, Loader],
+    providers: [CreateBrandPageService],
     templateUrl: './create_brand_page.component.html',
     styleUrl: './create_brand_page.component.scss'
 })
-export class CreateBrandPage {
+export class CreateBrandPage extends NgUnsubscriber implements OnInit {
+    private route = inject(ActivatedRoute)
+    private PS = inject(CreateBrandPageService)
     APP = inject(AppService)
     readonly border_dimenions = {
         width: 89,
@@ -23,40 +29,45 @@ export class CreateBrandPage {
     }
     btn_type: ButtonTypes = 'accent'
     brand_name: string = '';
-    brand_default_logo = '';
-    brand_logo_for_dark_mode: string | null = null;
     data_fetching = false;
     error = false;
 
+    ngOnInit(): void {
+        this.route.params.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(
+            async params => {
+                if (params['id'] !== undefined) {
+                    this.PS.brand_id$.next(params['id'])
+                }
+            }
+        )
+        this.PS.brand_name$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(name => {
+            this.brand_name = name
+        })
+    }
+
     handleCarNameInputEmit(name: string) {
-        this.brand_name = name;
+        this.PS.brand_name$.next(name)
     }
 
-    handleCarBrandImageEmit(image: string, dark_mode_logo: boolean) {
-        if (dark_mode_logo) {
-            this.brand_logo_for_dark_mode = image;
-        } else {
-            this.brand_default_logo = image;
-        }
-    }
-
-    async saveBrand() {
-        try {
-            const brand = new CarBrand('', this.brand_name, {default: this.brand_default_logo, for_dark_mode: this.brand_logo_for_dark_mode})
-            this.data_fetching = true;
-            await this.APP.DATA.CAR_BRAND.saveOne(brand)
-            setTimeout(() => {
-                this.data_fetching = false;
-                this.APP.navigate('carBrands')
-            }, 1000)
-        } catch (err) {
-            //!!! SEND ERROR TO APP SERVICES
-            this.data_fetching = false;
-            this.toogleError(true);
-            setTimeout(() => {
-                this.toogleError(false);
-            }, 1500) 
-        }
+    saveBrand() {
+        this.data_fetching = true;
+        setTimeout(() => {
+            this.PS.saveBrand()
+                .then(
+                    () => {
+                        this.data_fetching = false;
+                    }
+                )
+                .catch(
+                    err => {
+                        this.data_fetching = false;
+                        this.toogleError(true);
+                        setTimeout(() => {
+                            this.toogleError(false);
+                        }, 1500)
+                    }
+                )
+        }, 1000)
     }
 
     private toogleError(bool: boolean) {

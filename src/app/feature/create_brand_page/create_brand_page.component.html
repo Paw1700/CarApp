@@ -1,7 +1,7 @@
 <div class="PAGE">
     <title-bar (click)="APP.navigate('carBrands')" [title_content]="'Wróć'" [title_mode]="'SMALL'"/>
-    <text-input [title]="'Nazwa marki'" (valueChange)="handleCarNameInputEmit($event)"/>
-    <logo-picker (for_dark_mode_logo)="handleCarBrandImageEmit($event, true)" (main_logo)="handleCarBrandImageEmit($event, false)" class="LOGO_PICKER"/>
+    <text-input [value]="brand_name" (valueChange)="handleCarNameInputEmit($event)" [title]="'Nazwa marki'"/>
+    <logo-picker class="LOGO_PICKER"/>
     <btn (click)="saveBrand()" [btn_type]="btn_type" [border_radius_in_vw]="border_dimenions.border_radius" [width_in_vw]="border_dimenions.width" [height_in_vw]="border_dimenions.height">
         @if (data_fetching) {
             <loader [size]="border_dimenions.height*1.5" [white_border]="true"/>

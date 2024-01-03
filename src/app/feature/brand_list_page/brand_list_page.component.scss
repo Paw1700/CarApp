@@ -1,8 +1,13 @@
 div.PAGE {
     justify-content: flex-start;
+    gap: 2.5vw;
 
     img.PLUS_IMAGE {
         width: 5vw;
         object-fit: contain;
+    }
+
+    div.LIST {
+        width: 89vw;
     }
 }

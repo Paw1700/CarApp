@@ -1,0 +1,16 @@
+<div (touchstart)="handleTouchEvent($event, 'start')" (touchend)="handleTouchEvent($event, 'end')"
+    class="SCROLL_ABLE_BAR">
+    <div [style.left.%]="bar_posistion" class="BAR">
+        <button (click)="pressEvent('first')"
+            [ngStyle]="{backgroundColor: first_option.color, minWidth: first_option.width_in_percent+'%'}"
+            class="FIRST_OPTION">
+            {{ first_option.text }}
+        </button>
+        <div class="CONTENT"><ng-content></ng-content></div>
+        <button (click)="pressEvent('second')"
+            [ngStyle]="{backgroundColor: second_option.color, minWidth: second_option.width_in_percent+'%'}"
+            class="SECOND_OPTION">
+            {{ second_option.text }}
+        </button>
+    </div>
+</div>

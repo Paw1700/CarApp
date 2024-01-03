@@ -11,7 +11,7 @@ export class AppService {
         public APPERANCE: AppApperance,
         public DATA: AppData,
         public STATE: AppState
-    ) {}
+    ) { }
 
     async startApp(): Promise<void> {
         let redirect_location: AppLocations = 'home';
@@ -44,7 +44,7 @@ export class AppService {
         }
     }
 
-    async navigate(location: AppLocations): Promise<void> {
+    async navigate(location: AppLocations, additionalURLData?: string): Promise<void> {
         switch (location) {
             case 'splashScreen':
                 this.ROUTER.navigateByUrl('/');
@@ -87,9 +87,17 @@ export class AppService {
                 this.APPERANCE.setNavBarSelectedElement(null);
                 this.APPERANCE.hideNavBar(true);
                 break
+            case 'editCarBrand':
+                if (additionalURLData === undefined) {
+                    console.error(`Did not provided needed additional data for navigation for ${location}`)
+                    return 
+                }
+                this.ROUTER.navigateByUrl('/brandList/create/'+additionalURLData)
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
+                break
             case 'newCar':
             case 'editCar':
-            case 'editCarBrand':
             case 'backup':
             case 'aboutApp/updated':
             case 'important':

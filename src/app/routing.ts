@@ -63,5 +63,13 @@ export const routes: Routes = [
         data: {
             animState: 'createBrand'
         }
+    },
+    {
+        path: 'brandList/create/:id',
+        pathMatch: "full",
+        component: CreateBrandPage,
+        data: {
+            animState: 'createBrand'
+        }
     }
 ];

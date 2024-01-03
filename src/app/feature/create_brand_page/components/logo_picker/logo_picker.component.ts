@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CreateBrandPageService } from '../../create_brand_page.service';
+import { NgUnsubscriber } from '../../../../util/ngUnsubscriber';
+import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'logo-picker',
@@ -8,9 +11,8 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './logo_picker.component.html',
     styleUrl: './logo_picker.component.scss',
 })
-export class LogoPickerComponent {
-    @Output('main_logo') main_logo_emitter = new EventEmitter<string>();
-    @Output('for_dark_mode_logo') for_dark_mode_logo_emitter = new EventEmitter<string>();
+export class LogoPickerComponent extends NgUnsubscriber implements OnInit{
+    private PS = inject(CreateBrandPageService)
     main_logo: string | null = null;
     dark_mode_logo: string | null = null;
     not_use_dark_mode = false
@@ -21,6 +23,21 @@ export class LogoPickerComponent {
         file_size: false,
         image_type: false,
     }];
+
+    ngOnInit(): void {
+        this.PS.brand_logo_default$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( image => {
+            if (image !== '') {
+                this.main_logo = image
+            }
+        })
+        this.PS.brand_logo_for_dark_mode$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( image => {
+            if (image !== null) {
+                this.dark_mode_logo = image
+            } else if (this.main_logo !== null) {
+                this.not_use_dark_mode = true
+            }
+        })
+    }
 
     async handleInputImage(forDarkMode: boolean, image: any) {
         this.resetError()
@@ -66,10 +83,10 @@ export class LogoPickerComponent {
     private setLogo(forDarkMode: boolean, logo: string): void {
         if (forDarkMode) {
             this.dark_mode_logo = logo;
-            this.for_dark_mode_logo_emitter.emit(logo)
+            this.PS.brand_logo_for_dark_mode$.next(logo)
         } else {
             this.main_logo = logo;
-            this.main_logo_emitter.emit(logo);
+            this.PS.brand_logo_default$.next(logo)
         }
     }
 
