@@ -58,13 +58,15 @@ import { Feature } from "../../../../../models/app-version.model";
             width: 75%;
 
             p.TITLE {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
                 font-weight: 700;
+                text-align: left;
             }
             
             p.DESC {
                 font-size: 1rem;
                 font-weight: 500;
+                text-align: left;
             }
         }
     }

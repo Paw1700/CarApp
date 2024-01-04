@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 @Component({
     selector: 'app-desc',
@@ -8,8 +8,8 @@ import { Component } from "@angular/core";
             <img class="APP_LOGO">
             <div class="APP_DESC">
                 <p class="TITLE">CarApp</p>
-                <p class="VERSION">v2.2</p>
-                <p class="COMPILATION">(240102)</p>
+                <p class="VERSION">v{{ app_version_string }}</p>
+                <p class="COMPILATION">({{ app_compilation_string }})</p>
             </div>
         </div>
     `,
@@ -54,5 +54,6 @@ import { Component } from "@angular/core";
     `
 })
 export class AppDescComponent {
-
+    @Input({required: true}) app_version_string: string = ''
+    @Input({required: true}) app_compilation_string: string = ''
 }

@@ -23,7 +23,7 @@
         - [ ] Refaktoring zgodnie z podejściem 
                 Komponent => Serwis strony => Serwis aplikacji/podmiotu
         - [ ] Rozbicie na mniejsze komponenty
-            - [ ] About App
+            - [x] About App
             - [ ] Important Update
             - [x] App First Configuration (Start Configuration)
             - [ ] Backup
@@ -40,7 +40,7 @@
                 - [x] Navigation Bar
                 - [ ] Warning Prompt
                 - [ ] Loaders 
-            - [ ] About App
+            - [x] About App
             - [ ] Important Update
             - [x] App First Configuration (Start Configuration)
             - [ ] Backup
