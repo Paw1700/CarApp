@@ -1,0 +1,10 @@
+<div
+    [ngStyle]="{
+        flexDirection: scroll_mode === 'horizontal' ? 'row' : 'column',
+        left: tab_left_offset +'%',
+    }"
+    (touchstart)="handleScrollEvent($event, 'start')"
+    (touchend)="handleScrollEvent($event, 'end')"
+    class="SCROLL_ABLE_TABS">
+    <ng-content></ng-content>
+</div>

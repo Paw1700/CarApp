@@ -2,8 +2,8 @@
 export class Insurance {
     constructor(
         public name: string = '',
-        public startDate: string =  '',
-        public endsDate: string = '',
+        public startDate: string =  new Date().toJSON().substring(0, 10),
+        public endsDate: string = new Date().toJSON().substring(0, 10),
         public options: {
             AC: boolean,
             NWW: boolean,

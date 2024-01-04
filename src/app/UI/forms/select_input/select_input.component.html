@@ -1,0 +1,26 @@
+<div class="SELECT_INPUT">
+    <p class="TITLE" [class.ACTIVE]="select_active">{{ title }}</p>
+    <div (click)="toogleSelectActiveState()" class="TAP_BAR" [class.ACTIVE]="select_active" [class.CHOSED]="choosed_element_index != -1">
+        <p class="CHOOSED">
+            @if (choosed_element_index !== -1) {
+                {{ select_list[choosed_element_index].name  }}
+            }
+        </p>
+        <svg class="ARROW_DOWN" viewBox="0 0 333 202" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path [class.ACTIVE]="select_active" fill-rule="evenodd" clip-rule="evenodd"
+                [attr.d]="show_list ? arrow_path.active: arrow_path.unactive"/>
+        </svg>
+    </div>
+    <div [class.HIDE]="!show_list" class="LIST">
+        @if (show_empty_opt) {
+            <div (click)="element_choosed(-1)" class="LIST_ELEMENT DELETE">
+                BRAK
+            </div>
+        }
+        @for (el of select_list; track el.name; let i = $index) {
+            <div (click)="element_choosed(i)" class="LIST_ELEMENT">
+                {{el.name}}
+            </div>
+        }
+    </div>
+</div>

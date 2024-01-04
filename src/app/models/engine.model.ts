@@ -2,9 +2,9 @@
 export class CombustionEngine {
     constructor(
         public volume: number = 0,
-        public pistonDesign: "R" | "V" | "B" = "R",
+        public pistonDesign: "R" | "V" | "B" | '' = "",
         public pistonAmount: number = 0,
-        public fuelType: "B" | "D" = "B",
+        public fuelType: "B" | "D" | '' = "",
         public fuelTankVolume: number = 0,
         public avgFuelUsage: number = 0,
         public power: number = 0,
@@ -14,7 +14,7 @@ export class CombustionEngine {
 //! ID NOT NEEDED - THIS MODEL IS NOT USED SEPERATE IN DB
 export class ElectricEngine {
     constructor(
-        public energyStorage: 'H' | 'B' = 'B',
+        public energyStorage: 'H' | 'B' | '' = '',
         public energyStorageVolume: number = 0,
         public energyAvgUsage: number = 0,
         public power: number = 0,

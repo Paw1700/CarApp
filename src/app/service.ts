@@ -22,6 +22,7 @@ export class AppService {
         this.APPERANCE.setStatusBarColor(true);
         await this.DATA.start();
         this.APPERANCE.watchForDarkModeChange();
+        redirect_location = 'newCar'
         setTimeout(() => {
             this.navigate(redirect_location);
         }, 500);
@@ -64,6 +65,7 @@ export class AppService {
                 this.APPERANCE.hideNavBar(false);
                 break;
             case 'carsList':
+                this.ROUTER.navigateByUrl('/carsList');
                 this.APPERANCE.setNavBarSelectedElement('cars');
                 this.APPERANCE.hideNavBar(false);
                 break;
@@ -97,6 +99,10 @@ export class AppService {
                 this.APPERANCE.hideNavBar(true);
                 break
             case 'newCar':
+                this.ROUTER.navigateByUrl('/carsList/create')
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
+                break
             case 'editCar':
             case 'backup':
             case 'aboutApp/updated':

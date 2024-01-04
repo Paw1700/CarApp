@@ -1,0 +1,41 @@
+div.INPUT_BOX {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p.TITLE {
+        font-size: 1.25rem;
+        width: 85%;
+        text-align: left;
+        position: relative;
+        top: 40%;
+        transition: 0.2s ease-out;
+        color: var(--app-elements-bg);
+
+        &.ACTIVE {
+            top: 0;
+            width: 95%;
+            font-weight: 700;
+            color: var(--font-color);
+        }
+    }
+
+    input {
+        width: 85%;
+        height: 80%;
+        padding-inline: 5%;
+        border: 0.5vw solid var(--app-elements-bg);
+        border-radius: 2.5vw;
+        position: relative;
+        bottom: 12.5%;
+        font-size: 1.25rem;
+        font-weight: 600;
+
+        &.ACTIVE {
+            bottom: 0;
+            border-color: var(--font-color);
+        }
+    }
+}

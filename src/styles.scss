@@ -236,6 +236,12 @@ input[type=time],
 input[type=url],
 input[type=week] {}
 
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
 /* Button Controls
 -----------------------------------------------*/
 
@@ -297,7 +303,7 @@ textarea {
 /* Selects
 -----------------------------------------------*/
 
-select {}
+// select {}
 
 select[multiple] {
 	/* Move the label to the top */

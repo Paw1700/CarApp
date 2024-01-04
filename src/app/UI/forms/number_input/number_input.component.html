@@ -1,0 +1,37 @@
+@if (type === 'buttons') {
+<div class="NUMBER_BUTTONS_INPUT">
+    <p class="TITLE">{{ title }}</p>
+    <div class="INPUT_BOX">
+        <p class="VALUE">{{ value?.toFixed(precision) }}</p>
+        <div class="CHANGE_BUTTONS">
+            <button (click)="changeValue('minus')">
+                <svg viewBox="0 0 202 333" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M200.818 35.3553L165.463 0L0 165.463L0.855374 166.318L0.40931 166.764L165.872 332.227L201.228 296.872L70.2646 165.909L200.818 35.3553Z"
+                        fill="white" />
+                </svg>
+            </button>
+            <button (click)="changeValue('plus')">
+                <svg viewBox="0 0 202 333" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M0.409225 296.872L35.7646 332.228L201.228 166.765L200.372 165.909L200.818 165.463L35.3552 0.00012207L-9.15527e-05 35.3555L130.963 166.318L0.409225 296.872Z"
+                        fill="white" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    @if (show_fast_btns) {
+        <div class="FST_BTNS">
+            <button (click)="changeValue('plus', -fast_btns_settings.second_amount )">{{ "- " + fast_btns_settings.second_amount }}</button>
+            <button (click)="changeValue('plus', -fast_btns_settings.first_amount)">{{ "- " + fast_btns_settings.first_amount }}</button>
+            <button (click)="changeValue('plus', fast_btns_settings.first_amount)">{{ "+ " + fast_btns_settings.first_amount }}</button>
+            <button (click)="changeValue('plus', fast_btns_settings.second_amount)">{{ "+ " + fast_btns_settings.second_amount }}</button>
+        </div>
+    }
+</div>
+} @else if (type === 'typed-in') {
+<div class="NUMBER_TYPED_IN">
+    <p [class.ACTIVE]="input_active" class="TITLE">{{ title }}</p>
+    <input [(ngModel)]="value" (focus)="toogleInput(true)" (blur)="toogleInput(false); emitValue()" [class.ACTIVE]="input_active" type="number">
+</div>
+}

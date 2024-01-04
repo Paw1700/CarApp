@@ -1,0 +1,4 @@
+<div class="INPUT_BOX">
+    <p [class.ACTIVE]="input_active" class="TITLE">{{ title }}</p>
+    <input [(ngModel)]="value" (focus)="toogleInput(true)" (blur)="toogleInput(false); emitValue()" [class.ACTIVE]="input_active" type="text">
+</div>

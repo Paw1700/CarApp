@@ -6,6 +6,8 @@ import { SettingsPage } from './feature/settings_page/settings_page.component';
 import { AboutAppPage } from './feature/about_app_page/about_app_page.component';
 import { BrandListPage } from './feature/brand_list_page/brand_list_page.component';
 import { CreateBrandPage } from './feature/create_brand_page/create_brand_page.component';
+import { CarsListPage } from './feature/cars_list_page/cars_list_page.component';
+import { CarCreatePage } from './feature/car_create_page/car_create_page.component';
 
 export const routes: Routes = [
     {
@@ -70,6 +72,22 @@ export const routes: Routes = [
         component: CreateBrandPage,
         data: {
             animState: 'createBrand'
+        }
+    },
+    {
+        path: 'carsList',
+        pathMatch: "full",
+        component: CarsListPage,
+        data: {
+            animState: 'carsList'
+        }
+    },
+    {
+        path: 'carsList/create',
+        pathMatch: "full",
+        component: CarCreatePage,
+        data: {
+            animState: 'carCreate'
         }
     }
 ];

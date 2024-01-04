@@ -1,0 +1,8 @@
+<div class="PAGE">
+    <title-bar (click)="APP.navigate('carsList')" [title_content]="'Nowy pojazd'" [title_mode]="'SMALL'" />
+    <scroll-able-tabs [tabs_number]="2" [tab_width_in_vw]="100">
+        <car-photo-picker [photo_title]="'Zdjęcie z przodu'" [input_photo]="car_front_left_photo" (received_photo)="handleCarPhoto('front_left', $event)" />
+        <car-photo-picker [photo_title]="'Zdjęcie z boku'" [input_photo]="car_side_photo" (received_photo)="handleCarPhoto('side', $event)" />
+    </scroll-able-tabs>
+    <car-credentials />
+</div>

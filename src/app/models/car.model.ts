@@ -9,6 +9,47 @@ export type SourceType = 'Combustion' | 'Electric'
 
 export type CarType = SourceType | 'Hybrid'
 
+export class CarDBModel {
+    constructor(
+        public id: string = '',
+        public brandId: string = '',
+        public model: string = '',
+        public mileage: {
+            actual: number,
+            at_review: number
+        } = {
+            actual: 0,
+            at_review: 0
+        },
+        public type: CarType | '' = '',
+        public engine: {
+            combustion: CombustionEngine,
+            electric: ElectricEngine
+        } = {
+            combustion: new CombustionEngine(), 
+            electric: new ElectricEngine()
+        },
+        public gearbox: Gearbox = new Gearbox(),
+        public drive_type: GearboxDriveType | '' = "",
+        public insurance: Insurance = new Insurance(),
+        public tech_review_ends: string = new Date().toJSON().substring(0, 10),
+        public color: {
+            theme: string,
+            accent: string
+        } = {
+            theme: '#000000',
+            accent: '#000000'
+        },
+        public photo: {
+            side: string, 
+            front_left: string
+        } = {
+            side: '',
+            front_left: ''
+        }
+    ) { }
+}
+
 export class Car {
     constructor(
         public id: string = '',
@@ -21,7 +62,7 @@ export class Car {
             actual: 0,
             at_review: 0
         },
-        public type: CarType = 'Hybrid',
+        public type: CarType | '' = 'Hybrid',
         public engine: {
             combustion: CombustionEngine,
             electric: ElectricEngine
@@ -30,7 +71,7 @@ export class Car {
             electric: new ElectricEngine()
         },
         public gearbox: Gearbox = new Gearbox(),
-        public drive_type: GearboxDriveType = "AWD",
+        public drive_type: GearboxDriveType | '' = "AWD",
         public insurance: Insurance = new Insurance(),
         public tech_review_ends: string = '',
         public color: {
@@ -76,43 +117,3 @@ export class Car {
     // }
 }
 
-export class CarDBModel {
-    constructor(
-        public id: string = '',
-        public brandId: string = '',
-        public model: string = '',
-        public mileage: {
-            actual: number,
-            at_review: number
-        } = {
-            actual: 0,
-            at_review: 0
-        },
-        public type: CarType = 'Hybrid',
-        public engine: {
-            combustion: CombustionEngine,
-            electric: ElectricEngine
-        } = {
-            combustion: new CombustionEngine(), 
-            electric: new ElectricEngine()
-        },
-        public gearbox: Gearbox = new Gearbox(),
-        public drive_type: GearboxDriveType = "AWD",
-        public insurance: Insurance = new Insurance(),
-        public tech_review_ends: string = '',
-        public color: {
-            theme: string,
-            accent: string
-        } = {
-            theme: '#000000',
-            accent: '#000000'
-        },
-        public photo: {
-            side: string, 
-            front_left: string
-        } = {
-            side: '',
-            front_left: ''
-        }
-    ) { }
-}

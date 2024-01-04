@@ -1,0 +1,17 @@
+<div class="COMPONENT">
+    <div class="PHOTO_PICKER">
+        <div [class.RM_BORDER]="photo !== ''" class="PHOTO">
+            @if (photo === '' && !error_file_size && !error_image_type) {
+                <p class="TITLE">{{ photo_title }}</p>
+                <p class="REQ">Zdjęcie musi być w formacie webp i nie może przekraczać 150kB!</p>
+            } @else if (error_file_size) {
+                <p class="ERROR">Rozmiar zdjęcia nie może być większy niż 150kB!</p>
+            } @else if (error_image_type) {
+                <p class="ERROR">Rozmiar zdjęcia musi być w formacie webp!</p>
+            } @else {
+                <img [src]="photo"/>
+            }
+            <input (change)="handleInputImage($event)" type="file" />
+        </div>
+    </div>
+</div>

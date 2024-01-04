@@ -3,6 +3,7 @@
 
 # <lb>NEED FOR 2.2 <o>**WIP**</o>
 
+- [ ] <r>**Refaktoring modeli na null gdy pusty wyraz** </r>
 - [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
     - [ ] **CORE**
         - [ ] **SERVICES**
@@ -46,8 +47,8 @@
             - [ ] Backup
             - [x] Brand List
             - [x] Brand Create
-            - [ ] Car List 
-            - [ ] Home Page <o>**WIP**</o>
+            - [ ] Car List <o>**WIP**</o>
+            - [ ] Home Page 
             - [ ] Routes List
             - [x] Settings
             - [x] Splash Screen

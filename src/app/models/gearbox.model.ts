@@ -1,6 +1,8 @@
 export class Gearbox {
     constructor(
-        public type: "AT" | "AT-CVT" | "MT" = "AT",
+        public type: GearboxType | '' = "",
         public gearsAmount: number = 0 
     ) { }
 }
+
+export type GearboxType = "AT" | "AT-CVT" | "MT"

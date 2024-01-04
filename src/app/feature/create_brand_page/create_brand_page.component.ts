@@ -3,7 +3,7 @@ import { TitleBar } from "../../UI/title_bar/title_bar.component";
 import { AppService } from "../../service";
 import { LogoPickerComponent } from "./components/logo_picker/logo_picker.component";
 import { ButtonComponent, ButtonTypes } from "../../UI/button/button.component";
-import { TextInputComponent } from "../../UI/forms/text_input.component";
+import { TextInputComponent } from "../../UI/forms/text_input/text_input.component";
 import { Loader } from "../../UI/loaders/loader.component";
 import { NgUnsubscriber } from "../../util/ngUnsubscriber";
 import { ActivatedRoute } from "@angular/router";
