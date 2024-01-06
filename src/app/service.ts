@@ -22,7 +22,7 @@ export class AppService {
         this.APPERANCE.setStatusBarColor(true);
         await this.DATA.start();
         this.APPERANCE.watchForDarkModeChange();
-        redirect_location = 'newCar'
+        // redirect_location = 'newCar' <-- RENAVIGATE WHEN CREATING PAGE
         setTimeout(() => {
             this.navigate(redirect_location);
         }, 500);
@@ -92,9 +92,9 @@ export class AppService {
             case 'editCarBrand':
                 if (additionalURLData === undefined) {
                     console.error(`Did not provided needed additional data for navigation for ${location}`)
-                    return 
+                    return
                 }
-                this.ROUTER.navigateByUrl('/brandList/create/'+additionalURLData)
+                this.ROUTER.navigateByUrl('/brandList/create/' + additionalURLData)
                 this.APPERANCE.setNavBarSelectedElement(null);
                 this.APPERANCE.hideNavBar(true);
                 break
@@ -104,6 +104,14 @@ export class AppService {
                 this.APPERANCE.hideNavBar(true);
                 break
             case 'editCar':
+                if (additionalURLData === undefined) {
+                    console.error(`Did not provided needed additional data for navigation for ${location}`)
+                    return
+                }
+                this.ROUTER.navigateByUrl('/carsList/create/' + additionalURLData)
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
+                break
             case 'backup':
             case 'aboutApp/updated':
             case 'important':

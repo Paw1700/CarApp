@@ -2,8 +2,13 @@ div.PAGE {
     justify-content: flex-start;
     gap: 2.5vw;
 
-    .LOGO_PICKER {
+    logo-picker,
+    text-input {
         width: 89vw;
+    }
+
+    text-input {
+        height: 20vw;
     }
 
     input.BRAND_NAME_INPUT {
@@ -15,7 +20,7 @@ div.PAGE {
         padding: 2.5vw 5vw;
 
         &::placeholder {
-            opacity: .5;
+            opacity: 0.5;
         }
 
         &.ERROR {

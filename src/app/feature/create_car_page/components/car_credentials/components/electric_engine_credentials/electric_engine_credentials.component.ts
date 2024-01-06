@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from "@angular/core";
 import { SelectInputComponent } from "../../../../../../UI/forms/select_input/select_input.component";
 import { TextInputComponent } from "../../../../../../UI/forms/text_input/text_input.component";
 import { NumberInputComponent } from "../../../../../../UI/forms/number_input/number_input.component";
-import { CarCreatePageService } from "../../../../car_create_page.service";
+import { CarCreatePageService } from "../../../../create_car_page.service";
 import { CarDBModel } from "../../../../../../models/car.model";
 import { NgUnsubscriber } from "../../../../../../util/ngUnsubscriber";
 import { takeUntil } from "rxjs";
@@ -57,7 +57,7 @@ export class ElectricEngineCredentials extends NgUnsubscriber implements OnInit 
         this.PS.car_data$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(data => {
             this.car_data = data
             switch (this.car_data.engine.electric.energyStorage) {
-                case "":
+                case null:
                     this.selected_battery_type = -1
                     break
                 case "H":

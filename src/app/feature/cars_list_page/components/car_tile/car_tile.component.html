@@ -1,0 +1,45 @@
+<div (touchstart)="scrollEvent($event)" (touchend)="scrollEvent($event)" class="COMPONENT">
+    <div [ngStyle]="{backgroundColor: car.color.theme, bottom: tile_posistion+'vw'}" class="CAR_TILE">
+        <div class="CAR_PRESENTATION">
+            <img class="BRAND_IMAGE"
+                [src]="car.brand.brand_image_set.for_dark_mode !== null ? car.brand.brand_image_set.for_dark_mode : car.brand.brand_image_set.default" />
+            <img class="CAR_IMAGE" [src]="car.photo.side" />
+        </div>
+        <div class="NAME_AND_SLCT_BTN">
+            <p class="MODEL_NAME">{{ car.model }}</p>
+            <button (click)="emitClick()" class="SLCT_BTN" [class.SELECTED]="car_is_selected">
+                @if(car_is_selected) {
+                    <img src="/assets/UI/ok/ok.svg">
+                } @else {
+                    WYBIERZ
+                }
+            </button>
+        </div>
+    </div>
+    <div [ngStyle]="{bottom: tile_posistion+'vw'}" class="ENERGY_STATE">
+        @if (car.type === 'Combustion' || car.type === 'Hybrid') {
+            <div class="FUEL_STATE">
+                <div class="UPPER_DATA">
+                    <p class="TITLE">Stan paliwa</p>
+                    <p class="LEVEL_PERCENT">{{ car_energy_source_state.fuel.level }}%</p>
+                </div>
+                <div class="FUEL_LEVEL_BAR">
+                    <div class="LEVEL" [ngStyle]="{width: car_energy_source_state.fuel.level+'%'}"></div>
+                </div>
+                <p class="REMAIN_DISTANCE">{{ car_energy_source_state.fuel.remain_distance }} km</p>
+            </div>
+        }
+        @if(car.type === 'Electric' || car.type === 'Hybrid') {
+            <div class="FUEL_STATE">
+                <div class="UPPER_DATA">
+                    <p class="TITLE">Stan paliwa</p>
+                    <p class="LEVEL_PERCENT">{{ car_energy_source_state.electric.level }}%</p>
+                </div>
+                <div class="FUEL_LEVEL_BAR">
+                    <div class="LEVEL" [ngStyle]="{width: car_energy_source_state.electric.level+'%'}"></div>
+                </div>
+                <p class="REMAIN_DISTANCE">{{ car_energy_source_state.electric.remain_distance }} km</p>
+            </div>
+        }
+    </div>
+</div>

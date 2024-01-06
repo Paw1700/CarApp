@@ -46,7 +46,7 @@ export class CarService {
                 } else {
                     const cars_from_DB = await this.DB.getAllObject<CarDBModel>(this.DB_STORES.cars)
                     const cars: Car[] = []
-                    for (let i = 0; i <= cars_from_DB.length; i++) {
+                    for (let i = 0; i <= cars_from_DB.length - 1; i++) {
                         cars.push(await this.convertCarDBModelToCarModel(cars_from_DB[i]))
                     }
                     resolve(cars)
@@ -121,7 +121,7 @@ export class CarService {
                     const fuel_tank = car.engine.combustion.fuelTankVolume
                     const used_fuel = await this.usedSource(carID, 'Combustion')
                     return_status.fuel.in_stock = Number((fuel_tank - used_fuel).toFixed(1))
-                    return_status.fuel.level = Number((return_status.fuel.in_stock / fuel_tank).toFixed(0))
+                    return_status.fuel.level = Number((return_status.fuel.in_stock * 100 / fuel_tank).toFixed(0))
                     const car_avg_usage = await this.actualAvgUsage(carID, 'Combustion')
                     return_status.fuel.remain_distance = Number((return_status.fuel.in_stock / (car_avg_usage / 100)).toFixed(0))
                 }
@@ -129,7 +129,7 @@ export class CarService {
                     const battery_volume = car.engine.electric.energyStorageVolume
                     const used_energy = await this.usedSource(carID, 'Electric')
                     return_status.electric.in_stock = Number((battery_volume - used_energy).toFixed(1))
-                    return_status.electric.level = Number((return_status.electric.in_stock / battery_volume).toFixed(0))
+                    return_status.electric.level = Number((return_status.electric.in_stock * 100 / battery_volume).toFixed(0))
                     const car_avg_usage = await this.actualAvgUsage(carID, 'Electric')
                     return_status.electric.remain_distance = Number((return_status.electric.in_stock / (car_avg_usage / 100)).toFixed(0))
                 }
@@ -288,7 +288,8 @@ export class CarService {
         return new Promise(async (resolve, reject) => {
             try {
                 const brand = await this.DB.getObject<CarBrand>(this.DB_STORES.carBrands, car_DB_model.brandId)
-                resolve(new Car(car_DB_model.id, brand, car_DB_model.model, car_DB_model.mileage, car_DB_model.type, car_DB_model.engine, car_DB_model.gearbox, car_DB_model.drive_type, car_DB_model.insurance, car_DB_model.tech_review_ends, car_DB_model.color, car_DB_model.photo))
+                resolve(new Car(car_DB_model, brand))
+                // resolve(new Car(car_DB_model.id, brand, car_DB_model.model, car_DB_model.mileage, car_DB_model.type, car_DB_model.engine, car_DB_model.gearbox, car_DB_model.drive_type, car_DB_model.insurance, car_DB_model.tech_review_ends, car_DB_model.color, car_DB_model.photo))
             } catch (err) {
                 reject(err)
             }

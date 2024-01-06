@@ -11,10 +11,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 export class ScrollAbleBar implements OnInit {
     @Input({ required: true }) first_option = new ScrollBarOption('', 25, null, null)
     @Input({ required: true }) second_option = new ScrollBarOption('', 25, null, null)
-    @Input() first_option_return_value: string | number | boolean | null = null
-    @Input() second_option_return_value: string | number | boolean | null = null
-    @Output() first_option_pressed = new EventEmitter<string | number | boolean | void>()
-    @Output() second_option_pressed = new EventEmitter<string | number | boolean | void>()
+    @Input() first_option_return_value: any = null
+    @Input() second_option_return_value: any = null
+    @Output() first_option_pressed = new EventEmitter<any>()
+    @Output() second_option_pressed = new EventEmitter<any>()
     private start_touch_position = { x: 0, y: 0 }
     private end_touch_posistion = { x: 0, y: 0 }
     private bar_defualt_position = 0//-this.first_option.width_in_percent

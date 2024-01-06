@@ -3,11 +3,11 @@ import { SelectInputComponent } from "../../../../UI/forms/select_input/select_i
 import { AppService } from "../../../../service";
 import { CarBrand } from "../../../../models/car_brand.model";
 import { TextInputComponent } from "../../../../UI/forms/text_input/text_input.component";
-import { ButtonComponent } from "../../../../UI/button/button.component";
+import { ButtonComponent, ButtonTypes } from "../../../../UI/button/button.component";
 import { NumberInputComponent } from "../../../../UI/forms/number_input/number_input.component";
 import { CombustionEngineCredentials } from "./components/combustion_engine_credentials/combustion_engine_credentials.component";
 import { ElectricEngineCredentials } from "./components/electric_engine_credentials/electric_engine_credentials.component";
-import { CarCreatePageService } from "../../car_create_page.service";
+import { CarCreatePageService } from "../../create_car_page.service";
 import { CarDBModel, CarType } from "../../../../models/car.model";
 import { NgUnsubscriber } from "../../../../util/ngUnsubscriber";
 import { takeUntil } from "rxjs";
@@ -31,6 +31,7 @@ export class CarCredentialsComponent extends NgUnsubscriber implements OnInit {
     APP = inject(AppService)
     brands: CarBrand[] = []
     data_fetching = false
+    btn_type: ButtonTypes = 'accent'
 
     car_data: CarDBModel = new CarDBModel()
     choosed_brand_index = -1
@@ -120,6 +121,14 @@ export class CarCredentialsComponent extends NgUnsubscriber implements OnInit {
             this.PS.saveCar()
             .then(() => {
                 this.data_fetching = false
+                this.APP.navigate('carsList')
+            })
+            .catch((err) => {
+                this.data_fetching = false
+                this.btn_type = 'error'
+                setTimeout(() => {
+                    this.btn_type = 'accent'
+                }, 2000)
             })
         }, 1250);
     }
@@ -132,10 +141,10 @@ export class CarCredentialsComponent extends NgUnsubscriber implements OnInit {
         this.PS.car_data$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(car => {
             this.car_data = car
             this.choosed_brand_index = this.brands.findIndex(brand => brand.id === car.brandId)
-            if (car.mileage.actual !== 0) {
+            if (car.mileage.actual !== null) {
                 this.actual_mileage = car.mileage.actual
             }
-            if (car.mileage.at_review !== 0) {
+            if (car.mileage.at_review !== null) {
                 this.mileage_at_review = car.mileage.at_review
             }
             this.ins_opts.AC = this.car_data.insurance.options.AC
@@ -151,7 +160,7 @@ export class CarCredentialsComponent extends NgUnsubscriber implements OnInit {
                 case "Hybrid":
                     this.select_car_type_index = 0
                     break
-                case "":
+                case null:
                     this.select_car_type_index = -1
                     break
             }
@@ -165,7 +174,7 @@ export class CarCredentialsComponent extends NgUnsubscriber implements OnInit {
                 case "MT":
                     this.select_gearbox_type_index = 2
                     break
-                case "":
+                case null:
                     this.select_gearbox_type_index = -1
                     break
             }
@@ -179,7 +188,7 @@ export class CarCredentialsComponent extends NgUnsubscriber implements OnInit {
                 case "RWD":
                     this.select_drive_type_index = 2
                     break
-                case "":
+                case null:
                     this.select_drive_type_index = -1
                     break
             }

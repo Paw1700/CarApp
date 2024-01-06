@@ -1,0 +1,139 @@
+div.COMPONENT {
+    width: 100%;
+    overflow: hidden;
+    height: 60vw;
+    justify-content: flex-start;
+
+    div.CAR_TILE {
+        width: 100%;
+        height: 60vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5vw;
+        padding-block: 2.5vw;
+        position: relative;
+        bottom: 0;
+        transition: 0.2s ease-in;
+
+        div.CAR_PRESENTATION {
+            height: 45vw;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            img.CAR_IMAGE {
+                width: 80%;
+                object-fit: contain;
+                position: absolute;
+                bottom: 0;
+                z-index: 2;
+            }
+
+            img.BRAND_IMAGE {
+                height: 80%;
+                width: 80%;
+                object-fit: contain;
+                position: relative;
+                opacity: 0.5;
+                z-index: 1;
+            }
+        }
+
+        div.NAME_AND_SLCT_BTN {
+            width: 89%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            p.MODEL_NAME {
+                font-size: 1.25rem;
+                font-weight: 500;
+                color: white;
+                width: 70%;
+                text-align: left;
+            }
+
+            button.SLCT_BTN {
+                padding: 1.2vw 2.25vw;
+                width: 30%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                border-radius: 1.25vw;
+                border: 0.65vw solid var(--accent-color);
+
+                &.SELECTED {
+                    background-color: var(--accent-color);
+                }
+
+                img {
+                    width: 80%;
+                    height: 1.25rem;
+                    object-fit: contain;
+                }
+            }
+        }
+    }
+
+    div.ENERGY_STATE {
+        width: 100%;
+        height: 40vw;
+        padding-block: 3vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        bottom: 0;
+        transition: 0.2s ease-in;
+
+        div.FUEL_STATE {
+            width: 89%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25vw;
+
+            div.UPPER_DATA, div.BOTTOM_DATA {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            div.UPPER_DATA {
+
+                p.TITLE, p.LEVEL_PERCENT {
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                } 
+            }
+
+            div.FUEL_LEVEL_BAR {
+                width: 100%;
+                height: 2.5vw;
+                background-color: var(--app-elements-bg);
+
+                div.LEVEL {
+                    background-color: var(--accent-color);
+                    width: 50%;
+                    height: 100%;
+                }
+            }
+
+            p.REMAIN_DISTANCE {
+                width: 100%;
+                font-size: .75rem;
+                font-weight: 500;
+                opacity: .6;
+                text-align: end;
+            }
+        }
+    }
+}

@@ -30,7 +30,8 @@
             - [ ] Backup
             - [x] Brand List
             - [x] Brand Create
-            - [ ] Car 
+            - [x] Car Create
+            - [ ] Car List 
             - [ ] Routes List
             - [ ] Settings
             - [x] Splash Screen
@@ -48,6 +49,7 @@
             - [x] Brand List
             - [x] Brand Create
             - [ ] Car List <o>**WIP**</o>
+            - [x] Car Create <r>DON'T HAVE ERROR INFO</r>
             - [ ] Home Page 
             - [ ] Routes List
             - [x] Settings

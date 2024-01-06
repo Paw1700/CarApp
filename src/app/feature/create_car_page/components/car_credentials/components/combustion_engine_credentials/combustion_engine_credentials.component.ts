@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from "@angular/core";
 import { NumberInputComponent } from "../../../../../../UI/forms/number_input/number_input.component";
 import { TextInputComponent } from "../../../../../../UI/forms/text_input/text_input.component";
 import { SelectInputComponent } from "../../../../../../UI/forms/select_input/select_input.component";
-import { CarCreatePageService } from "../../../../car_create_page.service";
+import { CarCreatePageService } from "../../../../create_car_page.service";
 import { NgUnsubscriber } from "../../../../../../util/ngUnsubscriber";
 import { CarDBModel } from "../../../../../../models/car.model";
 import { takeUntil } from "rxjs";
@@ -78,7 +78,7 @@ export class CombustionEngineCredentials extends NgUnsubscriber implements OnIni
         this.PS.car_data$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(data => {
             this.car_data = data
             switch (this.car_data.engine.combustion.pistonDesign) {
-                case "":
+                case null:
                     this.engine_type_selected_index = -1
                     break
                 case "R":
@@ -92,7 +92,7 @@ export class CombustionEngineCredentials extends NgUnsubscriber implements OnIni
                     break
             }
             switch (this.car_data.engine.combustion.fuelType) {
-                case "":
+                case null:
                     this.fuel_type_selected_index = -1
                     break
                 case "B":

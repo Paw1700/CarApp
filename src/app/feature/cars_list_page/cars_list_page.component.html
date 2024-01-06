@@ -4,4 +4,11 @@
         <img class="PLUS_IMAGE" src="/assets/UI/plus/white.webp">
         <p>Dodaj pojazd</p>
     </btn>
+    <div class="LIST">
+        @for (data of cars_data; track data.car.id) {
+            <scroll-able-bar style="width: 89vw;" [first_option]="left_scroll_bar_opt" [second_option]="right_scroll_bar_opt" [first_option_return_value]="data.car.id" [second_option_return_value]="data.car.id" (first_option_pressed)="goToEditCar($event)" (second_option_pressed)="deleteCar($event)">
+                <car-tile style="width: 89vw;" [car]="data.car" [car_energy_source_state]="data.energy_state" [car_is_selected]="data.car.id === selected_car_id" (car_is_choosed)="changeSelectedCarID($event)"></car-tile>
+            </scroll-able-bar>
+        }
+    </div>
 </div>
