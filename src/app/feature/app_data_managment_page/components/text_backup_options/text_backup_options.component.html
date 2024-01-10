@@ -1,0 +1,9 @@
+<div class="COMPONENT">
+    @if (backup_mode === null) {
+        <p class="TITLE">Tekstowy backup aplikacji</p>
+        <button (click)="changeBackupMode('export')" class="OPTION">Eksportuj</button>
+        <button (click)="changeBackupMode('import')" class="OPTION">Importuj</button>
+    } @else if (backup_mode === 'import') {
+        <import-backup style="width: 100%;" (cancelButtonClicked)="changeBackupMode(null)"/>
+    }
+</div>

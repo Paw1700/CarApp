@@ -30,18 +30,18 @@ export class ElectricEngineCredentials extends NgUnsubscriber implements OnInit 
             case 'battery_type':
                 switch (payload.name) {
                     case 'Bateria litowo-jonowa':
-                        this.car_data.engine.electric.energyStorage = 'B'
+                        this.car_data.engine.electric.energy_storage = 'B'
                         break
                     case 'Wodór':
-                        this.car_data.engine.electric.energyStorage = 'H'
+                        this.car_data.engine.electric.energy_storage = 'H'
                         break
                 }
                 break
             case "battery_volume":
-                this.car_data.engine.electric.energyStorageVolume = payload
+                this.car_data.engine.electric.energy_storage_volume = payload
                 break
             case 'avg_energy_usage':
-                this.car_data.engine.electric.energyAvgUsage = payload
+                this.car_data.engine.electric.energy_avg_usage = payload
                 break
             case "power":
                 this.car_data.engine.electric.power = payload
@@ -56,7 +56,7 @@ export class ElectricEngineCredentials extends NgUnsubscriber implements OnInit 
     private readCarDataState() {
         this.PS.car_data$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(data => {
             this.car_data = data
-            switch (this.car_data.engine.electric.energyStorage) {
+            switch (this.car_data.engine.electric.energy_storage) {
                 case null:
                     this.selected_battery_type = -1
                     break

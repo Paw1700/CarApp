@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { Feature } from "../../../../../models/app-version.model";
+import { Feature } from "../../../../../models/app_version.model";
 
 @Component({
     selector: 'feature',

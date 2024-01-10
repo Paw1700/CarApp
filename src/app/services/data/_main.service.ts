@@ -12,7 +12,7 @@ export class DB_STORES {
         public carBrands: string = 'carBrands',
         public cars: string = 'cars',
         public routes: string = 'routes'
-    ) {}
+    ) { }
 }
 
 export class LS_STORES {
@@ -20,7 +20,7 @@ export class LS_STORES {
         public choosedCarID = 'choosedCarID',
         public usedAppVersion = 'usedAppVersion',
         public fuelConfigAvgUsage = 'fuelConfigAvgUsage'
-    ) {}
+    ) { }
 }
 
 @Injectable()
@@ -30,7 +30,7 @@ export class AppData {
         public CAR_BRAND: CarBrandService,
         public CAR: CarService,
         public ROUTE: RouteService
-    ) {}
+    ) { }
 
     private readonly DB_NAME = 'CarApp';
     private readonly DB_VERSION = 1;
@@ -45,7 +45,7 @@ export class AppData {
         return new Promise(async (resolve, reject) => {
             this.DB.initLS(Object.getOwnPropertyNames(this.LS_STORES));
             try {
-                this.DB.initDB(
+                await this.DB.initDB(
                     this.DB_NAME,
                     this.DB_VERSION,
                     Object.getOwnPropertyNames(this.DB_STORES)
@@ -65,7 +65,9 @@ export class AppData {
             try {
                 this.DB.clearLS();
                 await this.DB.deleteDB(this.DB_NAME);
-                resolve();
+                setTimeout(() => {
+                    resolve();
+                }, 500) 
             } catch {
                 reject('APP-RESET-ERROR');
             }
@@ -125,10 +127,14 @@ export class AppData {
      * Sets fuel config value in DB
      * @param fuel_config value of average car usage
      */
-    saveFuelConfig(fuel_config: number): void {
+    saveFuelConfig(fuel_config: number | null): void {
+        let fc = ''
+        if (fuel_config !== null) {
+            fc = fuel_config.toFixed(1)
+        } 
         this.DB.LS_insertData(
             this.LS_STORES.fuelConfigAvgUsage,
-            fuel_config.toFixed(1)
+            fc
         );
     }
 

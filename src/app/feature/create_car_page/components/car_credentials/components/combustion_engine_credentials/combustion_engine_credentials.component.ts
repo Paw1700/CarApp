@@ -35,34 +35,34 @@ export class CombustionEngineCredentials extends NgUnsubscriber implements OnIni
             case 'engine_type':
                 switch (payload.name) {
                     case 'Widlasty':
-                        this.car_data.engine.combustion.pistonDesign = 'V'
+                        this.car_data.engine.combustion.piston_design = 'V'
                         break
                     case 'Rzędowy':
-                        this.car_data.engine.combustion.pistonDesign = 'R'
+                        this.car_data.engine.combustion.piston_design = 'R'
                         break
                     case 'Boxer':
-                        this.car_data.engine.combustion.pistonDesign = 'B'
+                        this.car_data.engine.combustion.piston_design = 'B'
                         break
                 }
                 break
             case "pistion_amount":
-                this.car_data.engine.combustion.pistonAmount = payload
+                this.car_data.engine.combustion.piston_amount = payload
                 break
             case 'fuel_type':
                 switch(payload.name) {
                     case 'Benzyna':
-                        this.car_data.engine.combustion.fuelType = 'B'
+                        this.car_data.engine.combustion.fuel_type = 'B'
                         break
                     case 'Diesel':
-                        this.car_data.engine.combustion.fuelType = 'D'
+                        this.car_data.engine.combustion.fuel_type = 'D'
                         break
                 }
                 break
             case 'fuel_tank_volume':
-                this.car_data.engine.combustion.fuelTankVolume = payload
+                this.car_data.engine.combustion.fuel_tank_volume = payload
                 break
             case "avg_fuel_usage":
-                this.car_data.engine.combustion.avgFuelUsage = payload
+                this.car_data.engine.combustion.avg_fuel_usage = payload
                 break
             case "power":
                 this.car_data.engine.combustion.power = payload
@@ -77,7 +77,7 @@ export class CombustionEngineCredentials extends NgUnsubscriber implements OnIni
     private readCarDataState() {
         this.PS.car_data$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(data => {
             this.car_data = data
-            switch (this.car_data.engine.combustion.pistonDesign) {
+            switch (this.car_data.engine.combustion.piston_design) {
                 case null:
                     this.engine_type_selected_index = -1
                     break
@@ -91,7 +91,7 @@ export class CombustionEngineCredentials extends NgUnsubscriber implements OnIni
                     this.engine_type_selected_index = 2
                     break
             }
-            switch (this.car_data.engine.combustion.fuelType) {
+            switch (this.car_data.engine.combustion.fuel_type) {
                 case null:
                     this.fuel_type_selected_index = -1
                     break

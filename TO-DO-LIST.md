@@ -3,7 +3,7 @@
 
 # <lb>NEED FOR 2.2 <o>**WIP**</o>
 
-- [ ] <r>**Refaktoring modeli na null gdy pusty wyraz** </r>
+- [x] <r>**Refaktoring modeli na null gdy pusty wyraz** </r>
 - [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
     - [ ] **CORE**
         - [ ] **SERVICES**
@@ -31,9 +31,10 @@
             - [x] Brand List
             - [x] Brand Create
             - [x] Car Create
-            - [ ] Car List 
+            - [x] Car List 
             - [ ] Routes List
-            - [ ] Settings
+            - [x] Settings
+            - [ ] Managed App Data
             - [x] Splash Screen
         - [ ] Przepisanie HTML z optymalizacją CSS
             - [ ] UI
@@ -48,11 +49,12 @@
             - [ ] Backup
             - [x] Brand List
             - [x] Brand Create
-            - [ ] Car List <o>**WIP**</o>
+            - [x] Car List
             - [x] Car Create <r>DON'T HAVE ERROR INFO</r>
             - [ ] Home Page 
             - [ ] Routes List
             - [x] Settings
+            - [ ] Managed App Data <o>**WIP**</o>
             - [x] Splash Screen
 - [ ] Stworzenie skryptu sortującego błedy w pliku JSON jak i typach
 - [ ] Sprawdzenie poprawności stylów i dark modu

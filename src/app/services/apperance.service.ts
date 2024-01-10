@@ -1,10 +1,12 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { LoadingScreenInputData } from "../UI/loading_screen/loading_screen.component";
 
 @Injectable()
 export class AppApperance {
     bottom_bar_state$ = new BehaviorSubject<BottomBarState>(new BottomBarState())
     dark_mode_state$ = new BehaviorSubject<boolean>(false)
+    loading_screen_state$ = new BehaviorSubject<LoadingScreenInputData>({show: false, loading_stage_text: ''})
 
     /**
      * Checking if at moment of running function browser is in dark mode
@@ -113,4 +115,3 @@ export class BottomBarState {
         } | null = null
     ) { }
 }
-

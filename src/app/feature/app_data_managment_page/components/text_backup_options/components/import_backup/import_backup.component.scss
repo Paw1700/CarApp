@@ -1,0 +1,89 @@
+div.COMPONENT {
+    width: 100%;
+    gap: 1.25vw;
+
+    p.TITLE {
+        font-weight: 700;
+        font-size: 1.25rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    div.IMPORT_WINDOW,
+    div.BACKUP_DATA_WINDOW {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        p.TITLE {
+            width: 100%;
+            text-align: left;
+            font-weight: 500;
+        }
+    }
+
+    div.IMPORT_WINDOW {
+        gap: 2.5vw;
+
+        textarea {
+            width: 90%;
+            height: 20vw;
+            padding: 2.5vw 5%;
+            border-radius: 2.5vw;
+            background-color: var(--app-elements);
+            color: var(--font-color);
+        }
+    }
+
+    div.BACKUP_DATA_WINDOW {
+        gap: 1.25vw;
+
+        div.DATA_ROW {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            p {
+                &:first-of-type {
+                    font-weight: 600;
+                    font-size: 1.125rem;
+                }
+
+                &:last-of-type {
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    div.BTNs {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        button {
+            padding-block: 1.25vw;
+            border-radius: 2.5vw;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        button.DECLINE_BTN {
+            width: 100%;
+            background-color: var(--app-elements);
+
+            &.SHOW_BACKUP {
+                width: 45%;
+            }
+        }
+
+        button.ACEPT_BTN {
+            width: 45%;
+            background-color: var(--accent-color);
+        }
+    }
+}

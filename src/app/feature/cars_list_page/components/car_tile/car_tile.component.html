@@ -1,4 +1,4 @@
-<div (touchstart)="scrollEvent($event)" (touchend)="scrollEvent($event)" class="COMPONENT">
+<div class="COMPONENT">
     <div [ngStyle]="{backgroundColor: car.color.theme, bottom: tile_posistion+'vw'}" class="CAR_TILE">
         <div class="CAR_PRESENTATION">
             <img class="BRAND_IMAGE"
@@ -15,6 +15,7 @@
                 }
             </button>
         </div>
+        <img (click)="toogleEnergyStatusView()" class="ARROW_DOWN" [src]="'/assets/UI/arrow_'+ (tile_posistion !== 0 ? 'up': 'down') +'/white.webp'" />
     </div>
     <div [ngStyle]="{bottom: tile_posistion+'vw'}" class="ENERGY_STATE">
         @if (car.type === 'Combustion' || car.type === 'Hybrid') {
@@ -32,7 +33,7 @@
         @if(car.type === 'Electric' || car.type === 'Hybrid') {
             <div class="FUEL_STATE">
                 <div class="UPPER_DATA">
-                    <p class="TITLE">Stan paliwa</p>
+                    <p class="TITLE">Stan energii</p>
                     <p class="LEVEL_PERCENT">{{ car_energy_source_state.electric.level }}%</p>
                 </div>
                 <div class="FUEL_LEVEL_BAR">

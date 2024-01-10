@@ -12,6 +12,8 @@ import { DatabaseManager } from './util/db.driver';
 import { RouteService } from './services/data/routes.service';
 import { AppState } from './services/state.service';
 import { NavBar } from './UI/navbar/navbar.component';
+import { AppBackup } from './services/backup.service';
+import { LoadingScreen, LoadingScreenInputData } from './UI/loading_screen/loading_screen.component';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +21,8 @@ import { NavBar } from './UI/navbar/navbar.component';
   imports: [
     CommonModule,
     RouterOutlet,
-    NavBar
+    NavBar,
+    LoadingScreen
   ],
   providers: [
     AppService,
@@ -30,7 +33,8 @@ import { NavBar } from './UI/navbar/navbar.component';
     CarService,
     DatabaseManager,
     RouteService,
-    AppState
+    AppState,
+    AppBackup
   ],
   animations: [
     trigger('routeAnimation', [
@@ -52,7 +56,7 @@ import { NavBar } from './UI/navbar/navbar.component';
       ]),
 
       //* SLIDE TO LEFT
-      transition("settings => aboutApp, settings => brandList, brandList => createBrand, carsList => carCreate", [
+      transition("settings => aboutApp, settings => brandList, brandList => createBrand, carsList => carCreate, settings => appDataManagment", [
         group([
           query(":enter", [
             style({ zIndex: 2, position: 'absolute', left: '100vw', top: 0 }),
@@ -70,7 +74,7 @@ import { NavBar } from './UI/navbar/navbar.component';
       ]),
 
       //* SLIDE RIGHT
-      transition("aboutApp => settings, brandList => settings, createBrand => brandList, carCreate => carsList", [
+      transition("aboutApp => settings, brandList => settings, createBrand => brandList, carCreate => carsList, appDataManagment => settings", [
         group([
           query(":enter", [
             style({ zIndex: 1, position: 'absolute', left: 0, top: 0 }),
@@ -92,13 +96,18 @@ import { NavBar } from './UI/navbar/navbar.component';
     <router-outlet />
   </div>
   <navbar />
+  <loading-screen [loading_state_data]="loading_screen_data"/>
   `,
   styles: ``
 })
 export class AppComponent {
   constructor(private APP: AppService, private contexts: ChildrenOutletContexts) {
     this.APP.startApp()
+    this.APP.APPERANCE.loading_screen_state$.subscribe( state => {
+      this.loading_screen_data = state
+    })
   }
+  loading_screen_data: LoadingScreenInputData = {show: false, loading_stage_text: 'OK'}
 
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animState'];

@@ -5,6 +5,11 @@
         "title": "Błąd resetowania aplikacji!"
     },
     {
+        "id": "BACKUP-VALIDATION-ERROR",
+        "type": "FATAL",
+        "title": "Błąd weryfikacji kopii zapasowej aplikacji!"
+    },
+    {
         "id": "DB-CONNECT-ERROR",
         "type": "FATAL",
         "title": "Błąd połączenia z bazą danych!"

@@ -8,12 +8,65 @@ import { CombustionEngine, ElectricEngine } from '../models/engine.model';
 import { Gearbox } from '../models/gearbox.model';
 import { Insurance } from '../models/insurance.model';
 import { Route } from '../models/route.model';
+import { Backup } from '../models/backup.model';
 
 @Injectable()
 export class AppValidator {
     constructor(private DB: DatabaseManager) { }
 
     private readonly DB_STORES = new DB_STORES()
+
+    validateBackup(backup: Backup): Promise<ValidationResult> {
+        return new Promise(async (resolve) => {
+            if (!this.hasValue(backup.appVersion, 'string')) {
+                resolve({ pass: false, reason: "Brak wersji aplikacji w kopii zapasowej!", errCode: "BACKUP-VALIDATION-ERROR" })
+                return
+            }
+            if (!this.hasValue(backup.creationDate, 'string')) {
+                resolve({ pass: false, reason: "Brak daty utworzenia backupu!", errCode: "BACKUP-VALIDATION-ERROR" })
+                return
+            }
+            if (backup.choosedCarID === undefined) {
+                resolve({ pass: false, reason: "Brak danych wybranego auta!", errCode: "BACKUP-VALIDATION-ERROR" })
+                return
+            }
+            if (backup.fuelCalcConfig === undefined) {
+                resolve({ pass: false, reason: "Brak konfiguracji spalania!", errCode: "BACKUP-VALIDATION-ERROR" })
+                return
+            }
+            if (backup.igd === undefined) {
+                resolve({ pass: false, reason: "Brak IndexGeneratorData!", errCode: "BACKUP-VALIDATION-ERROR" })
+                return
+            }
+            if (backup.carBrands === undefined) {
+                resolve({pass: false, reason: 'Brak marek w kopii zapasowej', errCode: "BACKUP-VALIDATION-ERROR"})
+                return
+            }
+            if (backup.cars !== undefined) {
+                for (let i = 0; i <= backup.cars.length - 1; i++) {
+                    const car_validation = await this.validateCar(backup.cars[i], true, backup.carBrands)
+                    if (!car_validation.pass) {
+                        resolve({pass: false, reason: "Błąd walidacji aut w kopii zaposowej [CarBrand]", errCode: "BACKUP-VALIDATION-ERROR"})
+                        return 
+                    }
+                }
+            } else {
+                resolve({ pass: false, reason: "Brak marek w kopii zapasowej!", errCode: "BACKUP-VALIDATION-ERROR" })
+            }
+            if (backup.routes !== undefined) {
+                for (let i = 0; i <= backup.routes.length - 1; i++) {
+                    const route_validation = this.validateRoute(backup.routes[i])
+                    if (!route_validation.pass) {
+                        resolve({pass: false, reason: "Błąd walidacji aut w kopii zapasowej [Route]", errCode: "BACKUP-VALIDATION-ERROR"})
+                        return
+                    }
+                }
+            } else {
+                resolve({ pass: false, reason: "Brak tras w kopii zapasowej!", errCode: "BACKUP-VALIDATION-ERROR" })
+            }
+            resolve({ pass: true })
+        })
+    }
 
     validateCarBrand(car_brand: CarBrand): ValidationResult {
         if (!this.hasValue(car_brand.id, 'string')) {
@@ -28,23 +81,35 @@ export class AppValidator {
         return { pass: true }
     }
 
-    validateCar(car: CarDBModel): Promise<ValidationResult> {
+    validateCar(car: CarDBModel, checkBrandFromLocalDB = false, brandsList: CarBrand[] = []): Promise<ValidationResult> {
         return new Promise(async resolve => {
             if (!this.hasValue(car.id, 'string')) {
                 resolve({ pass: false, reason: 'Błąd walidacji pojazdu, brak carID!', errCode: "CAR-VALIDATION-ERROR" })
             }
             if (this.hasValue(car.brandId, 'string')) {
-                const carBrandsID = await this.DB.getAllObject<CarBrand>(this.DB_STORES.carBrands)
-                let brandIDExists = false
-                carBrandsID.forEach(
-                    brand => {
+                if (checkBrandFromLocalDB) {
+                    let brandIDExists = false
+                    brandsList.forEach( brand => {
                         if (brand.id === car.brandId) {
                             brandIDExists = true
                         }
+                    })
+                    if (!brandIDExists) {
+                        resolve({ pass: false, reason: 'Nie znaleziono w DB tego brandID!', errCode: "CAR-VALIDATION-ERROR-BRAND_NOT_FOUND" })
                     }
-                )
-                if (!brandIDExists) {
-                    resolve({ pass: false, reason: 'Nie znaleziono w DB tego brandID!', errCode: "CAR-VALIDATION-ERROR-BRAND_NOT_FOUND" })
+                } else {
+                    const carBrandsID = await this.DB.getAllObject<CarBrand>(this.DB_STORES.carBrands)
+                    let brandIDExists = false
+                    carBrandsID.forEach(
+                        brand => {
+                            if (brand.id === car.brandId) {
+                                brandIDExists = true
+                            }
+                        }
+                    )
+                    if (!brandIDExists) {
+                        resolve({ pass: false, reason: 'Nie znaleziono w DB tego brandID!', errCode: "CAR-VALIDATION-ERROR-BRAND_NOT_FOUND" })
+                    }
                 }
             } else {
                 resolve({ pass: false, reason: 'Nie podano lub nieprawidłowy format brandID!', errCode: "CAR-VALIDATION-ERROR-BRAND" })
@@ -120,32 +185,32 @@ export class AppValidator {
         if (!this.hasValue(engine.volume, 'number')) {
             return { pass: false, reason: 'Nie poadno lub nieprawidłowy formar pojemności silnika spalinowego', errCode: "ENGINE-VALIDATION-ERROR-VOLUME" }
         }
-        if (!this.hasValue(engine.avgFuelUsage, 'number')) {
+        if (!this.hasValue(engine.avg_fuel_usage, 'number')) {
             return { pass: false, reason: 'Nie poadno lub nieprawidłowy formar średniego spalania silnika spalinowego', errCode: "ENGINE-VALIDATION-ERROR-AVG_USAGE" }
         }
-        if (!(engine.fuelType === 'B' || engine.fuelType === 'D')) {
+        if (!(engine.fuel_type === 'B' || engine.fuel_type === 'D')) {
             return { pass: false, reason: 'Nie poadno lub nieprawidłowy formar paliwa silnika spalinowego', errCode: "ENGINE-VALIDATION-ERROR-FUEL_TYPE" }
         }
-        if (!this.hasValue(engine.fuelTankVolume, 'number')) {
+        if (!this.hasValue(engine.fuel_tank_volume, 'number')) {
             return {pass: false, reason: "Nie podano lub nieprawidłowy format pojemności baku", errCode: "CAR-VALIDATION-ERROR-FUEL_TANK_VOLUME"}
         }
-        if (!this.hasValue(engine.pistonAmount, 'number')) {
+        if (!this.hasValue(engine.piston_amount, 'number')) {
             return { pass: false, reason: 'Nie podano lub nieprawidłowy format ilości tłoków!', errCode: "ENGINE-VALIDATION-ERROR-PISTON_AMOUNT" }
         }
-        if (!(engine.pistonDesign === "B" || engine.pistonDesign === "R" || engine.pistonDesign === "V")) {
+        if (!(engine.piston_design === "B" || engine.piston_design === "R" || engine.piston_design === "V")) {
             return { pass: false, reason: 'Nie podano lub nieprawidłowy format rodzaju ułozenia tłoków!', errCode: "ENGINE-VALIDATION-ERROR-PISTON_DESIGN" }
         }
         return { pass: true }
     }
 
     validateElectricEngine(engine: ElectricEngine): ValidationResult {
-        if (!(engine.energyStorage === 'B' || engine.energyStorage === 'H')) {
+        if (!(engine.energy_storage === 'B' || engine.energy_storage === 'H')) {
             return { pass: false, reason: "Nie podano lub nieprawidłowy format rodzaju energii do silnika elektrycznego!", errCode: "ENGINE-VALIDATION-ERROR-ENERGY_SOURCE" }
         }
-        if (!this.hasValue(engine.energyStorageVolume, 'number')) {
+        if (!this.hasValue(engine.energy_storage_volume, 'number')) {
             return { pass: false, reason: "Nie podano lub nieprawidłowy format pojemności magazynu energi do silnika elektrycznego!", errCode: "ENGINE-VALIDATION-ERROR-ENERGY_SOURCE_VOLUME" }
         }
-        if (!this.hasValue(engine.energyAvgUsage, 'number')) {
+        if (!this.hasValue(engine.energy_avg_usage, 'number')) {
             return { pass: false, reason: "Nie podano lub nieprawidłowy format średniego zużycia energi do silnika elektrycznego!", errCode: "ENGINE-VALIDATION-ERROR-ENERGY_AVG_USAGE" }
         }
         if (!this.hasValue(engine.power, 'number')) {
@@ -158,7 +223,7 @@ export class AppValidator {
     }
 
     validateGearbox(gearbox: Gearbox): ValidationResult {
-        if (!this.hasValue(gearbox.gearsAmount, 'number')) {
+        if (!this.hasValue(gearbox.gears_amount, 'number')) {
             return { pass: false, reason: 'Nie podano lub nieprawidłowy format ilości biegów!', errCode: "GEARBOX-VALIDATION-ERROR-GEARS_AMOUNT" }
         }
         if (!(gearbox.type === "AT" || gearbox.type === "MT" || gearbox.type === 'AT-CVT')) {
@@ -171,10 +236,10 @@ export class AppValidator {
         if (!this.hasValue(insurance.name, 'string')) {
             return { pass: false, reason: 'Nie podano lub nieprawidłowy format nazwy ubezpieczyciela!', errCode: 'INSURANCE-VALIDATION-ERROR-NAME' }
         }
-        if (!this.hasValue(insurance.startDate, 'string')) {
+        if (!this.hasValue(insurance.start_date, 'string')) {
             return { pass: false, reason: 'Nie podano lub nieprawidłowy format daty startu ubezpieczenia!', errCode: 'INSURANCE-VALIDATION-ERROR-START_DATE' }
         }
-        if (!this.hasValue(insurance.endsDate, 'string')) {
+        if (!this.hasValue(insurance.ends_date, 'string')) {
             return { pass: false, reason: 'Nie podano lub nieprawidłowy format daty końca ubezpieczenia!', errCode: "INSURANCE-VALIDATION-ERROR-END_DATE" }
         }
         return { pass: true }

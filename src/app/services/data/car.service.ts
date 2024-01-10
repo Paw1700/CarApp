@@ -62,12 +62,12 @@ export class CarService {
      * @param updateMode if true will update data of exist car in DB !!! it deletes all routes of car if type was changed !!!
      * @returns 
      */
-    saveOne(car: CarDBModel, updateMode = false): Promise<void> {
+    saveOne(car: CarDBModel, updateMode = false, backup_mode = false): Promise<void> {
         return new Promise(async (resolve, reject) => {
             try {
                 if (!updateMode) {
                     car.id = await this.DB.GENERATE_INDEX(this.DB_STORES.cars)
-                } else {
+                } else if (!backup_mode) {
                     //* CHECK IF CAR TYPE WAS CHANGE, IF SO DELETE ALL IT'S ROADS
                     const old_car = await this.getOne(car.id, true) as CarDBModel
                     if (car.type !== old_car.type) {
@@ -118,7 +118,7 @@ export class CarService {
                 const car = await this.getOne(carID, true) as CarDBModel
                 const return_status = new energySourceStatus()
                 if (car.type === 'Combustion' || car.type === 'Hybrid') {
-                    const fuel_tank = car.engine.combustion.fuelTankVolume
+                    const fuel_tank = car.engine.combustion.fuel_tank_volume
                     const used_fuel = await this.usedSource(carID, 'Combustion')
                     return_status.fuel.in_stock = Number((fuel_tank - used_fuel).toFixed(1))
                     return_status.fuel.level = Number((return_status.fuel.in_stock * 100 / fuel_tank).toFixed(0))
@@ -126,7 +126,7 @@ export class CarService {
                     return_status.fuel.remain_distance = Number((return_status.fuel.in_stock / (car_avg_usage / 100)).toFixed(0))
                 }
                 if (car.type === 'Electric' || car.type === 'Hybrid') {
-                    const battery_volume = car.engine.electric.energyStorageVolume
+                    const battery_volume = car.engine.electric.energy_storage_volume
                     const used_energy = await this.usedSource(carID, 'Electric')
                     return_status.electric.in_stock = Number((battery_volume - used_energy).toFixed(1))
                     return_status.electric.level = Number((return_status.electric.in_stock * 100 / battery_volume).toFixed(0))
@@ -175,7 +175,7 @@ export class CarService {
                 const car_routes = (await this.ROUTE.getCarRoutes(carID)).filter(route => type === 'Combustion' ? route.usage.combustion.include : route.usage.electric.include)
                 if (car_routes.length === 0) {
                     const car = await this.getOne(carID, true) as CarDBModel
-                    const car_manufacture_avg_usage = type === 'Combustion' ? car.engine.combustion.avgFuelUsage : car.engine.electric.energyAvgUsage
+                    const car_manufacture_avg_usage = type === 'Combustion' ? car.engine.combustion.avg_fuel_usage : car.engine.electric.energy_avg_usage
                     resolve(Number(((car_manufacture_avg_usage + (new_route_avg_usage ? new_route_avg_usage : 0)) / (new_route_avg_usage ? 2 : 1)).toFixed(1)))
                 } else {
                     let sum_of_source_avg = 0
@@ -221,7 +221,7 @@ export class CarService {
                 }
                 let calculatedAvgUsage = 0
                 const car = await this.getOne(carID, true) as CarDBModel
-                calculatedAvgUsage = real_avg_usage * ((type === 'Combustion' ? car.engine.combustion.avgFuelUsage : car.engine.electric.energyAvgUsage) / Number(fuel_config))
+                calculatedAvgUsage = real_avg_usage * ((type === 'Combustion' ? car.engine.combustion.avg_fuel_usage : car.engine.electric.energy_avg_usage) / Number(fuel_config))
                 resolve(calculatedAvgUsage)
             }
         )

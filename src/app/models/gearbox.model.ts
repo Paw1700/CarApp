@@ -1,7 +1,7 @@
 export class Gearbox {
     constructor(
         public type: GearboxType | null = null,
-        public gearsAmount: number = 0 
+        public gears_amount: number = 0 
     ) { }
 }
 

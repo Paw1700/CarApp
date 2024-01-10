@@ -1,4 +1,4 @@
-import { AppVersion } from "./models/app-version.model";
+import { AppVersion } from "./models/app_version.model";
 
 export class AppEnvironment {
     public static readonly APP_VERSION: AppVersion = {

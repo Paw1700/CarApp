@@ -1,0 +1,20 @@
+div.COMPONENT {
+    width: 89vw;
+    gap: 2.5vw;
+
+    p.TITLE {
+        font-size: 1rem;
+        font-weight: 700;
+        width: 100%;
+        text-align: left;
+    }
+
+    button.OPTION {
+        width: 100%;
+        background-color: var(--app-elements);
+        border-radius: 1.25vw;
+        padding: 1.9vw 3.8vw;
+        text-align: left;
+        font-weight: 500;
+    }
+}

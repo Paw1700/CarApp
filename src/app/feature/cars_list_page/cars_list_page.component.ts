@@ -31,7 +31,6 @@ export class CarsListPage implements OnInit{
     }
 
     changeSelectedCarID(carID: string) {
-        console.log(carID);
         const ids_are_equal = carID === this.selected_car_id
         this.APP.DATA.saveChoosedCarID(ids_are_equal ? null : carID)
         this.selected_car_id = ids_are_equal ? '' : carID
@@ -57,14 +56,40 @@ export class CarsListPage implements OnInit{
         try {
             this.selected_car_id = this.APP.DATA.getChoosedCarID()
             const cars = await this.APP.DATA.CAR.getAll() as Car[]
+            const list_to_set: {car: Car, energy_state: energySourceStatus}[] = []
             if (refresh) {
                 this.cars_data = []
             }
             for(let i = 0; i <= cars.length - 1; i++) {
                 const car = cars[i]
                 const car_energy_state = await this.APP.DATA.CAR.getCarEnergySourceStatus(car.id)
-                this.cars_data.push({car: car, energy_state: car_energy_state})
+                list_to_set.push({car: car, energy_state: car_energy_state})
             }
+            list_to_set.sort((a, b) => {
+                if (a.car.model > b.car.model) {
+                    return 1
+                }
+                if (a.car.model < b.car.model) {
+                    return -1
+                }
+                return 0
+            })
+            list_to_set.sort((a, b) => {
+                if (a.car.brand.name > b.car.brand.name) {
+                    return 1
+                }
+                if (a.car.brand.name < b.car.brand.name) {
+                    return -1
+                }
+                return 0
+            })
+            if (this.selected_car_id !== null) {
+                const index_of_chosed_car = list_to_set.findIndex(data => data.car.id === this.selected_car_id)
+                const chosed_car = list_to_set[index_of_chosed_car]
+                list_to_set.splice(index_of_chosed_car, 1)
+                list_to_set.unshift(chosed_car)
+            }
+            this.cars_data = list_to_set
         } catch (err) {
             console.error(err);
         }

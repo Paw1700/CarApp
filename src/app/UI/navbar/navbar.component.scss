@@ -9,6 +9,7 @@ div.NAVBAR {
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
+    background: linear-gradient(0deg, var(--app-theme) 95%, rgba(0,0,0,0) 100%);
 
     div.BAR_ELEMENT {
         display: flex;

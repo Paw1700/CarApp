@@ -32,3 +32,5 @@ export class AppVersionIteration {
         public build: string = '0'
     ) { }
 }
+
+export type AppDataMajorVersions = '2.0.5' | '2.1.3' | 'actual'

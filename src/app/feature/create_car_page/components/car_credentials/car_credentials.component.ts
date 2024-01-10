@@ -78,10 +78,10 @@ export class CarCredentialsComponent extends NgUnsubscriber implements OnInit {
                 this.car_data.insurance.name = payload
                 break
             case 'ins_start_date':
-                this.car_data.insurance.startDate = payload
+                this.car_data.insurance.start_date = payload
                 break
             case 'ins_end_date':
-                this.car_data.insurance.endsDate = payload
+                this.car_data.insurance.ends_date = payload
                 break
             case "ins_opt":
                 this.ins_opts = payload
@@ -106,7 +106,7 @@ export class CarCredentialsComponent extends NgUnsubscriber implements OnInit {
                 this.car_data.gearbox.type = payload.value
                 break
             case "gearbox_gears_amount":
-                this.car_data.gearbox.gearsAmount = payload
+                this.car_data.gearbox.gears_amount = payload
                 break
             case "drive_type":
                 this.car_data.drive_type = payload.value

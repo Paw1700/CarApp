@@ -3,6 +3,7 @@ import { AppApperance } from './services/apperance.service';
 import { Router } from '@angular/router';
 import { AppData } from './services/data/_main.service';
 import { AppState } from './services/state.service';
+import { AppBackup } from './services/backup.service';
 
 @Injectable()
 export class AppService {
@@ -10,7 +11,8 @@ export class AppService {
     constructor(
         public APPERANCE: AppApperance,
         public DATA: AppData,
-        public STATE: AppState
+        public STATE: AppState,
+        public BACKUP: AppBackup
     ) { }
 
     async startApp(): Promise<void> {
@@ -112,7 +114,11 @@ export class AppService {
                 this.APPERANCE.setNavBarSelectedElement(null);
                 this.APPERANCE.hideNavBar(true);
                 break
-            case 'backup':
+            case 'appDataManagment':
+                this.ROUTER.navigateByUrl('/appDataManagment')
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
+                break
             case 'aboutApp/updated':
             case 'important':
                 break;
@@ -132,7 +138,7 @@ export type AppLocations =
     | 'newCarBrand'
     | 'editCarBrand'
     | 'startConfig'
-    | 'backup'
+    | 'appDataManagment'
     | 'aboutApp'
     | 'aboutApp/updated'
     | 'important';
