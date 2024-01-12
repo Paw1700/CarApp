@@ -1,0 +1,21 @@
+div.TANK_UP_BOX {
+    width: 95%;
+    padding: 2.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5vw;
+
+    p.TITLE {
+        width: 100%;
+        text-align: left;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    amount-slider {
+        width: 100%;
+        height: 12.5vw;
+    }
+}

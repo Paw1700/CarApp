@@ -1,0 +1,14 @@
+<div class="SWITCH">
+    <p class="TITLE">Tryb jazdy</p>
+    <div class="SLIDER">
+        <div class="BG_ICONS">
+            <img class="POWER" [class.HIDE]="slider_value <= 33">
+            <img class="HYBRID" [class.HIDE]="slider_value > 33 && slider_value <= 66">
+            <img class="FUEL" [class.HIDE]="slider_value > 66">
+        </div>
+        <input type="range" min="0" max="100" value="0" (input)="changeSliderPickerPos($event)" (change)="setRouteType()"/>
+        <div class="SLIDER_PICK" [ngStyle]="{'left': slider_picker_pos+'%'}">
+            <img [class.POWER]="slider_value <= 33" [class.HYBRID]="slider_value > 33 && slider_value <= 66" [class.FUEL]="slider_value > 66"/>
+        </div>
+    </div>
+</div>

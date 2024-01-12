@@ -1,0 +1,10 @@
+<div class="SLIDER">
+    <div class="VALUES">
+        <p>{{ minValue }}</p>
+        <p>{{ maxValue }}</p>
+    </div>
+    <div [ngStyle]="{'left': slider_picker_pos+'%'}" class="PICKER">
+        {{ slider_value }}
+    </div>
+    <input type="range" [step]="slider_step" [min]="minValue" [max]="maxValue" [value]="slider_value" (input)="changeSliderPickerPos($event)" />
+</div>

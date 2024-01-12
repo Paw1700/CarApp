@@ -19,6 +19,16 @@ export class AppEnvironment {
                 "id": 2,
                 "title": "Poprawa desingu",
                 "description": "Zmieniono wygląd interfejsu tras i auta, dodano scrollowanie aby ujrzeć dodatkowe funckje. Zmieniono interfejs dodawania pojazdu."
+            },
+            {
+                "id": 3,
+                "title": "Nowa strona o aucie",
+                "description": "Dodano nową stronę z opisem danych auta."
+            },
+            {
+                "id": 4,
+                "title": "Zmiana wyglądu strony głównej",
+                "description": "Zmieniono wygląd ekranu głównemu auta i wykorzystano obsługę przesunięcie w przyciski dodania trasy aby pokazać schowane opcje."
             }
         ]
     }

@@ -1,0 +1,57 @@
+div.COMPONENT {
+    & {
+        --car-theme: #000000;
+    }
+
+    background: linear-gradient(0deg, var(--app-theme) 0%, var(--car-theme) 100%);
+    width: 100%;
+    height: 84.24vh;
+    justify-content: flex-start;
+
+    car-title {
+        width: 89vw;
+        height: 15%;
+        opacity: 1;
+    }
+
+    energy-state {
+        width: 89vw;
+        max-height: 15%;
+        margin-top: 1.25vh;
+    }
+    
+    remain-distance {
+        width: 89vw;
+        max-height: 20%;
+        margin-top: 1.25vh;
+    }
+
+    img {
+        width: 89vw;
+        height: 25%;
+        object-fit: contain;
+        margin-bottom: 1.25vh;
+    }
+
+    div.ACTION_BOX_UPPER_OPTIONS {
+        width: 89vw;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-block: 1.25vw;
+
+        p {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+    }
+    
+    scroll-able-bar {
+        width: 89vw;
+
+        action-box {
+            width: 100%;
+        }
+    }
+}

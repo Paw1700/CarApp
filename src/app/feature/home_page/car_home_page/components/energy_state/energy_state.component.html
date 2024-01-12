@@ -1,0 +1,7 @@
+<div class="COMPONENT">
+    @if (car.type === 'Combustion' || car.type === 'Electric') {
+        <single-level-bar [source_type]="car.type" [bar_state]="car.type === 'Combustion' ? car_energy_state.fuel : car_energy_state.electric" [diff_bar_state]="car.type === 'Combustion' ? diff_energy_state.fuel : diff_energy_state.electric" [energy_source_volume]="car.type === 'Combustion' ? car.engine.combustion.fuel_tank_volume : car.engine.electric.energy_storage_volume"/>
+    } @else if (car.type === 'Hybrid') {
+        <double-level-bar  [combustion_bar_state]="car_energy_state.fuel" [combustion_diff_state]="diff_energy_state.fuel" [fuel_source_volume]="car.engine.combustion.fuel_tank_volume" [electric_bar_state]="car_energy_state.electric" [electric_diff_state]="diff_energy_state.electric" [energy_source_volume]="car.engine.electric.energy_storage_volume" />
+    }
+</div>

@@ -12,7 +12,7 @@ import { CarDBModel, CarType } from "../../../../models/car.model";
 import { NgUnsubscriber } from "../../../../util/ngUnsubscriber";
 import { takeUntil } from "rxjs";
 import { ColorPicker } from "./components/color_picker.component";
-import { DatePicker } from "./components/date_picker.component";
+import { DatePicker } from "../../../../UI/forms/date_picker.component";
 import { InsOpt, InsuranceOptionsPicker } from "./components/insurance_picker.component";
 import { Loader } from "../../../../UI/loaders/loader.component";
 

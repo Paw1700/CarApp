@@ -1,0 +1,8 @@
+<div class="ADDING_ROUTE_BOX">
+    @if (car.type === 'Hybrid') {
+        <route-type-switch (routeTypeChanged)="handleInput('route_type', $event)"/>
+    }
+    <date-picker [title]="'Data trasy'" [value]="start_date" (valueChange)="handleInput('date', $event)"/>
+    <number-input [title]="'Dystans'" [minValue]="0" [type]="'buttons'" [show_fast_btns]="true" [fast_btns_settings]="{first_amount: 5, second_amount: 25}" (valueChange)="handleInput('distance', $event)"/>
+    <number-input [title]="'Śr. zużycie'" [minValue]="0" [precision]="1" [type]="'buttons'" [show_fast_btns]="true" [fast_btns_settings]="{first_amount: 0.5, second_amount: 2.5}" (valueChange)="handleInput('avg_usage', $event)"/>
+</div>

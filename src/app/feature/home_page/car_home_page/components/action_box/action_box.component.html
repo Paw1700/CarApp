@@ -1,0 +1,14 @@
+<div class="ACTION_BOX">
+    @if (box_state === 'closed') {
+        <button [@add_route_btn] (click)="changeCompState('add_route')" class="ADD_RT_BTN">
+            <img src="/assets/UI/add_route/white.webp" /> 
+            DODAJ TRASĘ
+        </button>
+    } @else if (box_state === 'add_route') {
+        <add-route-box [@add_route_box] />
+    } @else if (box_state === 'tank_up') {
+        <tank-up-box [@tank_up_box]/>
+    } @else if (box_state === 'charge_up') {
+        <charge-up-box [@charge_up_box] />
+    }
+</div>

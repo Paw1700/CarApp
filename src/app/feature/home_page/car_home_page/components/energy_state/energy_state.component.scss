@@ -1,0 +1,12 @@
+div.COMPONENT {
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    gap: 2.5vw;
+
+    single-level-bar,
+    double-level-bar {
+        width: 100%;
+        height: 100%;
+    }
+}

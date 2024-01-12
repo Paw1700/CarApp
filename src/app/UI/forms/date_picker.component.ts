@@ -12,13 +12,14 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
     styles: `
         div.DATE_PICKER {
             width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: space-evenly;
 
             input[type="date"] {
                 width: 40%;
-                height: 80%;
+                height: 100%;
                 font-size: 1.5rem;
                 display: flex;
                 align-items: center;

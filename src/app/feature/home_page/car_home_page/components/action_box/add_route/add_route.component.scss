@@ -1,0 +1,20 @@
+div.ADDING_ROUTE_BOX {
+    width: 95%;
+    height: 95%;
+    padding: 2.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5vw;
+
+    route-type-switch,
+    date-picker,
+    number-input {
+        width: 100%;
+    }
+
+    date-picker {
+        height: 10%;
+    }
+}

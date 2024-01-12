@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AppData } from './services/data/_main.service';
 import { AppState } from './services/state.service';
 import { AppBackup } from './services/backup.service';
+import { CarDBModel } from './models/car.model';
 
 @Injectable()
 export class AppService {
@@ -23,6 +24,11 @@ export class AppService {
         this.navigate('splashScreen');
         this.APPERANCE.setStatusBarColor(true);
         await this.DATA.start();
+        const carID = this.DATA.getChoosedCarID() 
+        if (carID) {
+            const car = await this.DATA.CAR.getOne(carID, true) as CarDBModel 
+            this.APPERANCE.setAppColor(car.color.theme, car.color.accent)
+        }
         this.APPERANCE.watchForDarkModeChange();
         // redirect_location = 'newCar' <-- RENAVIGATE WHEN CREATING PAGE
         setTimeout(() => {

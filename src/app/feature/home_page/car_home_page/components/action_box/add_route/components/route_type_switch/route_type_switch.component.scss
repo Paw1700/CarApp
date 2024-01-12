@@ -1,0 +1,97 @@
+div.SWITCH {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5vw;
+
+    p.TITLE {
+        width: 100%;
+        font-size: 1.25rem;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    div.SLIDER {
+        width: 100%;
+        height: 12.5vw;
+        background-color: var(--app-elements-bg);
+        border-radius: 2.5vw;
+        position: relative;
+
+        div.BG_ICONS,
+        div.SLIDER_PICK {
+            img {
+                height: 75%;
+                object-fit: contain;
+                transition: 0.2s ease-out;
+
+                &.HIDE {
+                    opacity: 0;
+                }
+
+                &.POWER {
+                    content: url('/assets/UI/power/black.webp');
+                    
+                    @media (prefers-color-scheme: dark) {
+                        content: url('/assets/UI/power/white.webp');
+                    }
+                }
+
+                &.HYBRID {
+                    content: url('/assets/UI/hybrid/black.webp');
+                    
+                    @media (prefers-color-scheme: dark) {
+                        content: url('/assets/UI/hybrid/white.webp');
+                    }
+                }
+
+                &.FUEL {
+                    content: url('/assets/UI/gas_station/black.webp');
+                    
+                    @media (prefers-color-scheme: dark) {
+                        content: url('/assets/UI/gas_station/white.webp');
+                    }
+                }
+            }
+        }
+
+        div.BG_ICONS {
+            width: 95%;
+            padding-inline: 2.5%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        input[type='range'] {
+            width: 90%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 5%;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        div.SLIDER_PICK {
+            width: 12.5%;
+            height: 80%;
+            border-radius: 2.5vw;
+            position: absolute;
+            left: 2.5%;
+            top: 10%;
+            z-index: 0;
+            background-color: var(--app-elements);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

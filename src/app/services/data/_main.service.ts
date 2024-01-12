@@ -48,7 +48,8 @@ export class AppData {
                 await this.DB.initDB(
                     this.DB_NAME,
                     this.DB_VERSION,
-                    Object.getOwnPropertyNames(this.DB_STORES)
+                    Object.getOwnPropertyNames(this.DB_STORES), 
+                    true
                 );
                 resolve();
             } catch {

@@ -6,13 +6,25 @@ import { CarTile } from "./components/car_tile/car_tile.component";
 import { Car } from "../../models/car.model";
 import { ScrollAbleBar, ScrollBarOption } from "../../UI/scroll_able_bar/scroll_able_bar.component";
 import { energySourceStatus } from "../../services/data/car.service";
+import { animate, style, transition, trigger } from "@angular/animations";
 
 @Component({
     selector: 'cars-list',
     standalone: true,
     imports: [TitleBar, ButtonComponent, CarTile, ScrollAbleBar],
     templateUrl: './cars_list_page.component.html',
-    styleUrl: './cars_list_page.component.scss'
+    styleUrl: './cars_list_page.component.scss',
+    animations: [
+        trigger('tile', [
+            transition("void => *", [
+                style({position: 'relative', bottom: '-2.5vh', opacity: 0}),
+                animate("350ms ease-out", style({
+                    opacity: 1,
+                    bottom: 0
+                }))
+            ])
+        ])
+    ]
 })
 export class CarsListPage implements OnInit{
     APP = inject(AppService)
@@ -33,6 +45,13 @@ export class CarsListPage implements OnInit{
     changeSelectedCarID(carID: string) {
         const ids_are_equal = carID === this.selected_car_id
         this.APP.DATA.saveChoosedCarID(ids_are_equal ? null : carID)
+        if (!ids_are_equal) {
+            const d_car = this.cars_data.find(data => data.car.id === carID)
+            if (d_car?.car)
+                this.APP.APPERANCE.setAppColor(d_car.car.color.theme, d_car.car.color.accent)
+        } else {
+            this.APP.APPERANCE.setAppColor(null)
+        }
         this.selected_car_id = ids_are_equal ? '' : carID
     }
 

@@ -1,0 +1,15 @@
+<div [@car_page]="show_page" [ngStyle]="{'--car-theme': car.color.theme}" class="COMPONENT">
+    <car-title [@car_title]="add_route_open" [brand_logo]="car.brand.brand_image_set.for_dark_mode !== null ? car.brand.brand_image_set.for_dark_mode : car.brand.brand_image_set.default" [model_name]="car.model"/>
+    <energy-state [car_energy_state]="car_energy_state" [diff_energy_state]="diff_energy_state" [car]="car"/>
+    <remain-distance [car_type]="car.type" [energy_state]="car_energy_state" [diff_energy_state]="diff_energy_state" />
+    <img [@car_image]="add_route_open" [src]="car.photo.front_left" />
+    @if (add_route_open) {
+        <div [@action_box_upper_options] class="ACTION_BOX_UPPER_OPTIONS">
+            <p (click)="closeActionBox()">ZAMKNIJ</p>
+            <p (click)="initSaveAction()">ZAPISZ</p>
+        </div>
+    }
+    <scroll-able-bar [listen_to_scroll]="!add_route_open" (first_option_pressed)="openOtherBoxOption('tank-up')" (second_option_pressed)="openOtherBoxOption('charge_up')" [first_option]="{color: car.color.theme , width_in_percent: 35, text: (car.type === 'Combustion' || car.type === 'Hybrid') ? 'ZATANKUJ': '', image: null}" [second_option]="{color: car.color.theme, width_in_percent: 35, text: (car.type === 'Electric' || car.type === 'Hybrid') ? 'NAŁADUJ': '', image: null}">
+        <action-box />
+    </scroll-able-bar>
+</div>

@@ -1,4 +1,4 @@
-import { Injectable, signal } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { DatabaseManager } from "../../util/db.driver";
 import { AppValidator } from "../validator.service";
 import { Car, CarDBModel, SourceType } from "../../models/car.model";
@@ -6,6 +6,7 @@ import { DB_STORES, LS_STORES } from "./_main.service";
 import { CarBrand } from "../../models/car_brand.model";
 import { RouteService } from "./routes.service";
 import { AppEnvironment } from "../../environment";
+import { Route } from "../../models/route.model";
 
 @Injectable()
 export class CarService {
@@ -141,6 +142,40 @@ export class CarService {
         })
     }
 
+    getDiffInEnergySourceWhenAddingRoute(carID: string, new_route: Route): Promise<energySourceStatus> {
+        return new Promise<energySourceStatus>(async (resolve, reject) => {
+            const car = await this.getOne(carID, true) as CarDBModel
+            const car_energy_source_status = await this.getCarEnergySourceStatus(carID)
+            const return_diff_status = new energySourceStatus()
+            if (new_route.usage.combustion.include) {
+                // return_diff_status.fuel.in_stock
+                new_route.usage.combustion.amount = await this.calcAvgUsage(carID, new_route.original_avg_fuel_usage, 'Combustion')
+                return_diff_status.fuel.in_stock = Number((new_route.distance * (new_route.usage.combustion.amount / 100)).toFixed(1))
+                if (new_route.usage.electric.include) {
+                    return_diff_status.fuel.in_stock = return_diff_status.fuel.in_stock / AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio 
+                }
+                // return_diff_status.fuel.remain_distance
+                const new_fuel_amount_in_stock = car_energy_source_status.fuel.in_stock - return_diff_status.fuel.in_stock
+                const new_fuel_distance = Number(((new_fuel_amount_in_stock / (await this.actualAvgUsage(carID, 'Combustion', new_route.usage.combustion.amount))) * 100).toFixed(0))
+                return_diff_status.fuel.remain_distance = car_energy_source_status.fuel.remain_distance - new_fuel_distance
+                // return_diff_status.fuel.level
+                return_diff_status.fuel.level = Number((return_diff_status.fuel.in_stock * 100 / car.engine.combustion.fuel_tank_volume).toFixed(0))
+            }
+            if (new_route.usage.electric.include) {
+                // return_diff_status.electric.in_stock
+                new_route.usage.electric.amount = await this.calcAvgUsage(carID, new_route.original_avg_fuel_usage, 'Electric')
+                return_diff_status.electric.in_stock = Number((new_route.distance * (new_route.usage.electric.amount / 100)).toFixed(1))
+                // return_diff_status.electric.remain_distance
+                const new_energy_amount_in_stock = car_energy_source_status.electric.in_stock - return_diff_status.electric.in_stock
+                const new_energy_distance = Number(((new_energy_amount_in_stock / (await this.actualAvgUsage(carID, 'Electric', new_route.usage.electric.amount))) * 100).toFixed(0))
+                return_diff_status.electric.remain_distance = car_energy_source_status.electric.remain_distance - new_energy_distance
+                // return_diff_status.electric.level
+                return_diff_status.electric.level = Number((return_diff_status.electric.in_stock * 100 / car.engine.electric.energy_storage_volume).toFixed(0))
+            }
+            resolve(return_diff_status)
+        })
+    }
+
     /**
      * @returns distance driven by car in routes saved in DB
      * @param carID id of car you want data
@@ -181,7 +216,7 @@ export class CarService {
                     let sum_of_source_avg = 0
                     car_routes.forEach(
                         route => {
-                            switch(type) {
+                            switch (type) {
                                 case "Combustion":
                                     if (route.usage.electric.amount !== 0) {
                                         sum_of_source_avg += route.usage.combustion.amount * AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
@@ -225,6 +260,92 @@ export class CarService {
                 resolve(calculatedAvgUsage)
             }
         )
+    }
+
+    /**
+     * It's tank up car by deleting combustion route or converting hybrid routes in to electric one
+     * @param carID id of car you want to fill up
+     */
+    tankUp(carID: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                const car_routes = await this.ROUTE.getCarRoutes(carID)
+                if (car_routes.length > 0) {
+                    let sumOfKm = 0
+                    const save_changed_routes: Route[] = []
+                    const routesIDs_to_delete: string[] = []
+                    car_routes.forEach( route => {
+                        const loop_route = route
+                        let delete_this_one = false
+                        if (loop_route.usage.combustion.include && loop_route.usage.electric.include) {
+                            loop_route.usage.combustion.include = false
+                        } else if (loop_route.usage.combustion.include && !loop_route.usage.electric.include) {
+                            delete_this_one = true
+                        }
+                        if (delete_this_one)  {
+                            sumOfKm += loop_route.distance
+                            routesIDs_to_delete.push(loop_route.id)
+                        } else {
+                            save_changed_routes.push(loop_route)
+                        }
+                    })
+                    await this.ROUTE.delete(routesIDs_to_delete)
+                    for (let i = 0; i <= save_changed_routes.length - 1; i++) {
+                        await this.ROUTE.saveOne(save_changed_routes[i], true)
+                    }
+                    resolve()
+                } else {
+                    //!!! CREATE ERROR CODE
+                    throw new Error('Empty routes')
+                }
+            } catch (err) {
+                console.error(err)
+                reject(err)
+            }
+        })
+    }
+
+    /**
+     * It's charge up car by deleting electric route or converting hybrid routes in to combustion one
+     * @param carID 
+     */
+    chargeUp(carID: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                const car_routes = await this.ROUTE.getCarRoutes(carID)
+                if (car_routes.length > 0) {
+                    let sumOfKm = 0
+                    const save_changed_routes: Route[] = []
+                    const routesIDs_to_delete: string[] = []
+                    car_routes.forEach( route => {
+                        const loop_route = route
+                        let delete_this_one = false
+                        if (loop_route.usage.combustion.include && loop_route.usage.electric.include) {
+                            loop_route.usage.electric.include = false
+                        } else if (loop_route.usage.electric.include && !loop_route.usage.combustion.include) {
+                            delete_this_one = true
+                        }
+                        if (delete_this_one)  {
+                            sumOfKm += loop_route.distance
+                            routesIDs_to_delete.push(loop_route.id)
+                        } else {
+                            save_changed_routes.push(loop_route)
+                        }
+                    })
+                    await this.ROUTE.delete(routesIDs_to_delete)
+                    for (let i = 0; i <= save_changed_routes.length - 1; i++) {
+                        await this.ROUTE.saveOne(save_changed_routes[i], true)
+                    }
+                    resolve()
+                } else {
+                    //!!! CREATE ERROR CODE
+                    throw new Error('Empty routes')
+                }
+            } catch (err) {
+                console.error(err);
+                reject(err)
+            }
+        })
     }
 
     /**
@@ -299,23 +420,21 @@ export class CarService {
 
 export class energySourceStatus {
     constructor(
-        public fuel: {
-            level: number,
-            in_stock: number,
-            remain_distance: number
-        } = {
+        public fuel: sourceStatus = {
                 level: 0,
                 in_stock: 0,
                 remain_distance: 0
             },
-        public electric: {
-            level: number,
-            in_stock: number,
-            remain_distance: number
-        } = {
+        public electric: sourceStatus = {
                 level: 0,
                 in_stock: 0,
                 remain_distance: 0
             }
     ) { }
 }
+
+export type sourceStatus = {
+    level: number,
+    in_stock: number,
+    remain_distance: number
+} 
