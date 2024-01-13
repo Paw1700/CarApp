@@ -9,7 +9,7 @@
             <p (click)="initSaveAction()">ZAPISZ</p>
         </div>
     }
-    <scroll-able-bar [listen_to_scroll]="!add_route_open" (first_option_pressed)="openOtherBoxOption('tank-up')" (second_option_pressed)="openOtherBoxOption('charge_up')" [first_option]="{color: car.color.theme , width_in_percent: 35, text: (car.type === 'Combustion' || car.type === 'Hybrid') ? 'ZATANKUJ': '', image: null}" [second_option]="{color: car.color.theme, width_in_percent: 35, text: (car.type === 'Electric' || car.type === 'Hybrid') ? 'NAŁADUJ': '', image: null}">
+    <scroll-able-bar [listen_to_scroll]="!add_route_open" (first_option_pressed)="openOtherBoxOption('tank-up')" (second_option_pressed)="openOtherBoxOption('charge_up')" [first_option]="{color: car.color.theme , width_in_percent: 35, text: tank_up_text, image: null}" [second_option]="{color: car.color.theme, width_in_percent: 35, text: charge_up_text, image: null}">
         <action-box />
     </scroll-able-bar>
 </div>
