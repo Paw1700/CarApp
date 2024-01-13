@@ -59,11 +59,11 @@ import { CarHomePageService } from "./car_home_page.service";
         trigger('car_image', [
             state('false', style({
                 opacity: 1,
-                maxHeight: '20%'
+                height: '25%'
             })),
             state('true', style({
                 opacity: 0,
-                maxHeight: 0
+                height: 0
             })),
             transition('false => true', [
                 animate('350ms ease-out')

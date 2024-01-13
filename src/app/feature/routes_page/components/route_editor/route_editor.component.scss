@@ -1,0 +1,61 @@
+:host {
+    width: 100vw;
+    height: 85vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--app-theme);
+
+    div.EDITOR {
+        width: 84vw;
+        padding: 2.5vw;
+        background-color: var(--app-elements);
+        border-radius: 2.5vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5vw;
+
+        p.TITLE {
+            font-size: 1.5rem;
+            width: 100%;
+            font-weight: 700;
+        }
+
+        route-type-switch,
+        date-picker,
+        number-input {
+            width: 100%;
+        }
+
+        div.BTNs {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            button {
+                width: 45%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+                font-weight: 700;
+                height: 2.75rem;
+                background-color: var(--app-elements-bg-dark);
+                color: var(--font-color-dark);
+                border-radius: 2.5vw;
+
+                @media (prefers-color-scheme: dark) {
+                    background-color: var(--app-elements-bg-light);
+                    color: var(--font-color-light);
+                }
+            }
+        }
+    }
+}

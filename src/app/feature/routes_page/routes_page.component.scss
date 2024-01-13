@@ -1,0 +1,21 @@
+div.PAGE {
+    justify-content: flex-start;
+    gap: 2.5vw;
+
+    div.ROUTE_DATE {
+        width: 89vw;
+        text-align: left;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    route-list-item {
+        width: 89vw;
+    }
+
+    p.EMPTY_ROUTES {
+        width: 89vw;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+}

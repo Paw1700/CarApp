@@ -9,6 +9,7 @@ import { CreateBrandPage } from './feature/create_brand_page/create_brand_page.c
 import { CarsListPage } from './feature/cars_list_page/cars_list_page.component';
 import { CarCreatePage } from './feature/create_car_page/create_car_page.component';
 import { AppDataManagmentPage } from './feature/app_data_managment_page/app_data_managment_page.page';
+import { RoutesPage } from './feature/routes_page/routes_page.component';
 
 export const routes: Routes = [
     {
@@ -105,6 +106,14 @@ export const routes: Routes = [
         component: AppDataManagmentPage,
         data: {
             animState: 'appDataManagment'
+        }
+    },
+    {
+        path: 'routes',
+        pathMatch: 'full',
+        component: RoutesPage,
+        data: {
+            animState: 'routesList'
         }
     }
 ];

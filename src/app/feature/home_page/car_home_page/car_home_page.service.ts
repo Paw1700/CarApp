@@ -69,7 +69,7 @@ export class CarHomePageService {
     private adaptDiffSourceStatusToRoute() {
         this.route_data$.subscribe(async route => {
             if (this.car$.value.id !== '') {
-                this.diff_energy_state$.next(await this.APP.DATA.CAR.getDiffInEnergySourceWhenAddingRoute(this.car$.value.id, route))
+                this.diff_energy_state$.next(await this.APP.DATA.CAR.getDiffInEnergySourceWhenAddingRoute(this.car$.value.id, JSON.parse(JSON.stringify(route))))
             }
         })
     }

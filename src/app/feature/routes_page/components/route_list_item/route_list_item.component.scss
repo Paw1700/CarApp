@@ -1,0 +1,79 @@
+:host {
+    width: 100%;
+    background-color: var(--app-elements);
+    border-radius: 2.5vw;
+
+    scroll-able-bar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+
+        div.ROUTE_DATA {
+            width: 100%;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+
+            p {
+                font-size: 1.2rem;
+                font-weight: 500;
+            }
+
+            div.DISTANCE,
+            div.FUEL_USED,
+            div.ENERGY_USED {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                gap: 2.5vw;
+
+                img {
+                    height: 1.3rem;
+                    object-fit: contain;
+                }
+            }
+            
+            div.DISTANCE {
+                img {
+                    content: url("/assets/UI/route/black.webp");
+                    @media (prefers-color-scheme: dark) {
+                        content: url("/assets/UI/route/white.webp");
+                    }
+                }
+            }
+
+            div.FUEL_USED,
+            div.ENERGY_USED {
+                div.DATA {
+                    display: flex;
+                    flex-direction: column;
+                    gap: .5vh;
+
+                    p {
+                        font-size: .75rem;
+                    }
+                }
+            }
+
+            div.FUEL_USED {
+                img {
+                    content: url("/assets/UI/gas_station/black.webp");
+                    @media (prefers-color-scheme: dark) {
+                        content: url("/assets/UI/gas_station/white.webp");
+                    }
+                }
+            }
+
+            div.ENERGY_USED {
+                img {
+                    content: url("/assets/UI/power/black.webp");
+                    @media (prefers-color-scheme: dark) {
+                        content: url("/assets/UI/power/white.webp");
+                    }
+                }
+            }
+        }
+    }
+}

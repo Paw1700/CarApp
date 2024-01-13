@@ -152,7 +152,7 @@ export class CarService {
                 new_route.usage.combustion.amount = await this.calcAvgUsage(carID, new_route.original_avg_fuel_usage, 'Combustion')
                 return_diff_status.fuel.in_stock = Number((new_route.distance * (new_route.usage.combustion.amount / 100)).toFixed(1))
                 if (new_route.usage.electric.include) {
-                    return_diff_status.fuel.in_stock = return_diff_status.fuel.in_stock / AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio 
+                    return_diff_status.fuel.in_stock = return_diff_status.fuel.in_stock / AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
                 }
                 // return_diff_status.fuel.remain_distance
                 const new_fuel_amount_in_stock = car_energy_source_status.fuel.in_stock - return_diff_status.fuel.in_stock
@@ -208,30 +208,20 @@ export class CarService {
             try {
                 //!! CAN CAUSE PROBLEM 
                 const car_routes = (await this.ROUTE.getCarRoutes(carID)).filter(route => type === 'Combustion' ? route.usage.combustion.include : route.usage.electric.include)
+                const car = await this.getOne(carID, true) as CarDBModel
+                const car_manufacture_avg_usage = type === 'Combustion' ? car.engine.combustion.avg_fuel_usage : car.engine.electric.energy_avg_usage
                 if (car_routes.length === 0) {
-                    const car = await this.getOne(carID, true) as CarDBModel
-                    const car_manufacture_avg_usage = type === 'Combustion' ? car.engine.combustion.avg_fuel_usage : car.engine.electric.energy_avg_usage
                     resolve(Number(((car_manufacture_avg_usage + (new_route_avg_usage ? new_route_avg_usage : 0)) / (new_route_avg_usage ? 2 : 1)).toFixed(1)))
                 } else {
                     let sum_of_source_avg = 0
                     car_routes.forEach(
                         route => {
-                            switch (type) {
-                                case "Combustion":
-                                    if (route.usage.electric.amount !== 0) {
-                                        sum_of_source_avg += route.usage.combustion.amount * AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
-                                    } else {
-                                        sum_of_source_avg += route.usage.combustion.amount
-                                    }
-                                    break
-                                case "Electric":
-                                    sum_of_source_avg += route.usage.electric.amount
-                                    break
-                            }
+                            sum_of_source_avg += type === 'Combustion' ? route.usage.combustion.amount : route.usage.electric.amount
                         }
                     )
                     sum_of_source_avg += new_route_avg_usage ? new_route_avg_usage : 0
-                    resolve(sum_of_source_avg / (car_routes.length + (new_route_avg_usage ? 1 : 0)))
+                    sum_of_source_avg += car_manufacture_avg_usage
+                    resolve(sum_of_source_avg / ((car_routes.length + 1) + (new_route_avg_usage ? 1 : 0)))
                 }
             } catch (err) {
                 console.error(err);
@@ -274,7 +264,7 @@ export class CarService {
                     let sumOfKm = 0
                     const save_changed_routes: Route[] = []
                     const routesIDs_to_delete: string[] = []
-                    car_routes.forEach( route => {
+                    car_routes.forEach(route => {
                         const loop_route = route
                         let delete_this_one = false
                         if (loop_route.usage.combustion.include && loop_route.usage.electric.include) {
@@ -282,7 +272,7 @@ export class CarService {
                         } else if (loop_route.usage.combustion.include && !loop_route.usage.electric.include) {
                             delete_this_one = true
                         }
-                        if (delete_this_one)  {
+                        if (delete_this_one) {
                             sumOfKm += loop_route.distance
                             routesIDs_to_delete.push(loop_route.id)
                         } else {
@@ -317,7 +307,7 @@ export class CarService {
                     let sumOfKm = 0
                     const save_changed_routes: Route[] = []
                     const routesIDs_to_delete: string[] = []
-                    car_routes.forEach( route => {
+                    car_routes.forEach(route => {
                         const loop_route = route
                         let delete_this_one = false
                         if (loop_route.usage.combustion.include && loop_route.usage.electric.include) {
@@ -325,7 +315,7 @@ export class CarService {
                         } else if (loop_route.usage.electric.include && !loop_route.usage.combustion.include) {
                             delete_this_one = true
                         }
-                        if (delete_this_one)  {
+                        if (delete_this_one) {
                             sumOfKm += loop_route.distance
                             routesIDs_to_delete.push(loop_route.id)
                         } else {
@@ -352,9 +342,9 @@ export class CarService {
      * @returns sum of fuel/energy used by car
      * @param carID id of car
      * @param type of source
-     * @param CHRCUTC (Convert Hybrid Routes Combustion Usage To Combustion) if hybrid route was changed to combustion, amount of it is still divided by constant of hybrid route which sometimes needs to be converted back
+     * @param CCRCUTH (Convert Combustion Routes Combustion Usage To Hybrid) if hybrid route was changed to combustion, amount of it is still divided by constant of hybrid route which sometimes needs to be converted back
      */
-    private usedSource(carID: string, type: SourceType, CHRCUTC = false): Promise<number> {
+    private usedSource(carID: string, type: SourceType, CCRCUTH = true): Promise<number> {
         return new Promise(async (resolve, reject) => {
             try {
                 const car_routes = await this.ROUTE.getCarRoutes(carID)
@@ -364,8 +354,8 @@ export class CarService {
                         case "Combustion":
                             if (route.usage.combustion.include) {
                                 let route_usage = route.usage.combustion.amount
-                                if (CHRCUTC && !route.usage.electric.include && route.usage.electric.amount !== 0) {
-                                    route_usage *= AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
+                                if (CCRCUTH && route.usage.electric.amount !== 0) {
+                                    route_usage /= AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
                                 }
                                 sum_of_source += Number((route.distance * (route_usage / 100)).toFixed(1))
                             }
@@ -421,15 +411,15 @@ export class CarService {
 export class energySourceStatus {
     constructor(
         public fuel: sourceStatus = {
-                level: 0,
-                in_stock: 0,
-                remain_distance: 0
-            },
+            level: 0,
+            in_stock: 0,
+            remain_distance: 0
+        },
         public electric: sourceStatus = {
-                level: 0,
-                in_stock: 0,
-                remain_distance: 0
-            }
+            level: 0,
+            in_stock: 0,
+            remain_distance: 0
+        }
     ) { }
 }
 

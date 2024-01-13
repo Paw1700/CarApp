@@ -1,0 +1,26 @@
+<scroll-able-bar [first_option]="{color: 'blue', width_in_percent: 25, text: 'EDYTUJ', image: null}" (first_option_pressed)="edit()" [second_option]="{color: 'red', width_in_percent: 25, text: 'USUŃ', image: null}" (second_option_pressed)="delete()">
+    <div class="ROUTE_DATA">
+        <div class="DISTANCE">
+            <img>
+            <p>{{ route.distance }}km</p>
+        </div>
+        @if (route.usage.combustion.include) {
+            <div class="FUEL_USED">
+                <img>
+                <div class="DATA">
+                    <p>{{ (combustion_used).toFixed(1) }} L</p>
+                    <p>{{ combustion_usage.toFixed(1) }} L/100km</p>
+                </div>
+            </div>
+        }
+        @if (route.usage.electric.include) {
+            <div class="ENERGY_USED">
+                <img>
+                <div class="DATA">
+                    <p>{{ (electric_used).toFixed(1) }} kWh</p>
+                    <p>{{ electric_usage.toFixed(1) }} kWh/100km</p>
+                </div>
+            </div>
+        }
+    </div>
+</scroll-able-bar>

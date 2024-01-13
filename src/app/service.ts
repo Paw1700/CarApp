@@ -82,6 +82,7 @@ export class AppService {
                 this.APPERANCE.hideNavBar(false);
                 break;
             case 'routes':
+                this.ROUTER.navigateByUrl('/routes');
                 this.APPERANCE.setNavBarSelectedElement('routes');
                 this.APPERANCE.hideNavBar(false);
                 break;
