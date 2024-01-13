@@ -44,14 +44,7 @@ export class CarsListPage implements OnInit{
 
     changeSelectedCarID(carID: string) {
         const ids_are_equal = carID === this.selected_car_id
-        this.APP.DATA.saveChoosedCarID(ids_are_equal ? null : carID)
-        if (!ids_are_equal) {
-            const d_car = this.cars_data.find(data => data.car.id === carID)
-            if (d_car?.car)
-                this.APP.APPERANCE.setAppColor(d_car.car.color.theme, d_car.car.color.accent)
-        } else {
-            this.APP.APPERANCE.setAppColor(null)
-        }
+        this.APP.setChoosedCar(ids_are_equal ? null : carID)
         this.selected_car_id = ids_are_equal ? '' : carID
     }
 

@@ -6,7 +6,7 @@ import { LoadingScreenInputData } from "../UI/loading_screen/loading_screen.comp
 export class AppApperance {
     bottom_bar_state$ = new BehaviorSubject<BottomBarState>(new BottomBarState())
     dark_mode_state$ = new BehaviorSubject<boolean>(false)
-    loading_screen_state$ = new BehaviorSubject<LoadingScreenInputData>({show: false, loading_stage_text: ''})
+    loading_screen_state$ = new BehaviorSubject<LoadingScreenInputData>({ show: false, loading_stage_text: '' })
 
     /**
      * Checking if at moment of running function browser is in dark mode
@@ -83,17 +83,27 @@ export class AppApperance {
      * It's sets selected element in bottom bar
      * @param element specified element of bottom bar
      */
-    public setNavBarSelectedElement(element: BottomBarElements) {
+    setNavBarSelectedElement(element: BottomBarElements) {
         const state = this.bottom_bar_state$.value
         state.selected_element = element
         this.bottom_bar_state$.next(state)
     }
 
     /**
+     * Sets car brand and name in nav bar 
+     * @param state give car brand logo set and name or null for reset 
+     */
+    setChoosedCarBrandInNavBar(state: BottomBarCarBrandData | null) {
+        const act_state = this.bottom_bar_state$.value
+        act_state.choosed_car_brand = state
+        this.bottom_bar_state$.next(act_state)
+    }
+
+    /**
      * It's hides or shows bottom bar
      * @param bool show or hide bar
      */
-    public hideNavBar(bool: boolean) {
+    hideNavBar(bool: boolean) {
         const state = this.bottom_bar_state$.value
         state.show = !bool
         this.bottom_bar_state$.next(state)
@@ -106,12 +116,14 @@ export class BottomBarState {
     constructor(
         public show = false,
         public selected_element: BottomBarElements = null,
-        public choosed_car_brand: {
-            name: string,
-            image: {
-                default: string,
-                for_dark_mode: string | null
-            }
-        } | null = null
+        public choosed_car_brand: BottomBarCarBrandData | null = null
     ) { }
+}
+
+export type BottomBarCarBrandData = {
+    name: string,
+    image: {
+        default: string,
+        for_dark_mode: string | null
+    }
 }

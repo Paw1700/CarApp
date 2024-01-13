@@ -37,13 +37,16 @@ export class NavBar implements OnInit {
     private APP = inject(AppService);
     bar_state: BottomBarState = new BottomBarState();
     selected_car_image: string = '';
+    selected_car_text = ''
     image_color_mode: 'black' | 'white' = 'black';
     private default_selected_car_image = '/assets/UI/selected_car/' + this.image_color_mode + '.webp';
+    private default_selected_car_text = 'Strona główna'
 
     ngOnInit(): void {
         this.APP.APPERANCE.bottom_bar_state$.subscribe((state) => {
             this.bar_state = state;
             this.checkIfSelectedCarIconChanged();
+            this.checkIfSelectedCarNameChanged()
         });
         this.APP.APPERANCE.dark_mode_state$.subscribe((dark_mode_on) => {
             if (dark_mode_on) {
@@ -61,23 +64,26 @@ export class NavBar implements OnInit {
 
     private checkIfSelectedCarIconChanged() {
         if (this.bar_state.choosed_car_brand !== null) {
-            if (
-                this.image_color_mode === 'white' &&
-                this.bar_state.choosed_car_brand.image.for_dark_mode !== null
-            ) {
-                this.selected_car_image =
-                    this.bar_state.choosed_car_brand.image.for_dark_mode;
+            if (this.image_color_mode === 'white' && this.bar_state.choosed_car_brand.image.for_dark_mode !== null) {
+                this.selected_car_image = this.bar_state.choosed_car_brand.image.for_dark_mode;
             } else {
-                this.selected_car_image =
-                    this.bar_state.choosed_car_brand.image.default;
+                this.selected_car_image = this.bar_state.choosed_car_brand.image.default;
             }
         } else {
             this.setDefaultImage()
-            this.selected_car_image = this.default_selected_car_image;
         }
     }
 
+    private checkIfSelectedCarNameChanged() {
+        if (this.bar_state.choosed_car_brand?.name) {
+            this.selected_car_text = this.bar_state.choosed_car_brand.name
+        } else {
+            this.selected_car_text = this.default_selected_car_text
+        }
+    }
+    
     private setDefaultImage() {
         this.default_selected_car_image = '/assets/UI/selected_car/' + this.image_color_mode + '.webp';
+        this.selected_car_image = this.default_selected_car_image;
     }
 }

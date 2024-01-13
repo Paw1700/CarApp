@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AppData } from './services/data/_main.service';
 import { AppState } from './services/state.service';
 import { AppBackup } from './services/backup.service';
-import { CarDBModel } from './models/car.model';
+import { Car } from './models/car.model';
 
 @Injectable()
 export class AppService {
@@ -24,10 +24,11 @@ export class AppService {
         this.navigate('splashScreen');
         this.APPERANCE.setStatusBarColor(true);
         await this.DATA.start();
-        const carID = this.DATA.getChoosedCarID() 
+        const carID = this.DATA.getChoosedCarID()
         if (carID) {
-            const car = await this.DATA.CAR.getOne(carID, true) as CarDBModel 
+            const car = await this.DATA.CAR.getOne(carID) as Car
             this.APPERANCE.setAppColor(car.color.theme, car.color.accent)
+            this.APPERANCE.setChoosedCarBrandInNavBar({ name: car.brand.name, image: car.brand.brand_image_set })
         }
         this.APPERANCE.watchForDarkModeChange();
         // redirect_location = 'newCar' <-- RENAVIGATE WHEN CREATING PAGE
@@ -42,6 +43,18 @@ export class AppService {
             this.navigate('home');
             console.log('NAVIGATE AWAY!');
         }, 1500);
+    }
+
+    async setChoosedCar(carID: string | null) {
+        this.DATA.saveChoosedCarID(carID)
+        if (carID) {
+            const car = await this.DATA.CAR.getOne(carID) as Car
+            this.APPERANCE.setAppColor(car.color.theme, car.color.accent)
+            this.APPERANCE.setChoosedCarBrandInNavBar({ name: car.brand.name, image: car.brand.brand_image_set })
+        } else {
+            this.APPERANCE.setAppColor(null)
+            this.APPERANCE.setChoosedCarBrandInNavBar(null)
+        }
     }
 
     private checkIfIsConfigured(): boolean {
