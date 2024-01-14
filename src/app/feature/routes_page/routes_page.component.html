@@ -1,16 +1,18 @@
 <div class="PAGE">
     @if (choosedCarID) {
         <title-bar [title_content]="'Trasy'" [title_mode]="'BIG'" />
-        @for (route_pack of car_routes; track route_pack.date) {
-            <div [@show_up] class="ROUTE_DATE">
-                {{ route_pack.date.toJSON()| stringDate }}
-            </div>
-            @for(route of route_pack.route_list; track route.id) {
-                <route-list-item [@show_up] [route]="route" (edit_this_one)="editRoute($event)" (delete_this_one)="deleteRoute($event)"/>
+        <div class="ROUTES_LIST">
+            @for (route_pack of car_routes; track route_pack.date) {
+                <div [@show_up] class="ROUTE_DATE">
+                    {{ route_pack.date.toJSON()| stringDate }}
+                </div>
+                @for(route of route_pack.route_list; track route.id) {
+                    <route-list-item [@show_up] [route]="route" (edit_this_one)="editRoute($event)" (delete_this_one)="deleteRoute($event)"/>
+                }
+            } @empty {
+                <p [@show_up] class="EMPTY_ROUTES">Brak tras</p>
             }
-        } @empty {
-            <p [@show_up] class="EMPTY_ROUTES">Brak tras</p>
-        }
+        </div>
     } @else {
         <not-choosed-car (redirectToCarList)="APP.navigate('carsList')"/>
     }
