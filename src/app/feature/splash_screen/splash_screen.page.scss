@@ -16,10 +16,21 @@ div.PAGE {
         font-weight: 800;
     }
 
+    p.BETA_TEXT {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--default-accent-color);
+    }
+
+    p.BETA_BUILD_TEXT,
     p.APP_VERSION {
         font-size: 1.25rem;
         font-weight: 500;
         position: absolute;
         bottom: 8.9vw;
+    }
+
+    p.BETA_BUILD_TEXT {
+        color: var(--default-accent-color);
     }
 }

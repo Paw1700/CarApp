@@ -1,5 +1,12 @@
 <div class="PAGE">
   <img class="APP_LOGO" alt="App Logo" />
   <p class="APP_TITLE">CarApp</p>
-  <p class="APP_VERSION">2.2</p>
+  @if (app_version.beta) {
+    <p class="BETA_TEXT">BETA</p>
+  }
+  @if (app_version.beta) {
+    <p class="BETA_BUILD_TEXT">Build {{ app_version.build }}</p>
+  } @else {
+    <p class="APP_VERSION">{{ version_text }}</p>
+  }
 </div>

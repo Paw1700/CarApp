@@ -3,6 +3,6 @@
     @if (app_was_updated) {
         <p class="APP_WAS_UPDATED_TEXT">Aplikacja została zaktualizowania</p>
     }
-    <app-desc [app_version_string]="app_version" [app_compilation_string]="app_compilation"/>
+    <app-desc [app_version_string]="app_version" [app_compilation_string]="app_compilation" [app_beta_build]="app_version_data.build"/>
     <app-changes [features]="app_feature_chngs" [fixes]="app_fixes_chngs" [importans]="app_important_chngs"/>
 </div>

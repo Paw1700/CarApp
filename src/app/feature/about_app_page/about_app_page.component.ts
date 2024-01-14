@@ -18,7 +18,7 @@ import { NgUnsubscriber } from "../../util/ngUnsubscriber";
 export class AboutAppPage extends NgUnsubscriber implements OnInit{
     private route = inject(ActivatedRoute)
     APP = inject(AppService)
-    private readonly app_version_data = AppEnvironment.APP_VERSION
+    readonly app_version_data = AppEnvironment.APP_VERSION
     app_version = this.app_version_data.edition + '.' + this.app_version_data.version + '.' + this.app_version_data.patch
     app_compilation = this.app_version_data.compilation + this.app_version_data.compilationIteration
     app_important_chngs = this.app_version_data.important ? this.app_version_data.important : []

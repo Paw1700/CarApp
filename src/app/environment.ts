@@ -5,10 +5,10 @@ export class AppEnvironment {
         edition: 2,
         version: 2,
         patch: 0,
-        compilation: 240114,
-        compilationIteration: 'c',
-        beta: false,
-        build: '',
+        compilation: 0,
+        compilationIteration: 'x',
+        beta: true,
+        build: '1',
         features: [
             {
                 "id": 1,
