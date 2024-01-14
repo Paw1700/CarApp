@@ -8,6 +8,13 @@ export class AppApperance {
     dark_mode_state$ = new BehaviorSubject<boolean>(false)
     loading_screen_state$ = new BehaviorSubject<LoadingScreenInputData>({ show: false, loading_stage_text: '' })
 
+
+    restart() {
+        this.bottom_bar_state$.next(new BottomBarState())
+        this.dark_mode_state$.next(false)
+        this.loading_screen_state$.next({show: false, loading_stage_text: ''})
+    }
+
     /**
      * Checking if at moment of running function browser is in dark mode
      * @returns If browser is in dark mode return true, otherwise false

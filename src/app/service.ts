@@ -19,14 +19,17 @@ export class AppService {
     async startApp(withoutRedirection = false): Promise<void> {
         let redirect_location: AppLocations = 'home';
         let status_normal = true
-        if (!this.checkIfIsConfigured()) {
+        this.APPERANCE.restart()
+        const app_is_configured = this.checkIfIsConfigured() 
+        const app_was_updated = this.checkIfAppWasUpdated()
+        if (!app_is_configured) {
             redirect_location = 'startConfig';
         }
         this.navigate('splashScreen');
         this.APPERANCE.setStatusBarColor(true);
-        if (this.checkIfAppWasUpdated() === true) {
+        if (app_was_updated === true && app_is_configured) {
             redirect_location = 'aboutApp/updated'
-        } else if (this.checkIfAppWasUpdated() === 'major') {
+        } else if (app_was_updated === 'major' && app_is_configured) {
             status_normal = false
             redirect_location = 'important'
         }
