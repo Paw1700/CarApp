@@ -90,7 +90,12 @@ export class AppData {
      * @returns saved app version in string or null if it wasn't saved
      */
     getAppVersion(): string | null {
-        return this.DB.LS_getData(this.LS_STORES.usedAppVersion);
+        const version = this.DB.LS_getData(this.LS_STORES.usedAppVersion)
+        if (version !== '' && version !== null) {
+            return version
+        } else {
+            return null
+        }
     }
 
     /**

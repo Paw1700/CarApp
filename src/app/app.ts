@@ -10,7 +10,6 @@ import { AppValidator } from './services/validator.service';
 import { CarService } from './services/data/car.service';
 import { DatabaseManager } from './util/db.driver';
 import { RouteService } from './services/data/routes.service';
-import { AppState } from './services/state.service';
 import { NavBar } from './UI/navbar/navbar.component';
 import { AppBackup } from './services/backup.service';
 import { LoadingScreen, LoadingScreenInputData } from './UI/loading_screen/loading_screen.component';
@@ -33,7 +32,6 @@ import { LoadingScreen, LoadingScreenInputData } from './UI/loading_screen/loadi
     CarService,
     DatabaseManager,
     RouteService,
-    AppState,
     AppBackup
   ],
   animations: [

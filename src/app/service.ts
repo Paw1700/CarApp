@@ -2,9 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { AppApperance } from './services/apperance.service';
 import { Router } from '@angular/router';
 import { AppData } from './services/data/_main.service';
-import { AppState } from './services/state.service';
 import { AppBackup } from './services/backup.service';
 import { Car } from './models/car.model';
+import { AppEnvironment } from './environment';
+import { AppVersionIteration } from './models/app_version.model';
 
 @Injectable()
 export class AppService {
@@ -12,29 +13,41 @@ export class AppService {
     constructor(
         public APPERANCE: AppApperance,
         public DATA: AppData,
-        public STATE: AppState,
         public BACKUP: AppBackup
     ) { }
 
     async startApp(): Promise<void> {
         let redirect_location: AppLocations = 'home';
+        let status_normal = true
         if (!this.checkIfIsConfigured()) {
             redirect_location = 'startConfig';
         }
         this.navigate('splashScreen');
         this.APPERANCE.setStatusBarColor(true);
-        await this.DATA.start();
-        const carID = this.DATA.getChoosedCarID()
-        if (carID) {
-            const car = await this.DATA.CAR.getOne(carID) as Car
-            this.APPERANCE.setAppColor(car.color.theme, car.color.accent)
-            this.APPERANCE.setChoosedCarBrandInNavBar({ name: car.brand.name, image: car.brand.brand_image_set })
+        if (this.checkIfAppWasUpdated()) {
+            redirect_location = 'aboutApp/updated'
+        } else if (this.checkIfAppWasUpdated() === 'major') {
+            status_normal = false
+            redirect_location = 'important'
         }
-        this.APPERANCE.watchForDarkModeChange();
-        // redirect_location = 'startConfig'// <-- RENAVIGATE WHEN CREATING PAGE
-        setTimeout(() => {
-            this.navigate(redirect_location);
-        }, 500);
+        if (status_normal) {
+            await this.DATA.start();
+            const carID = this.DATA.getChoosedCarID()
+            if (carID) {
+                const car = await this.DATA.CAR.getOne(carID) as Car
+                this.APPERANCE.setAppColor(car.color.theme, car.color.accent)
+                this.APPERANCE.setChoosedCarBrandInNavBar({ name: car.brand.name, image: car.brand.brand_image_set })
+            }
+            this.APPERANCE.watchForDarkModeChange();
+            // redirect_location = 'important'// <-- RENAVIGATE WHEN CREATING PAGE
+            setTimeout(() => {
+                this.navigate(redirect_location);
+            }, 500);
+        } else {
+            setTimeout(() => {
+                this.navigate(redirect_location);
+            }, 1500);
+        }
     }
 
     firstConfigureApp(fuel_config: number): void {
@@ -63,6 +76,23 @@ export class AppService {
         } else {
             return true;
         }
+    }
+
+    private checkIfAppWasUpdated(): 'major' | boolean {
+        const user_AV_string = this.DATA.getAppVersion()
+        const actual_AV_string = this.BACKUP.convertAppVersion(AppEnvironment.APP_VERSION, undefined) as string
+        const actual_AV = AppEnvironment.APP_VERSION
+        if (user_AV_string === null) {
+            return true
+        }
+        const user_AV = this.BACKUP.convertAppVersion(undefined, user_AV_string) as AppVersionIteration
+        if ( user_AV.edition <= 2 && user_AV.version <= 1 && user_AV.patch <= 3 ) {
+            return 'major'
+        }
+        if ( actual_AV.edition > user_AV.edition || actual_AV.version > user_AV.version || actual_AV.patch > user_AV.patch ) {
+            return true
+        }
+        return false
     }
 
     async navigate(location: AppLocations, additionalURLData?: string): Promise<void> {
