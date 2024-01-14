@@ -1,7 +1,7 @@
 # <r>BUGLISTA
 *EMPTY FOR NOW*
 
-# <lb>NEED FOR 2.2 <o>**WIP**</o>
+# <lb>NEED FOR 2.2 <o>**WIP**</o> 
 
 - [x] <r>**Refaktoring modeli na null gdy pusty wyraz** </r>
 - [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
