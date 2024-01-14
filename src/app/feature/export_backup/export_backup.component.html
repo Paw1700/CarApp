@@ -1,0 +1,11 @@
+<p class="TITLE">Eksport danych</p>
+<textarea spellcheck="false" [value]="backup_string"></textarea>
+@if (show_copy_btn && backup_string) {
+    <button (click)="copyBackupString()">KOPIUJ</button>
+}
+<div class="BTNs">
+    <button [class.SMALLER]="!generate_after_init && !backup_string" (click)="hideWindow()">ZAMKNIJ</button>
+    @if(!generate_after_init && !backup_string) {
+        <button (click)="generateBackup()" class="SMALLER">GENERUJ</button>
+    }
+</div>

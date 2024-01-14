@@ -1,0 +1,45 @@
+:host {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5vw;
+
+    p.TITLE {
+        font-weight: 700;
+        font-size: 1.25rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    textarea {
+        width: 90%;
+        height: 20vw;
+        padding: 2.5vw 5%;
+        border-radius: 2.5vw;
+        background-color: var(--app-elements);
+        color: var(--font-color);
+    }
+
+    button {
+        width: 100%;
+        border-radius: 2.5vw;
+        color: white;
+        font-size: 1.25rem;
+        font-weight: 600;
+        background-color: var(--accent-color);
+        padding-block: 1.25vw;
+
+        &.SMALLER {
+            width: 45%;
+        }
+    }
+    div.BTNs {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+}

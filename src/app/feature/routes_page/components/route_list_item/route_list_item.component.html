@@ -4,7 +4,7 @@
             <img>
             <p>{{ route.distance }}km</p>
         </div>
-        @if (route.usage.combustion.include) {
+        @if (route.usage.combustion.amount !== 0) {
             <div class="FUEL_USED">
                 <img>
                 <div class="DATA">
@@ -13,7 +13,7 @@
                 </div>
             </div>
         }
-        @if (route.usage.electric.include) {
+        @if (route.usage.electric.amount !== 0) {
             <div class="ENERGY_USED">
                 <img>
                 <div class="DATA">

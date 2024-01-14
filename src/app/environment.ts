@@ -5,8 +5,8 @@ export class AppEnvironment {
         edition: 2,
         version: 2,
         patch: 0,
-        compilation: 240102,
-        compilationIteration: 'x',
+        compilation: 240114,
+        compilationIteration: 'c',
         beta: false,
         build: '',
         features: [
@@ -22,11 +22,6 @@ export class AppEnvironment {
             },
             {
                 "id": 3,
-                "title": "Nowa strona o aucie",
-                "description": "Dodano nową stronę z opisem danych auta."
-            },
-            {
-                "id": 4,
                 "title": "Zmiana wyglądu strony głównej",
                 "description": "Zmieniono wygląd ekranu głównemu auta i wykorzystano obsługę przesunięcie w przyciski dodania trasy aby pokazać schowane opcje."
             }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, inject } from "@angular/core";
 import { Backup } from "../../models/backup.model";
 import { AppService } from "../../service";
 import { AppVersionIteration } from "../../models/app_version.model";
@@ -9,7 +9,7 @@ import { AppVersionIteration } from "../../models/app_version.model";
     templateUrl: './import_backup.component.html',
     styleUrl: './import_backup.component.scss'
 })
-export class ImportBackupComponent {
+export class ImportBackupComponent implements OnInit{
     private APP = inject(AppService)
     @Input() showCancelButton = true
     @Output() cancelButtonClicked = new EventEmitter<void>()
@@ -22,12 +22,24 @@ export class ImportBackupComponent {
         number_of_cars: '',
         number_of_routes: ''
     }
+    show_paste_button = false
+
+    ngOnInit(): void {
+        this.show_paste_button = window.isSecureContext
+    }
 
     cancelImport() {
         this.cancelButtonClicked.emit()
         this.import_text = null
         this.backup = undefined
         this.show_backup_data = false
+    }
+
+    async pasteBackupString() {
+        if (this.show_paste_button) {
+            const data = {target: {value: await navigator.clipboard.readText()}}
+            this.handleBackupInput(data)
+        }
     }
 
     doImport() {

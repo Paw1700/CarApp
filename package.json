@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "ng serve --port 4201",
+    "ssl_show": "ng serve --ssl --disable-host-check --host 192.168.0.6 --port 1704",
     "show": "ng serve --disable-host-check --host 192.168.0.6 --port 1704"
   },
   "private": true,

@@ -5,5 +5,7 @@
         <button (click)="changeBackupMode('import')" class="OPTION">Importuj</button>
     } @else if (backup_mode === 'import') {
         <import-backup style="width: 100%;" (cancelButtonClicked)="changeBackupMode(null)"/>
+    } @else if (backup_mode === 'export') {
+        <export-backup (hideButtonClicked)="changeBackupMode(null)"/>
     }
 </div>

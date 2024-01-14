@@ -279,6 +279,9 @@ export class CarService {
                             save_changed_routes.push(loop_route)
                         }
                     })
+                    const car = await this.getOne(carID, true) as CarDBModel
+                    car.mileage.actual = Number((Number(car.mileage.actual) + sumOfKm).toFixed(0))
+                    await this.saveOne(car, true)
                     await this.ROUTE.delete(routesIDs_to_delete)
                     for (let i = 0; i <= save_changed_routes.length - 1; i++) {
                         await this.ROUTE.saveOne(save_changed_routes[i], true)
@@ -322,6 +325,9 @@ export class CarService {
                             save_changed_routes.push(loop_route)
                         }
                     })
+                    const car = await this.getOne(carID, true) as CarDBModel
+                    car.mileage.actual = Number((Number(car.mileage.actual) + sumOfKm).toFixed(0))
+                    await this.saveOne(car, true)
                     await this.ROUTE.delete(routesIDs_to_delete)
                     for (let i = 0; i <= save_changed_routes.length - 1; i++) {
                         await this.ROUTE.saveOne(save_changed_routes[i], true)

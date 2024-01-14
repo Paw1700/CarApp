@@ -3,6 +3,9 @@
 <div class="IMPORT_WINDOW">
     <p class="TITLE">Wklej poniżej tekst kopii</p>
     <textarea spellcheck="false" (change)="handleBackupInput($event)"></textarea>
+    @if (show_paste_button) {
+        <button (click)="pasteBackupString()">WKLEJ</button>
+    }
 </div>
 } @else {
 <div class="BACKUP_DATA_WINDOW">
@@ -30,6 +33,6 @@
         <button class="DECLINE_BTN" [class.SHOW_BACKUP]="show_backup_data" (click)="cancelImport()">ANULUJ</button>
     }
     @if (show_backup_data) {
-    <button class="ACEPT_BTN" [class.NO_CANCEL]="!showCancelButton" (click)="doImport()">IMPORTUJ</button>
+        <button class="ACEPT_BTN" [class.NO_CANCEL]="!showCancelButton" (click)="doImport()">IMPORTUJ</button>
     }
 </div>

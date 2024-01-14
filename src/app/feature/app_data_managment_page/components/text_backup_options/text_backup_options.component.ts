@@ -1,11 +1,12 @@
 import { Component, inject } from "@angular/core";
 import { AppService } from "../../../../service";
 import { ImportBackupComponent } from "../../../import_backup/import_backup.component";
+import { ExportBackupComponent } from "../../../export_backup/export_backup.component";
 
 @Component({
     selector: 'text-backup-options',
     standalone: true,
-    imports: [ImportBackupComponent],
+    imports: [ImportBackupComponent, ExportBackupComponent],
     templateUrl: './text_backup_options.component.html',
     styleUrl: './text_backup_options.component.scss'
 })

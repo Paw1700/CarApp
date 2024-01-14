@@ -63,32 +63,33 @@
         }
     }
 
+    button {
+        width: 100%;
+        padding-block: 1.25vw;
+        border-radius: 2.5vw;
+        font-size: 1.25rem;
+        font-weight: 600;
+        background-color: var(--accent-color);
+        color: white;
+    }
+
     div.BTNs {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
 
-        button {
-            padding-block: 1.25vw;
-            border-radius: 2.5vw;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: white;
-        }
-
+        
         button.DECLINE_BTN {
             width: 100%;
-            background-color: var(--app-elements);
-
+            
             &.SHOW_BACKUP {
                 width: 45%;
             }
         }
-
+        
         button.ACEPT_BTN {
             width: 45%;
-            background-color: var(--accent-color);
 
             &.NO_CANCEL {
                 width: 100%;
