@@ -80,13 +80,12 @@ export class AppService {
 
     private checkIfAppWasUpdated(): 'major' | boolean {
         const user_AV_string = this.DATA.getAppVersion()
-        const actual_AV_string = this.BACKUP.convertAppVersion(AppEnvironment.APP_VERSION, undefined) as string
         const actual_AV = AppEnvironment.APP_VERSION
         if (user_AV_string === null) {
             return true
         }
         const user_AV = this.BACKUP.convertAppVersion(undefined, user_AV_string) as AppVersionIteration
-        if ( user_AV.edition <= 2 && user_AV.version <= 1 && user_AV.patch <= 3 ) {
+        if ( user_AV.edition <= 2 && user_AV.version <= 1 && user_AV.patch <= 3 || user_AV_string === '14' ) {
             return 'major'
         }
         if ( actual_AV.edition > user_AV.edition || actual_AV.version > user_AV.version || actual_AV.patch > user_AV.patch ) {
@@ -169,6 +168,10 @@ export class AppService {
                 this.APPERANCE.hideNavBar(true);
                 break
             case 'aboutApp/updated':
+                this.ROUTER.navigateByUrl('aboutApp/true')
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
+                break
             case 'important':
                 break;
         }

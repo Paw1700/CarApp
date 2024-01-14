@@ -1,5 +1,8 @@
 <div class="PAGE">
-    <title-bar (click)="APP.navigate('settings')" [title_content]="'O aplikacji'" [title_mode]="'SMALL'"/>
+    <title-bar (click)="navigateAway()" [title_content]="app_was_updated ? '' : 'O aplikacji'" [title_mode]="'SMALL'"/>
+    @if (app_was_updated) {
+        <p class="APP_WAS_UPDATED_TEXT">Aplikacja została zaktualizowania</p>
+    }
     <app-desc [app_version_string]="app_version" [app_compilation_string]="app_compilation"/>
     <app-changes [features]="app_feature_chngs" [fixes]="app_fixes_chngs" [importans]="app_important_chngs"/>
 </div>

@@ -115,5 +115,13 @@ export const routes: Routes = [
         data: {
             animState: 'routesList'
         }
+    },
+    {
+        path: 'aboutApp/:updated',
+        pathMatch: 'full',
+        component: AboutAppPage,
+        data: {
+            animState: 'aboutApp'
+        }
     }
 ];
