@@ -33,7 +33,7 @@ export class CarsListPage implements OnInit{
         height: 12.5,
         border_radius: 2.5
     }
-    cars_data: {car: Car, energy_state: energySourceStatus}[] = [] 
+    cars_data: CarListTileDataSet[] = [] 
     selected_car_id: string | null = null
     left_scroll_bar_opt = new ScrollBarOption('blue', 25, 'EDYTUJ', null)
     right_scroll_bar_opt = new ScrollBarOption('red', 25, 'USUŃ', null)
@@ -68,14 +68,15 @@ export class CarsListPage implements OnInit{
         try {
             this.selected_car_id = this.APP.DATA.getChoosedCarID()
             const cars = await this.APP.DATA.CAR.getAll() as Car[]
-            const list_to_set: {car: Car, energy_state: energySourceStatus}[] = []
+            const list_to_set: CarListTileDataSet[] = []
             if (refresh) {
                 this.cars_data = []
             }
             for(let i = 0; i <= cars.length - 1; i++) {
                 const car = cars[i]
                 const car_energy_state = await this.APP.DATA.CAR.getCarEnergySourceStatus(car.id)
-                list_to_set.push({car: car, energy_state: car_energy_state})
+                const car_driven_distance = await this.APP.DATA.CAR.distanceDriven(car.id)
+                list_to_set.push({car: car, energy_state: car_energy_state, driven_distance: car_driven_distance})
             }
             list_to_set.sort((a, b) => {
                 if (a.car.model > b.car.model) {
@@ -107,3 +108,5 @@ export class CarsListPage implements OnInit{
         }
     }
 }
+
+export type CarListTileDataSet = {car: Car, energy_state: energySourceStatus, driven_distance: number}
