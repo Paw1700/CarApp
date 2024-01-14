@@ -16,7 +16,7 @@ export class AppService {
         public BACKUP: AppBackup
     ) { }
 
-    async startApp(): Promise<void> {
+    async startApp(withoutRedirection = false): Promise<void> {
         let redirect_location: AppLocations = 'home';
         let status_normal = true
         if (!this.checkIfIsConfigured()) {
@@ -24,7 +24,7 @@ export class AppService {
         }
         this.navigate('splashScreen');
         this.APPERANCE.setStatusBarColor(true);
-        if (this.checkIfAppWasUpdated()) {
+        if (this.checkIfAppWasUpdated() === true) {
             redirect_location = 'aboutApp/updated'
         } else if (this.checkIfAppWasUpdated() === 'major') {
             status_normal = false
@@ -40,13 +40,21 @@ export class AppService {
             }
             this.APPERANCE.watchForDarkModeChange();
             // redirect_location = 'important'// <-- RENAVIGATE WHEN CREATING PAGE
-            setTimeout(() => {
-                this.navigate(redirect_location);
-            }, 500);
+            if (!withoutRedirection) {
+                setTimeout(() => {
+                    this.navigate(redirect_location);
+                }, 500);
+            } else {
+                return Promise.resolve()
+            }
         } else {
-            setTimeout(() => {
-                this.navigate(redirect_location);
-            }, 1500);
+            if (!withoutRedirection) {
+                setTimeout(() => {
+                    this.navigate(redirect_location);
+                }, 1500);
+            }else {
+                return Promise.resolve()
+            }
         }
     }
 
@@ -85,7 +93,7 @@ export class AppService {
             return true
         }
         const user_AV = this.BACKUP.convertAppVersion(undefined, user_AV_string) as AppVersionIteration
-        if ( user_AV.edition <= 2 && user_AV.version <= 1 && user_AV.patch <= 3 || user_AV_string === '14' ) {
+        if ( (user_AV.edition <= 2 && user_AV.version <= 1 && user_AV.patch <= 3) || user_AV_string === '14' ) {
             return 'major'
         }
         if ( actual_AV.edition > user_AV.edition || actual_AV.version > user_AV.version || actual_AV.patch > user_AV.patch ) {
@@ -173,6 +181,10 @@ export class AppService {
                 this.APPERANCE.hideNavBar(true);
                 break
             case 'important':
+                this.ROUTER.navigateByUrl('important')
+                this.APPERANCE.setNavBarSelectedElement(null);
+                this.APPERANCE.hideNavBar(true);
+                break
                 break;
         }
     }

@@ -5,7 +5,7 @@ import { AppDataMajorVersions, AppVersion, AppVersionIteration } from '../models
 import { AppEnvironment } from '../environment';
 import { Backup } from '../models/backup.model';
 import { CarDBModel } from '../models/car.model';
-import { Backup_V2_0_5, Backup_V_2_1_3, CarBrand_V_2_0_5, CarDBModel_V_2_0_5, Engine_V_2_0_5, Gearbox_V_2_0_5, Insurance_V_2_0_5, Route_V_2_0_5 } from '../models/old_models.model';
+import { Backup_V2_0_5, Backup_V_2_1_3, CarBrand_V_2_0_5, CarBrand_V_2_1_3, CarDBModel_V_2_0_5, CarDBModel_V_2_1_3, Engine_V_2_0_5, Gearbox_V_2_0_5, Insurance_V_2_0_5, Route_V_2_0_5, Route_V_2_1_3 } from '../models/old_models.model';
 import { CarBrand } from '../models/car_brand.model';
 import { CombustionEngine, ElectricEngine } from '../models/engine.model';
 import { Gearbox } from '../models/gearbox.model';
@@ -21,9 +21,9 @@ export class AppBackup {
         return AppEnvironment.APP_VERSION;
     }
 
-    createBackup(oldVersion?: AppDataMajorVersions): Promise<Backup | Backup_V2_0_5> {
+    createBackup(oldVersion?: AppDataMajorVersions): Promise<Backup | Backup_V2_0_5 | Backup_V_2_1_3> {
         return new Promise(async (resolve, reject) => {
-            if (oldVersion === undefined) {
+            if (oldVersion === undefined || oldVersion === 'actual') {
                 try {
                     const backup = new Backup()
                     backup.appVersion = this.convertAppVersion(AppEnvironment.APP_VERSION, undefined) as string
@@ -57,6 +57,26 @@ export class AppBackup {
                             const fuel_config = this.DB.LS_getData('fuelConfigAvgUsage')
                             const choosed_car_ID = this.DB.LS_getData('choosedCarID')
                             const return_backup = new Backup_V2_0_5('14', new Date().toJSON(), db_stores, choosed_car_ID, Number(fuel_config), IGD, { indexInIGD: 0, data: car_brands }, { indexInIGD: 0, data: cars }, { indexInIGD: 0, data: insurances }, { indexInIGD: 0, data: gearboxes }, { indexInIGD: 0, data: engines }, { indexInIGD: 0, data: routes })
+                            this.DB.closeDB()
+                            resolve(return_backup)
+                        } catch (err) {
+                            console.error(err);
+                        }
+                        break
+                    case '2.1.3':
+                        try {
+                            this.DB.closeDB()
+                            const db_name = 'CarApp'
+                            const db_version = 1
+                            const db_stores = ['carBrands', 'cars', 'routes']
+                            await this.DB.initDB(db_name, db_version, db_stores)
+                            const choosed_car_ID = this.DB.LS_getData('choosedCarID')
+                            const fuel_config = Number(this.DB.LS_getData('fuelConfigAvgUsage'))
+                            const IGD = await this.DB.EXPORT_IGD()
+                            const car_brands = await this.DB.getAllObject<CarBrand_V_2_1_3>(db_stores[0])
+                            const cars = await this.DB.getAllObject<CarDBModel_V_2_1_3>(db_stores[1])
+                            const routes = await this.DB.getAllObject<Route_V_2_1_3>(db_stores[2])
+                            const return_backup = new Backup_V_2_1_3('2.1.3.231217.a', new Date().toJSON(), choosed_car_ID, fuel_config, IGD, car_brands, cars, routes)
                             this.DB.closeDB()
                             resolve(return_backup)
                         } catch (err) {
@@ -165,11 +185,11 @@ export class AppBackup {
         }
     }
 
-    convertOldBackupToActual(old_verrsion: string, backup_version: AppDataMajorVersions): Backup {
+    convertOldBackupToActual(old_version: string, backup_version: AppDataMajorVersions): Backup {
         const return_backup = new Backup()
         switch (backup_version) {
             case '2.0.5': // REMOVE GEARBOX, ENGINE, INSURANCE | CONVERT BRAND MODEL | CONVERT CARDBMODEL (ADDING GEARBOX, INSURANCE, ENGINES) | CONVERT ROUTE TO ROUTE WITH ELECTRIC DATA 
-                const backup_2_0_5 = JSON.parse(old_verrsion) as Backup_V2_0_5
+                const backup_2_0_5 = JSON.parse(old_version) as Backup_V2_0_5
                 const newIGD = backup_2_0_5.IGD.filter(
                     el => {
                         if (el.storeName === 'engines' || el.storeName === 'gearboxes' || el.storeName === 'insurances') {
@@ -211,7 +231,7 @@ export class AppBackup {
                 const routes_2_0_5: Route[] = []
                 backup_2_0_5.Routes.data.forEach(
                     route => {
-                        routes_2_0_5.push(new Route(route.id, route.carID, route.date, Number(route.originalAvgFuelUsage), Number(route.distance), { combustion: {include: true, amount: Number(route.avgFuelUsage)}, electric: {include: false, amount: 0} }))
+                        routes_2_0_5.push(new Route(route.id, route.carID, route.date, Number(route.originalAvgFuelUsage), Number(route.distance), { combustion: { include: true, amount: Number(route.avgFuelUsage) }, electric: { include: false, amount: 0 } }))
                     }
                 )
                 return_backup.appVersion = '2.0.5'
@@ -224,19 +244,19 @@ export class AppBackup {
                 return_backup.routes = routes_2_0_5
                 break
             case '2.1.3': // CONVERT DATAs MODEL PROPERTY NAMING | MULTIPLY HYBRID ROUTES COMBUSTION USAGE WITH 6      
-                const backup_2_1_3 = JSON.parse(old_verrsion) as Backup_V_2_1_3
+                const backup_2_1_3 = JSON.parse(old_version) as Backup_V_2_1_3
                 const car_brands_2_1_3: CarBrand[] = []
-                backup_2_1_3.carBrands.forEach( brand => {
-                    car_brands_2_1_3.push(new CarBrand(brand.id, brand.name, {default: brand.brandImageSet.default, for_dark_mode: brand.brandImageSet.forDarkMode}))
+                backup_2_1_3.carBrands.forEach(brand => {
+                    car_brands_2_1_3.push(new CarBrand(brand.id, brand.name, { default: brand.brandImageSet.default, for_dark_mode: brand.brandImageSet.forDarkMode }))
                 })
                 const cars_2_1_3: CarDBModel[] = []
-                backup_2_1_3.cars.forEach( car => {
+                backup_2_1_3.cars.forEach(car => {
                     const combustion_eng_2_1_3 = car.engine.combustion
                     const electric_eng_2_1_3 = car.engine.electric
-                    cars_2_1_3.push(new CarDBModel(car.id, car.brandId, car.model, {actual: car.mileage.actual, at_review: car.mileage.atReview}, car.type, {combustion: new CombustionEngine(combustion_eng_2_1_3.volume, combustion_eng_2_1_3.pistonDesign, combustion_eng_2_1_3.pistonAmount, combustion_eng_2_1_3.fuelType, combustion_eng_2_1_3.fuelTankVolume, combustion_eng_2_1_3.avgFuelUsage, combustion_eng_2_1_3.power, combustion_eng_2_1_3.torque), electric: new ElectricEngine(electric_eng_2_1_3.energyStorage, electric_eng_2_1_3.energyStorageVolume, electric_eng_2_1_3.energyAvgUsage, electric_eng_2_1_3.power, electric_eng_2_1_3.torque)}, new Gearbox(car.gearbox.type, car.gearbox.gearsAmount), car.driveType, new Insurance(car.insurance.name, car.insurance.startDate, car.insurance.endsDate, car.insurance.options), car.techReviewEnds, car.color, {side: car.photo.side, front_left: car.photo.frontLeft}))
+                    cars_2_1_3.push(new CarDBModel(car.id, car.brandId, car.model, { actual: car.mileage.actual, at_review: car.mileage.atReview }, car.type, { combustion: new CombustionEngine(combustion_eng_2_1_3.volume, combustion_eng_2_1_3.pistonDesign, combustion_eng_2_1_3.pistonAmount, combustion_eng_2_1_3.fuelType, combustion_eng_2_1_3.fuelTankVolume, combustion_eng_2_1_3.avgFuelUsage, combustion_eng_2_1_3.power, combustion_eng_2_1_3.torque), electric: new ElectricEngine(electric_eng_2_1_3.energyStorage, electric_eng_2_1_3.energyStorageVolume, electric_eng_2_1_3.energyAvgUsage, electric_eng_2_1_3.power, electric_eng_2_1_3.torque) }, new Gearbox(car.gearbox.type, car.gearbox.gearsAmount), car.driveType, new Insurance(car.insurance.name, car.insurance.startDate, car.insurance.endsDate, car.insurance.options), car.techReviewEnds, car.color, { side: car.photo.side, front_left: car.photo.frontLeft }))
                 })
                 const routes_2_1_3: Route[] = []
-                backup_2_1_3.routes.forEach( route => {
+                backup_2_1_3.routes.forEach(route => {
                     if (route.usage.combustion.amount !== 0 && route.usage.electric.amount !== 0) {
                         route.usage.combustion.amount = route.usage.combustion.amount * 6
                     }
@@ -251,6 +271,8 @@ export class AppBackup {
                 return_backup.igd = backup_2_1_3.igd
                 return_backup.routes = routes_2_1_3
                 break
+            case 'actual':
+                return JSON.parse(old_version)
         }
         return return_backup
     }
@@ -263,7 +285,7 @@ export class AppBackup {
             const app_version = this.convertAppVersion(undefined, backup_obj.appVersion) as AppVersionIteration
             if (app_version.edition <= 2 && app_version.version < 2) {
                 return '2.1.3'
-            } 
+            }
             return "actual"
         } else {
             return undefined

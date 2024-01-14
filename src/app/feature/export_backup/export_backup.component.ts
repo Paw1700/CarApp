@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SecurityContext, inject } from "@angular/core";
 import { AppService } from "../../service";
+import { AppEnvironment } from "../../environment";
+import { AppDataMajorVersions } from "../../models/app_version.model";
 
 @Component({
     selector: 'export-backup',
@@ -9,7 +11,9 @@ import { AppService } from "../../service";
 })
 export class ExportBackupComponent implements OnInit{
     private APP = inject(AppService)
+    @Input() app_version: AppDataMajorVersions = 'actual'
     @Input() generate_after_init = false
+    @Input() show_close_button = true
     @Output() hideButtonClicked = new EventEmitter<void>()
     backup_string: string | null = null
     show_copy_btn = false
@@ -22,7 +26,7 @@ export class ExportBackupComponent implements OnInit{
     }
 
     generateBackup() {
-        this.APP.BACKUP.createBackup()
+        this.APP.BACKUP.createBackup(this.app_version)
         .then( backup => {
             this.backup_string = JSON.stringify(backup)
         })

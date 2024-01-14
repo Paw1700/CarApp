@@ -10,6 +10,7 @@ import { CarsListPage } from './feature/cars_list_page/cars_list_page.component'
 import { CarCreatePage } from './feature/create_car_page/create_car_page.component';
 import { AppDataManagmentPage } from './feature/app_data_managment_page/app_data_managment_page.page';
 import { RoutesPage } from './feature/routes_page/routes_page.component';
+import { ImportantPage } from './feature/important_page/important_page.component';
 
 export const routes: Routes = [
     {
@@ -122,6 +123,14 @@ export const routes: Routes = [
         component: AboutAppPage,
         data: {
             animState: 'aboutApp'
+        }
+    },
+    {
+        path: 'important',
+        pathMatch: 'full',
+        component: ImportantPage,
+        data: {
+            animState: 'important'
         }
     }
 ];

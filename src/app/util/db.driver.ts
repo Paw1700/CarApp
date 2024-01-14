@@ -92,8 +92,10 @@ export class DatabaseManager {
     }
 
     public closeDB(): void {
-        this.db.close()
-        this.dbConnectionExist = false
+        if (this.db !== undefined) {
+            this.db.close()
+            this.dbConnectionExist = false
+        }
     }
 
     public deleteDB(dbName: string): Promise<void> {

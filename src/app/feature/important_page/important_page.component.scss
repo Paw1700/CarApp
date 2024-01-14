@@ -1,0 +1,41 @@
+:host {
+    width: 100vw;
+    height: 97.5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 2.5vh;
+    background-color: var(--app-theme);
+    gap: 5vw;
+
+    img.WARNING_SIGN {
+        width: 45vw;
+        object-fit: contain;
+        content: url('/assets/UI/warning/black.webp');
+
+        @media (prefers-color-scheme: dark) {
+            content: url('/assets/UI/warning/white.webp');
+        }
+    }
+
+    p.WARNING_TEXT {
+        width: 89vw;
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+
+    export-backup {
+        width: 89vw;
+    }
+
+    button.NEXT_BUTTON {
+        width: 89vw;
+        border-radius: 2.5vw;
+        background-color: var(--accent-color);
+        color: white;
+        padding-block: 1.25vw;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+}

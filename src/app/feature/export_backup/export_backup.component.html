@@ -4,8 +4,10 @@
     <button (click)="copyBackupString()">KOPIUJ</button>
 }
 <div class="BTNs">
-    <button [class.SMALLER]="!generate_after_init && !backup_string" (click)="hideWindow()">ZAMKNIJ</button>
+    @if (show_close_button) {
+        <button [class.SMALLER]="!generate_after_init && !backup_string" (click)="hideWindow()">ZAMKNIJ</button>
+    }
     @if(!generate_after_init && !backup_string) {
-        <button (click)="generateBackup()" class="SMALLER">GENERUJ</button>
+        <button (click)="generateBackup()" [class.SMALLER]="show_close_button">GENERUJ</button>
     }
 </div>
