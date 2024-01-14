@@ -1,47 +1,73 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { ChooseOptionComponent } from "./components/choose_option/choose_option.component";
-import { StartConfigViewModes, StartConfigurationPageService } from "./start_configuration.service";
 import { FreshStartComponent } from "./components/fresh_start/fresh_start.component";
-import { UseBackupComponent } from "./components/use_backup/use_backup.component";
-import { NgUnsubscriber } from "../../util/ngUnsubscriber";
-import { takeUntil } from "rxjs";
-import { animate, state, style, transition, trigger } from "@angular/animations";
+import { animate, style, transition, trigger } from "@angular/animations";
 import { TitleBar } from "../../UI/title_bar/title_bar.component";
+import { ImportBackupComponent } from "../import_backup/import_backup.component";
 
 @Component({
     standalone: true,
     selector: 'start_configuration',
     templateUrl: './start_configuration.page.html',
     styleUrl: './start_configuration.page.scss',
-    imports: [ChooseOptionComponent, FreshStartComponent, UseBackupComponent, TitleBar],
-    providers: [StartConfigurationPageService],
+    imports: [
+        ChooseOptionComponent, 
+        FreshStartComponent, 
+        TitleBar,
+        ImportBackupComponent
+    ],
     animations: [
         trigger('welcome_text', [
-            state('start', style({
-                opacity: 1
-            })),
-            state('*', style({
-                opacity: 0
-            })),
-            transition('* <=> start', [
-                animate('350ms ease-in-out')
+            transition('void => *', [
+                style({top: '-10vh' }),
+                animate('350ms ease-out', style({
+                    top: '2.5vh'
+                }))
+            ]),
+            transition('* => void', [
+                animate('350ms ease-out', style({
+                    top: '-10vh'
+                }))
+            ]),
+        ]),
+        trigger('choose_option', [
+            transition('void => *', [
+                style({left: '-100vw'}),
+                animate('350ms 150ms ease-out', style({
+                    left: '5.5vw'
+                }))
+            ]),
+            transition('* => void', [
+                animate('350ms ease-out', style({
+                    left: '-100vw'
+                }))
+            ]),
+        ]),
+        trigger('option', [
+            transition('void => *', [
+                style({
+                    position: 'relative',
+                    left: '100vw'
+                }),
+                animate('350ms ease-out', style({
+                    left: 0
+                }))
+            ]),
+            transition('* => void', [
+                style({position: 'relative', left: 0}),
+                animate('350ms ease-in', style({
+                    left: '100vw'
+                }))
             ])
         ])
     ]
 })
-export class StartConfiguration extends NgUnsubscriber implements OnInit {
-    private PS = inject(StartConfigurationPageService)
+export class StartConfiguration {
     view_mode: StartConfigViewModes = 'start'
 
-    ngOnInit(): void {
-        this.PS.view_mode$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(
-            mode => {
-                this.view_mode = mode
-            }
-        )
-    }
-
-    returnToStart() {
-        this.PS.view_mode$.next('start')
+    handleViewChange(view: StartConfigViewModes) {
+        this.view_mode = view
     }
 }
+
+export type StartConfigViewModes = 'start' | 'backup' | 'fresh_start'

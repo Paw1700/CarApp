@@ -1,51 +1,19 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CounterComponent } from '../../../../UI/counter/counter.component';
-import {
-    StartConfigViewModes,
-    StartConfigurationPageService,
-} from '../../start_configuration.service';
-import {
-    animate,
-    state,
-    style,
-    transition,
-    trigger,
-} from '@angular/animations';
-import { NgUnsubscriber } from '../../../../util/ngUnsubscriber';
-import { takeUntil } from 'rxjs';
 import { AppService } from '../../../../service';
 import { Loader } from '../../../../UI/loaders/loader.component';
 
 @Component({
     standalone: true,
-    selector: 'fresh_start',
+    selector: 'fresh-start',
     templateUrl: './fresh_start.component.html',
     styleUrl: './fresh_start.component.scss',
-    imports: [CounterComponent, Loader],
-    animations: [
-        trigger('component', [
-            state(
-                'fresh_start',
-                style({
-                    left: '5.5vw',
-                })
-            ),
-            state(
-                '*',
-                style({
-                    left: '100vw',
-                })
-            ),
-            transition('* <=> start', [animate('350ms ease-in-out')]),
-        ]),
-    ],
+    imports: [CounterComponent, Loader]
 })
-export class FreshStartComponent extends NgUnsubscriber implements OnInit {
-    private PS = inject(StartConfigurationPageService);
+export class FreshStartComponent  {
     private APP = inject(AppService);
 
     avg_fuel_usage = 0;
-    view_mode: StartConfigViewModes = 'start';
     data_fetching = false;
     error = false;
     error_message = 'BŁĄD'
@@ -56,14 +24,6 @@ export class FreshStartComponent extends NgUnsubscriber implements OnInit {
         if (this.error) {
             this.error = false;
         }
-    }
-
-    ngOnInit(): void {
-        this.PS.view_mode$
-            .pipe(takeUntil(this.ngUnsubscriber$))
-            .subscribe((mode) => {
-                this.view_mode = mode;
-            });
     }
 
     saveConfig(): void {

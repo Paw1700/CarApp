@@ -1,0 +1,35 @@
+<p class="TITLE">Import kopii</p>
+@if (!show_backup_data) {
+<div class="IMPORT_WINDOW">
+    <p class="TITLE">Wklej poniżej tekst kopii</p>
+    <textarea spellcheck="false" (change)="handleBackupInput($event)"></textarea>
+</div>
+} @else {
+<div class="BACKUP_DATA_WINDOW">
+    <p class="TITLE">Dane kopii zapasowej</p>
+    <div class="DATA_ROW">
+        <p>Wersja aplikacji:</p>
+        <p>{{ backup_info.version }}</p>
+    </div>
+    <div class="DATA_ROW">
+        <p>Data utworzenia:</p>
+        <p>{{ backup_info.date }}</p>
+    </div>
+    <div class="DATA_ROW">
+        <p>Liczba aut:</p>
+        <p>{{ backup_info.number_of_cars }}</p>
+    </div>
+    <div class="DATA_ROW">
+        <p>Liczba tras:</p>
+        <p>{{ backup_info.number_of_routes }}</p>
+    </div>
+</div>
+}
+<div class="BTNs">
+    @if (showCancelButton) {
+        <button class="DECLINE_BTN" [class.SHOW_BACKUP]="show_backup_data" (click)="cancelImport()">ANULUJ</button>
+    }
+    @if (show_backup_data) {
+    <button class="ACEPT_BTN" [class.NO_CANCEL]="!showCancelButton" (click)="doImport()">IMPORTUJ</button>
+    }
+</div>

@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { AppService } from "../../../../service";
-import { ImportBackupComponent } from "./components/import_backup/import_backup.component";
+import { ImportBackupComponent } from "../../../import_backup/import_backup.component";
 
 @Component({
     selector: 'text-backup-options',

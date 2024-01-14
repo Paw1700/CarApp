@@ -31,7 +31,7 @@ export class AppService {
             this.APPERANCE.setChoosedCarBrandInNavBar({ name: car.brand.name, image: car.brand.brand_image_set })
         }
         this.APPERANCE.watchForDarkModeChange();
-        // redirect_location = 'newCar' <-- RENAVIGATE WHEN CREATING PAGE
+        // redirect_location = 'startConfig'// <-- RENAVIGATE WHEN CREATING PAGE
         setTimeout(() => {
             this.navigate(redirect_location);
         }, 500);
@@ -41,7 +41,6 @@ export class AppService {
         this.DATA.saveFuelConfig(fuel_config);
         setTimeout(() => {
             this.navigate('home');
-            console.log('NAVIGATE AWAY!');
         }, 1500);
     }
 

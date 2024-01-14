@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output, inject } from "@angular/core";
-import { Backup } from "../../../../../../models/backup.model";
-import { AppService } from "../../../../../../service";
-import { AppVersionIteration } from "../../../../../../models/app_version.model";
+import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
+import { Backup } from "../../models/backup.model";
+import { AppService } from "../../service";
+import { AppVersionIteration } from "../../models/app_version.model";
 
 @Component({
     selector: 'import-backup',
@@ -11,6 +11,7 @@ import { AppVersionIteration } from "../../../../../../models/app_version.model"
 })
 export class ImportBackupComponent {
     private APP = inject(AppService)
+    @Input() showCancelButton = true
     @Output() cancelButtonClicked = new EventEmitter<void>()
     import_text: string | null = null
     show_backup_data = false

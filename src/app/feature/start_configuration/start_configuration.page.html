@@ -1,9 +1,15 @@
 <div class="PAGE">
-    <p [@welcome_text]="view_mode" class="WELCOME">Witaj!</p>
+    @if (view_mode === 'start') {
+        <p [@welcome_text] class="WELCOME">Witaj!</p>
+    } 
     @if (view_mode !== 'start') {
-        <title-bar (click)="returnToStart()" [title_content]="'Wróc'" [title_mode]="'SMALL'"/>
+        <title-bar (click)="handleViewChange('start')" [title_content]="'Wróc'" [title_mode]="'SMALL'"/>
     }
-    <choose_option />
-    <fresh_start />
-    <use-backup />
+    @if (view_mode === 'start') {
+        <choose-option [@choose_option] (viewModeChanged)="handleViewChange($event)"/>
+    } @else if (view_mode === 'fresh_start') {
+        <fresh-start [@option]/>
+    } @else if (view_mode === 'backup') {
+        <import-backup [@option] [showCancelButton]="false"/>
+    }
 </div>

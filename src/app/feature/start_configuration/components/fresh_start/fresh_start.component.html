@@ -1,18 +1,18 @@
-<div [@component]="view_mode" class="COMPONENT">
-    <p>Wyliczenia spalania opierają się na wyliczeniu stosunku spalania auta twojego do auta symulowanego. W tym celu potrzeba jest podana średniego spalania twojego auta.</p>
-    <counter class="COUNTER" [title]="'Śr. zużycie paliwa'" [value]="avg_fuel_usage" [minValue]="0" (changedValue)="handleCounterChange($event)"/>
-    <button (click)="saveConfig()" [class.ERROR]="error" class="SAVE">
-        @if (data_fetching) {
-            <loader [size]="loader_size" [white_border]="true"/>
-        } @else {
-            @if (error) {
-                BŁĄD
-            } @else {
-                ZAPISZ
-            }
-        }
-    </button>
+<p>Wyliczenia spalania opierają się na wyliczeniu stosunku spalania auta twojego do auta symulowanego. W tym celu
+    potrzeba jest podana średniego spalania twojego auta.</p>
+<counter class="COUNTER" [title]="'Śr. zużycie paliwa'" [value]="avg_fuel_usage" [minValue]="0"
+    (changedValue)="handleCounterChange($event)" />
+<button (click)="saveConfig()" [class.ERROR]="error" class="SAVE">
+    @if (data_fetching) {
+    <loader [size]="loader_size" [white_border]="true" />
+    } @else {
     @if (error) {
-        <p class="ERROR_MESSAGE">Wartość średniego spalania auta musi większa od 0</p>
+    BŁĄD
+    } @else {
+    ZAPISZ
     }
-</div>
+    }
+</button>
+@if (error) {
+<p class="ERROR_MESSAGE">Wartość średniego spalania auta musi większa od 0</p>
+}

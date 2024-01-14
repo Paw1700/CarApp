@@ -1,5 +1,9 @@
-div.COMPONENT {
+:host {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 1.25vw;
 
     p.TITLE {
@@ -70,6 +74,7 @@ div.COMPONENT {
             border-radius: 2.5vw;
             font-size: 1.25rem;
             font-weight: 600;
+            color: white;
         }
 
         button.DECLINE_BTN {
@@ -84,6 +89,10 @@ div.COMPONENT {
         button.ACEPT_BTN {
             width: 45%;
             background-color: var(--accent-color);
+
+            &.NO_CANCEL {
+                width: 100%;
+            }
         }
     }
 }

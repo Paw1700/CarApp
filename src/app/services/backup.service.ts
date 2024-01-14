@@ -168,7 +168,7 @@ export class AppBackup {
     convertOldBackupToActual(old_verrsion: string, backup_version: AppDataMajorVersions): Backup {
         const return_backup = new Backup()
         switch (backup_version) {
-            case '2.0.5':
+            case '2.0.5': // REMOVE GEARBOX, ENGINE, INSURANCE | CONVERT BRAND MODEL | CONVERT CARDBMODEL (ADDING GEARBOX, INSURANCE, ENGINES) | CONVERT ROUTE TO ROUTE WITH ELECTRIC DATA 
                 const backup_2_0_5 = JSON.parse(old_verrsion) as Backup_V2_0_5
                 const newIGD = backup_2_0_5.IGD.filter(
                     el => {
@@ -223,7 +223,7 @@ export class AppBackup {
                 return_backup.igd = newIGD
                 return_backup.routes = routes_2_0_5
                 break
-            case '2.1.3':
+            case '2.1.3': // CONVERT DATAs MODEL PROPERTY NAMING | MULTIPLY HYBRID ROUTES COMBUSTION USAGE WITH 6      
                 const backup_2_1_3 = JSON.parse(old_verrsion) as Backup_V_2_1_3
                 const car_brands_2_1_3: CarBrand[] = []
                 backup_2_1_3.carBrands.forEach( brand => {
@@ -237,6 +237,9 @@ export class AppBackup {
                 })
                 const routes_2_1_3: Route[] = []
                 backup_2_1_3.routes.forEach( route => {
+                    if (route.usage.combustion.amount !== 0 && route.usage.electric.amount !== 0) {
+                        route.usage.combustion.amount = route.usage.combustion.amount * 6
+                    }
                     routes_2_1_3.push(new Route(route.id, route.carID, route.date, route.originalAvgFuelUsage, route.distance, route.usage))
                 })
                 return_backup.appVersion = backup_2_1_3.appVersion
