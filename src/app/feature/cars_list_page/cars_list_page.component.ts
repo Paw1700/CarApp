@@ -55,10 +55,10 @@ export class CarsListPage implements OnInit{
     async deleteCar(carID: string) {
         try {
             if (carID === this.selected_car_id) {
-                this.APP.DATA.saveChoosedCarID(null)
-                await this.APP.DATA.CAR.deleteOne(carID)
-                this.getCarsData(true)
+                this.APP.setChoosedCar(null)
             }
+            await this.APP.DATA.CAR.deleteOne(carID)
+            this.getCarsData(true)
         } catch (err) {
             console.error(err);
         }

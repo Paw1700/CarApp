@@ -63,6 +63,7 @@ export class AppService {
 
     firstConfigureApp(fuel_config: number): void {
         this.DATA.saveFuelConfig(fuel_config);
+        this.DATA.saveAppVersion(this.BACKUP.convertAppVersion(AppEnvironment.APP_VERSION, undefined) as string)
         setTimeout(() => {
             this.navigate('home');
         }, 1500);

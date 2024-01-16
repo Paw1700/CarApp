@@ -98,6 +98,7 @@ export class AppBackup {
             }
             await this.DATA.reset()
             await this.DATA.start()
+            this.DATA.saveAppVersion(this.convertAppVersion(AppEnvironment.APP_VERSION, undefined) as string)
             this.DATA.saveChoosedCarID(backup.choosedCarID)
             this.DATA.saveFuelConfig(backup.fuelCalcConfig)
             await this.DB.IMPORT_IGD(backup.igd)
