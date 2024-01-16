@@ -47,28 +47,29 @@ export class StringDate implements PipeTransform {
                 month = 'grudnia'
                 break
         }
-        switch(dateOfValue.getDay()) {
+        switch (dateOfValue.getDay()) {
             case 0:
                 day = 'niedziela'
                 break
             case 1:
-                day = 'wtorek'
-                break
-            case 2:
-                day = 'środa'
-                break
-            case 3:
-                day = 'czwartek'
-                break
-            case 4:
-                day = 'piątek'
-                break
-            case 5:
-                day = 'sobota'
-                break
-            case 6:
                 day = 'poniedziałek'
                 break
+            case 2:
+                day = 'wtorek'
+                break
+            case 3:
+                day = 'środa'
+                break
+            case 4:
+                day = 'czwartek'
+                break
+            case 5:
+                day = 'piątek'
+                break
+            case 6:
+                day = 'sobota'
+                break
+
         }
         return dateOfValue.getDate() + " " + month + " " + dateOfValue.getFullYear() + ", " + day
     }
