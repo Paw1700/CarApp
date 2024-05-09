@@ -296,6 +296,10 @@ export class CarService {
                     }
                     car.energySourceData.electric.chargingPower = null
                     car.energySourceData.electric.chargingStartAt = null
+                } else if (chargingPower < 0) {
+                    car.energySourceData.electric.avaibleAmount = car.engine.electric.energy_storage_volume
+                    car.energySourceData.electric.chargingPower = null
+                    car.energySourceData.electric.chargingStartAt = null
                 } else {
                     throw new Error()
                 }
