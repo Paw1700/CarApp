@@ -4,8 +4,8 @@ import { DatabaseManager } from '../util/db.driver';
 import { AppDataMajorVersions, AppVersion, AppVersionIteration } from '../models/app_version.model';
 import { AppEnvironment } from '../environment';
 import { Backup } from '../models/backup.model';
-import { CarDBModel } from '../models/car.model';
-import { Backup_V2_0_5, Backup_V_2_1_3, CarBrand_V_2_0_5, CarBrand_V_2_1_3, CarDBModel_V_2_0_5, CarDBModel_V_2_1_3, Engine_V_2_0_5, Gearbox_V_2_0_5, Insurance_V_2_0_5, Route_V_2_0_5, Route_V_2_1_3 } from '../models/old_models.model';
+import { Car, CarDBModel } from '../models/car.model';
+import { Backup_V2_0_5, Backup_V_2_1_3, Backup_V_2_2_0, CarBrand_V_2_0_5, CarBrand_V_2_1_3, CarBrand_V_2_2_0, CarDBModel_V_2_0_5, CarDBModel_V_2_1_3, CarDBModel_V_2_2_0, Engine_V_2_0_5, Gearbox_V_2_0_5, Insurance_V_2_0_5, Route_V_2_0_5, Route_V_2_1_3, Route_V_2_2_0 } from '../models/old_models.model';
 import { CarBrand } from '../models/car_brand.model';
 import { CombustionEngine, ElectricEngine } from '../models/engine.model';
 import { Gearbox } from '../models/gearbox.model';
@@ -21,7 +21,7 @@ export class AppBackup {
         return AppEnvironment.APP_VERSION;
     }
 
-    createBackup(oldVersion?: AppDataMajorVersions): Promise<Backup | Backup_V2_0_5 | Backup_V_2_1_3> {
+    createBackup(oldVersion?: AppDataMajorVersions): Promise<Backup | Backup_V2_0_5 | Backup_V_2_1_3 | Backup_V_2_2_0> {
         return new Promise(async (resolve, reject) => {
             if (oldVersion === undefined || oldVersion === 'actual') {
                 try {
@@ -77,6 +77,26 @@ export class AppBackup {
                             const cars = await this.DB.getAllObject<CarDBModel_V_2_1_3>(db_stores[1])
                             const routes = await this.DB.getAllObject<Route_V_2_1_3>(db_stores[2])
                             const return_backup = new Backup_V_2_1_3('2.1.3.231217.a', new Date().toJSON(), choosed_car_ID, fuel_config, IGD, car_brands, cars, routes)
+                            this.DB.closeDB()
+                            resolve(return_backup)
+                        } catch (err) {
+                            console.error(err);
+                        }
+                        break
+                    case '2.2.0':
+                        try {
+                            this.DB.closeDB()
+                            const db_name = 'CarApp'
+                            const db_version = 1
+                            const db_stores = ['carBrands', 'cars', 'routes']
+                            await this.DB.initDB(db_name, db_version, db_stores)
+                            const choosed_car_ID = this.DB.LS_getData('choosedCarID')
+                            const fuel_config = Number(this.DB.LS_getData('fuelConfigAvgUsage'))
+                            const IGD = await this.DB.EXPORT_IGD()
+                            const car_brands = await this.DB.getAllObject<CarBrand_V_2_2_0>(db_stores[0])
+                            const cars = await this.DB.getAllObject<CarDBModel_V_2_2_0>(db_stores[1])
+                            const routes = await this.DB.getAllObject<Route_V_2_2_0>(db_stores[2])
+                            const return_backup = new Backup_V_2_2_0('2.2.0.x.x', new Date().toJSON(), choosed_car_ID, fuel_config, IGD, car_brands, cars, routes)
                             this.DB.closeDB()
                             resolve(return_backup)
                         } catch (err) {
@@ -207,6 +227,12 @@ export class AppBackup {
                     }
                     car_brands_2_0_5.push(new CarBrand(brand.id, brand.name, { default: brand.brandImage.light, for_dark_mode: brandForDarkMode }))
                 })
+                const routes_2_0_5: Route[] = []
+                backup_2_0_5.Routes.data.forEach(
+                    route => {
+                        routes_2_0_5.push(new Route(route.id, route.carID, route.date, Number(route.originalAvgFuelUsage), Number(route.distance), { combustion: { include: true, amount: Number(route.avgFuelUsage) }, electric: { include: false, amount: 0 } }))
+                    }
+                )
                 const cars_2_0_5: CarDBModel[] = []
                 backup_2_0_5.Cars.data.forEach(car => {
                     const oldCombustionEng = backup_2_0_5.Engines.data.filter(eng => eng.id === car.engineID).at(0)
@@ -227,14 +253,13 @@ export class AppBackup {
                         return;
                     }
                     const insurance = new Insurance(oldInsurance.name, oldInsurance.startDate, oldInsurance.endsDate, oldInsurance.options)
-                    cars_2_0_5.push(new CarDBModel(car.id, car.brandID, car.model, { actual: Number(car.mileage), at_review: Number(car.mileageAtReview) }, 'Combustion', { combustion: combustionEng, electric: new ElectricEngine() }, gearbox, car.driveType, insurance, car.techReviewEnds, { theme: car.themeColor, accent: car.accentColor }, { side: car.photo.side, front_left: car.photo.frontLeft }))
+                    const used_fuel = routes_2_0_5
+                        .filter(route => route.carID === car.id)
+                        .map(route => { return (route.usage.combustion.amount / 100) * route.distance })
+                        .reduce((r1, r2) => r1 + r2)
+                    const avaibleFuel = car.fuelTankVolume - used_fuel
+                    cars_2_0_5.push(new CarDBModel(car.id, car.brandID, car.model, { actual: Number(car.mileage), at_review: Number(car.mileageAtReview) }, 'Combustion', { combustion: combustionEng, electric: new ElectricEngine() }, { combustion: { avaibleAmount: avaibleFuel }, electric: { avaibleAmount: 0, chargingPower: null, chargingStartAt: null } }, gearbox, car.driveType, insurance, car.techReviewEnds, { theme: car.themeColor, accent: car.accentColor }, { side: car.photo.side, front_left: car.photo.frontLeft }))
                 })
-                const routes_2_0_5: Route[] = []
-                backup_2_0_5.Routes.data.forEach(
-                    route => {
-                        routes_2_0_5.push(new Route(route.id, route.carID, route.date, Number(route.originalAvgFuelUsage), Number(route.distance), { combustion: { include: true, amount: Number(route.avgFuelUsage) }, electric: { include: false, amount: 0 } }))
-                    }
-                )
                 return_backup.appVersion = '2.0.5'
                 return_backup.carBrands = car_brands_2_0_5
                 return_backup.cars = cars_2_0_5
@@ -250,18 +275,59 @@ export class AppBackup {
                 backup_2_1_3.carBrands.forEach(brand => {
                     car_brands_2_1_3.push(new CarBrand(brand.id, brand.name, { default: brand.brandImageSet.default, for_dark_mode: brand.brandImageSet.forDarkMode }))
                 })
-                const cars_2_1_3: CarDBModel[] = []
-                backup_2_1_3.cars.forEach(car => {
-                    const combustion_eng_2_1_3 = car.engine.combustion
-                    const electric_eng_2_1_3 = car.engine.electric
-                    cars_2_1_3.push(new CarDBModel(car.id, car.brandId, car.model, { actual: car.mileage.actual, at_review: car.mileage.atReview }, car.type, { combustion: new CombustionEngine(combustion_eng_2_1_3.volume, combustion_eng_2_1_3.pistonDesign, combustion_eng_2_1_3.pistonAmount, combustion_eng_2_1_3.fuelType, combustion_eng_2_1_3.fuelTankVolume, combustion_eng_2_1_3.avgFuelUsage, combustion_eng_2_1_3.power, combustion_eng_2_1_3.torque), electric: new ElectricEngine(electric_eng_2_1_3.energyStorage, electric_eng_2_1_3.energyStorageVolume, electric_eng_2_1_3.energyAvgUsage, electric_eng_2_1_3.power, electric_eng_2_1_3.torque) }, new Gearbox(car.gearbox.type, car.gearbox.gearsAmount), car.driveType, new Insurance(car.insurance.name, car.insurance.startDate, car.insurance.endsDate, car.insurance.options), car.techReviewEnds, car.color, { side: car.photo.side, front_left: car.photo.frontLeft }))
-                })
                 const routes_2_1_3: Route[] = []
                 backup_2_1_3.routes.forEach(route => {
                     if (route.usage.combustion.amount !== 0 && route.usage.electric.amount !== 0) {
                         route.usage.combustion.amount = route.usage.combustion.amount * 6
                     }
                     routes_2_1_3.push(new Route(route.id, route.carID, route.date, route.originalAvgFuelUsage, route.distance, route.usage))
+                })
+                const cars_2_1_3: CarDBModel[] = []
+                backup_2_1_3.cars.forEach(car => {
+                    const combustion_eng_2_1_3 = car.engine.combustion
+                    const electric_eng_2_1_3 = car.engine.electric
+                    const car_routes = routes_2_1_3.filter(route => route.carID == car.id)
+                    let fuelUsed = 0, energyUsed = 0
+                    car_routes.forEach( route => {
+                        if (route.usage.combustion.include) {
+                            fuelUsed += (route.distance / 100) * route.usage.combustion.amount
+                        }
+                        if (route.usage.electric.include) {
+                            energyUsed += (route.distance / 100) * route.usage.electric.amount
+                        }
+                    })
+                    cars_2_1_3.push(new CarDBModel(
+                        car.id,
+                        car.brandId,
+                        car.model,
+                        {
+                            actual: car.mileage.actual,
+                            at_review: car.mileage.atReview
+                        },
+                        car.type,
+                        {
+                            combustion: new CombustionEngine(combustion_eng_2_1_3.volume, combustion_eng_2_1_3.pistonDesign, combustion_eng_2_1_3.pistonAmount, combustion_eng_2_1_3.fuelType, combustion_eng_2_1_3.fuelTankVolume, combustion_eng_2_1_3.avgFuelUsage, combustion_eng_2_1_3.power, combustion_eng_2_1_3.torque),
+                            electric: new ElectricEngine(electric_eng_2_1_3.energyStorage, electric_eng_2_1_3.energyStorageVolume, electric_eng_2_1_3.energyAvgUsage, electric_eng_2_1_3.power, electric_eng_2_1_3.torque)
+                        },
+                        {
+                            combustion: {
+                                avaibleAmount: car.engine.combustion.fuelTankVolume - fuelUsed
+                            },
+                            electric: {
+                                avaibleAmount: car.engine.electric.energyStorageVolume - energyUsed,
+                                chargingPower: null,
+                                chargingStartAt: null
+                            }
+                        },
+                        new Gearbox(car.gearbox.type, car.gearbox.gearsAmount),
+                        car.driveType,
+                        new Insurance(car.insurance.name, car.insurance.startDate, car.insurance.endsDate, car.insurance.options),
+                        car.techReviewEnds,
+                        car.color,
+                        {
+                            side: car.photo.side,
+                            front_left: car.photo.frontLeft
+                        }))
                 })
                 return_backup.appVersion = backup_2_1_3.appVersion
                 return_backup.carBrands = car_brands_2_1_3
@@ -271,6 +337,46 @@ export class AppBackup {
                 return_backup.fuelCalcConfig = backup_2_1_3.fuelCalcConfig
                 return_backup.igd = backup_2_1_3.igd
                 return_backup.routes = routes_2_1_3
+                break
+            case '2.2.0': // ADD ENERGY SOURCE STATUS TO CAR MODEL
+                const backup_2_2_0 = JSON.parse(old_version) as Backup_V_2_2_0
+                const udpatedCars: CarDBModel[] = []
+                backup_2_2_0.cars.forEach( car => {
+                    const cars_routes = backup_2_2_0.routes.filter(route => route.carID === car.id)
+                    let usedFuel = 0, usedEnergy = 0
+                    cars_routes.forEach( route => {
+                        if (route.usage.combustion.include) {
+                            usedFuel += (route.distance / 100) * route.usage.combustion.amount
+                        }
+                        if (route.usage.electric.include) {
+                            usedEnergy += (route.distance / 100) * route.usage.electric.amount
+                        }
+                    })
+                    udpatedCars.push(new CarDBModel(
+                        car.id,
+                        car.brandId,
+                        car.model,
+                        car.mileage,
+                        car.type,
+                        car.engine,
+                        {
+                            combustion: {
+                                avaibleAmount: car.engine.combustion.fuel_tank_volume - usedFuel
+                            },
+                            electric: {
+                                avaibleAmount: car.engine.electric.energy_storage_volume - usedEnergy,
+                                chargingPower: null,
+                                chargingStartAt: null
+                            }
+                        },
+                        car.gearbox,
+                        car.drive_type,
+                        car.insurance,
+                        car.tech_review_ends,
+                        car.color,
+                        car.photo
+                    ))
+                })
                 break
             case 'actual':
                 return JSON.parse(old_version)
@@ -286,6 +392,9 @@ export class AppBackup {
             const app_version = this.convertAppVersion(undefined, backup_obj.appVersion) as AppVersionIteration
             if (app_version.edition <= 2 && app_version.version < 2) {
                 return '2.1.3'
+            }
+            if (app_version.edition <= 2 && app_version.version == 2) {
+                return '2.2.0'
             }
             return "actual"
         } else {
