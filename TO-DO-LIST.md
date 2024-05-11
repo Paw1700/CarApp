@@ -19,6 +19,12 @@
 - [ ] Symulowanie ładowania auta
 - [ ] Zmiana interfejsu dodawania tras i ładowania
 - [ ] Pamiętanie całej historii auta
+    - [x] Zmień CarDB model
+    - [x] Dostosuj CarService to zmiany modelu
+    - [x] Dostosuj CarHomePage
+    - [x] Stwórz algorytm przetwarzania starych danych aplikacji na nowszą wersje
+    - [ ] Dostosuj RoutesPage
+    - [x] Dostosuj CarListPage
 
 # <lb>DONE IN 2.2
 

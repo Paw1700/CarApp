@@ -75,8 +75,7 @@ export class CarsListPage implements OnInit{
             for(let i = 0; i <= cars.length - 1; i++) {
                 const car = cars[i]
                 const car_energy_state = await this.APP.DATA.CAR.getCarEnergySourceStatus(car.id)
-                const car_driven_distance = await this.APP.DATA.CAR.distanceDriven(car.id)
-                list_to_set.push({car: car, energy_state: car_energy_state, driven_distance: car_driven_distance})
+                list_to_set.push({car: car, energy_state: car_energy_state})
             }
             list_to_set.sort((a, b) => {
                 if (a.car.model > b.car.model) {
@@ -109,4 +108,4 @@ export class CarsListPage implements OnInit{
     }
 }
 
-export type CarListTileDataSet = {car: Car, energy_state: energySourceStatus, driven_distance: number}
+export type CarListTileDataSet = {car: Car, energy_state: energySourceStatus}
