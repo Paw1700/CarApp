@@ -97,7 +97,7 @@ export class AppService {
             return true
         }
         const user_AV = this.BACKUP.convertAppVersion(undefined, user_AV_string) as AppVersionIteration
-        if ( (user_AV.edition <= 2 && user_AV.version <= 1 && user_AV.patch <= 3) || user_AV_string === '14' ) {
+        if ( (user_AV.edition <= 2 && user_AV.version <= 1 && user_AV.patch <= 3) || (user_AV.edition == 2 && user_AV.version == 2 && user_AV.patch == 0) || user_AV_string === '14' ) {
             return 'major'
         }
         if ( actual_AV.edition > user_AV.edition || actual_AV.version > user_AV.version || actual_AV.patch > user_AV.patch ) {

@@ -24,7 +24,7 @@ export class ImportantPage implements OnInit{
         this.APP.APPERANCE.loading_screen_state$.next({show: true, loading_stage_text: 'AKTULIZOWANIE...'})
         setTimeout(async () => {
             try {
-                const old_data = await this.APP.BACKUP.createBackup(this.app_version)
+                const old_data = await this.APP.BACKUP.createBackup(this.app_version) 
                 const updated_data = this.APP.BACKUP.convertOldBackupToActual(JSON.stringify(old_data), this.app_version)
                 await this.APP.BACKUP.implementBackup(updated_data)
                 await this.APP.startApp(true)
@@ -45,6 +45,10 @@ export class ImportantPage implements OnInit{
         const user_AV = this.APP.BACKUP.convertAppVersion(undefined, user_AV_string) as AppVersionIteration
         if (user_AV.edition <= 2 && user_AV.version <= 1 && user_AV.patch <= 3) {
             this.app_version = '2.1.3'
+            return
+        }
+        if (user_AV.edition == 2 && user_AV.version == 2 && user_AV.patch == 0) {
+            this.app_version = '2.2.0'
             return
         }
     }

@@ -96,7 +96,7 @@ export class AppBackup {
                             const car_brands = await this.DB.getAllObject<CarBrand_V_2_2_0>(db_stores[0])
                             const cars = await this.DB.getAllObject<CarDBModel_V_2_2_0>(db_stores[1])
                             const routes = await this.DB.getAllObject<Route_V_2_2_0>(db_stores[2])
-                            const return_backup = new Backup_V_2_2_0('2.2.0.x.x', new Date().toJSON(), choosed_car_ID, fuel_config, IGD, car_brands, cars, routes)
+                            const return_backup = new Backup_V_2_2_0('2.2.0.0.x', new Date().toJSON(), choosed_car_ID, fuel_config, IGD, car_brands, cars, routes)
                             this.DB.closeDB()
                             resolve(return_backup)
                         } catch (err) {
@@ -198,6 +198,7 @@ export class AppBackup {
         switch (backup_data_major_version) {
             case "2.0.5":
             case '2.1.3':
+            case '2.2.0':
                 return this.convertOldBackupToActual(backup_string, backup_data_major_version)
             case "actual":
                 return JSON.parse(backup_string) as Backup
@@ -343,20 +344,24 @@ export class AppBackup {
                 const udpatedCars: CarDBModel[] = []
                 backup_2_2_0.cars.forEach( car => {
                     const cars_routes = backup_2_2_0.routes.filter(route => route.carID === car.id)
-                    let usedFuel = 0, usedEnergy = 0
+                    let usedFuel = 0, usedEnergy = 0, newMileage = car.mileage.actual
                     cars_routes.forEach( route => {
                         if (route.usage.combustion.include) {
-                            usedFuel += (route.distance / 100) * route.usage.combustion.amount
+                            usedFuel += (route.distance / 100) * route.usage.combustion.amount / (!route.usage.electric.include && route.usage.electric.amount !== 0 ? 6 : 1)
                         }
                         if (route.usage.electric.include) {
                             usedEnergy += (route.distance / 100) * route.usage.electric.amount
                         }
+                        newMileage! += route.distance
                     })
                     udpatedCars.push(new CarDBModel(
                         car.id,
                         car.brandId,
                         car.model,
-                        car.mileage,
+                        {
+                            actual: newMileage,
+                            at_review: car.mileage.at_review
+                        },
                         car.type,
                         car.engine,
                         {
@@ -377,6 +382,14 @@ export class AppBackup {
                         car.photo
                     ))
                 })
+                return_backup.appVersion = backup_2_2_0.appVersion
+                return_backup.carBrands = backup_2_2_0.carBrands
+                return_backup.cars = udpatedCars
+                return_backup.choosedCarID = backup_2_2_0.choosedCarID
+                return_backup.creationDate = backup_2_2_0.creationDate
+                return_backup.fuelCalcConfig = backup_2_2_0.fuelCalcConfig
+                return_backup.igd = backup_2_2_0.igd
+                return_backup.routes = backup_2_2_0.routes
                 break
             case 'actual':
                 return JSON.parse(old_version)

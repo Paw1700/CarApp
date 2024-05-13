@@ -68,7 +68,6 @@ export class ImportBackupComponent implements OnInit{
                 this.backup_info.number_of_cars = this.backup.cars.length.toString()
                 this.backup_info.number_of_routes = this.backup.routes.length.toString()
             }
-            console.log(this.backup);
         }
     }
 }
