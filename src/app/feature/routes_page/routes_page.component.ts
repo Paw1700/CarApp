@@ -9,9 +9,9 @@ import { RouteListItem } from './components/route_list_item/route_list_item.comp
 import { StringDate } from './pipes/stringDate.pipe';
 import { RouteEditor } from './components/route_editor/route_editor.component';
 import { RoutePageList, RoutePageService } from './routes_page.service';
-import { CarDBModel } from '../../models/car.model';
 import { NgUnsubscriber } from '../../util/ngUnsubscriber';
 import { takeUntil } from 'rxjs';
+import { ButtonComponent } from '../../UI/button/button.component';
 
 @Component({
     selector: 'routes-page',
@@ -21,7 +21,8 @@ import { takeUntil } from 'rxjs';
         TitleBar,
         RouteListItem,
         StringDate,
-        RouteEditor
+        RouteEditor,
+        ButtonComponent
     ],
     providers: [
         RoutePageService
@@ -62,14 +63,15 @@ import { takeUntil } from 'rxjs';
 export class RoutesPage extends NgUnsubscriber implements OnInit{
     APP = inject(AppService)
     private PS = inject(RoutePageService)
-    car_routes: RoutePageList[] = [] 
+    car_routes: RoutePageList = {list: [], isMore: false} 
     choosedCarID: string | null = null
     show_editor = false
+    private routes_list_page = 1
 
     async ngOnInit() {
         this.choosedCarID = this.APP.DATA.getChoosedCarID()
         if (this.choosedCarID) {
-            this.PS.getCarRoutes()
+            this.PS.getCarRoutes(this.routes_list_page)
         }
         this.PS.route_to_edit$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( route => {
             if (route) {
@@ -81,6 +83,11 @@ export class RoutesPage extends NgUnsubscriber implements OnInit{
         this.PS.car_routes_list$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( routes => {
             this.car_routes = routes
         })
+    }
+
+    getMoreRoutes() {
+        this.routes_list_page++
+        this.PS.getCarRoutes(this.routes_list_page)
     }
 
     editRoute(route: Route) {

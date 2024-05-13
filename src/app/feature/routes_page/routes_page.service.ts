@@ -9,7 +9,7 @@ export class RoutePageService {
     constructor(private APP: AppService) { }
     car_type$ = new BehaviorSubject<CarType | null>(null)
     route_to_edit$ = new BehaviorSubject<Route | null>(null)
-    car_routes_list$ = new BehaviorSubject<RoutePageList[]>([])
+    car_routes_list$ = new BehaviorSubject<RoutePageList>({ list: [], isMore: false })
 
     async saveRoute() {
         const route = this.route_to_edit$.value
@@ -35,21 +35,28 @@ export class RoutePageService {
         await this.getCarRoutes()
     }
 
-    async getCarRoutes() {
+    async getCarRoutes(page?: number) {
         const carID = this.APP.DATA.getChoosedCarID()
         if (carID) {
             this.car_type$.next((await this.APP.DATA.CAR.getOne(carID, true) as CarDBModel).type)
-            const unsorted_routes_list = await this.APP.DATA.ROUTE.getCarRoutes(carID)
-            this.car_routes_list$.next(this.sortRoutesByDate(unsorted_routes_list))
+            let unsorted_routes_list = await this.APP.DATA.ROUTE.getCarRoutes(carID), isMoreRoutes = false
+            if (page) {
+                const unsorted_routes_list_length = unsorted_routes_list.length
+                if (page * 12 < unsorted_routes_list_length) {
+                    isMoreRoutes = true
+                }
+                unsorted_routes_list = unsorted_routes_list.slice(0, page * 12)
+            }
+            this.car_routes_list$.next({ list: this.sortRoutesByDate(unsorted_routes_list), isMore: isMoreRoutes })
         }
     }
 
-    private sortRoutesByDate(routes: Route[]): RoutePageList[] {
-        const return_list: RoutePageList[] = []
+    private sortRoutesByDate(routes: Route[]): RoutePageListItem[] {
+        const return_list: RoutePageListItem[] = []
         let loop_date = new Date()
         let loop_routes: Route[] = []
 
-        routes.forEach( (route, index, array) => {
+        routes.forEach((route, index, array) => {
             if (index === 0 || loop_routes.length === 0) {
                 loop_date = new Date(route.date)
                 loop_routes = [route]
@@ -79,7 +86,7 @@ export class RoutePageService {
             }
 
             function endOfChapter() {
-                return_list.push({date: loop_date, route_list: loop_routes.reverse()})
+                return_list.push({ date: loop_date, route_list: loop_routes.reverse() })
                 loop_date = new Date()
                 loop_routes = []
             }
@@ -100,4 +107,5 @@ export class RoutePageService {
     }
 }
 
-export type RoutePageList = { date: Date, route_list: Route[] }
+export type RoutePageList = { list: RoutePageListItem[], isMore: boolean }
+export type RoutePageListItem = { date: Date, route_list: Route[] }
