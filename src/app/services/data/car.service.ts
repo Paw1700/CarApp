@@ -168,27 +168,6 @@ export class CarService {
         })
     }
 
-    //* WILL BE NOT USED LATER
-    /**
-     * @returns distance driven by car in routes saved in DB
-     * @param carID id of car you want data
-     */
-    distanceDriven(carID: string): Promise<number> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const car_routes = await this.ROUTE.getCarRoutes(carID)
-                let distance_sum = 0
-                car_routes.forEach(route => {
-                    distance_sum += route.distance
-                })
-                resolve(distance_sum)
-            } catch (err) {
-                console.error(err)
-                reject()
-            }
-        })
-    }
-
     /**
      * Calculates actual average energy/fuel usage in 100km, by adding new route average usage you get new average usage including added route
      * @param carID id of car
@@ -348,44 +327,6 @@ export class CarService {
                 // * UPDATE CAR DATA IN DB
                 await this.saveOne(car, true)
                 resolve()
-            } catch (err) {
-                console.error(err)
-                reject()
-            }
-        })
-    }
-
-    //* posiible not needed in future
-    /**
-     * @returns sum of fuel/energy used by car
-     * @param carID id of car
-     * @param type of source
-     * @param CCRCUTH (Convert Combustion Routes Combustion Usage To Hybrid) if hybrid route was changed to combustion, amount of it is still divided by constant of hybrid route which sometimes needs to be converted back
-     */
-    private usedSource(carID: string, type: SourceType, CCRCUTH = true): Promise<number> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const car_routes = await this.ROUTE.getCarRoutes(carID)
-                let sum_of_source = 0
-                car_routes.forEach(route => {
-                    switch (type) {
-                        case "Combustion":
-                            if (route.usage.combustion.ratio !== 0) {
-                                let route_usage = route.usage.combustion.amount
-                                if (CCRCUTH && route.usage.electric.amount !== 0) {
-                                    route_usage /= AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
-                                }
-                                sum_of_source += Number((route.distance * (route_usage / 100)).toFixed(1))
-                            }
-                            break
-                        case "Electric":
-                            if (route.usage.electric.ratio !== 0) {
-                                sum_of_source += Number((route.distance * (route.usage.electric.amount / 100)).toFixed(1))
-                            }
-                            break
-                    }
-                })
-                resolve(sum_of_source)
             } catch (err) {
                 console.error(err)
                 reject()
