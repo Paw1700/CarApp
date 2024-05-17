@@ -55,8 +55,6 @@ export class AddRouteBox extends NgUnsubscriber implements OnInit {
                     route.usage.combustion.ratio = Number(((payload * 0.32) / 100).toFixed(2))
                     route.usage.electric.ratio = Number(((100 - (payload * 0.32))/100).toFixed(2))
                 }
-                console.log(`Combustion: ${route.usage.combustion.ratio}`);
-                console.log(`Electric: ${route.usage.electric.ratio}`);
                 break
         }
         this.PS.route_data$.next(route)

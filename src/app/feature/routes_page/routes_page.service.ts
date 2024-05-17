@@ -9,21 +9,26 @@ export class RoutePageService {
     constructor(private APP: AppService) { }
     car_type$ = new BehaviorSubject<CarType | null>(null)
     route_to_edit$ = new BehaviorSubject<Route | null>(null)
+    route_to_delete$ = new BehaviorSubject<Route | null>(null)
     car_routes_list$ = new BehaviorSubject<RoutePageList>({ list: [], isMore: false })
 
     async saveRoute() {
         const route = this.route_to_edit$.value
         if (route) {
             await this.APP.DATA.CAR.newRouteOperation(route.carID, route, true)
-            // await this.APP.DATA.ROUTE.saveOne(route, true)
             await this.getCarRoutes()
             this.route_to_edit$.next(null)
         }
     }
 
-    async deleteRoute(route: Route) {
-        await this.APP.DATA.ROUTE.delete([route.id])
+    async deleteRoute(route: Route, affectCarSourceStatus = false) {
+        if (affectCarSourceStatus) {
+            await this.APP.DATA.CAR.removeRouteOperation(route, true)
+        } else {
+            await this.APP.DATA.ROUTE.delete([route.id])
+        }
         await this.getCarRoutes()
+        this.route_to_delete$.next(null)
     }
 
     async getCarRoutes(page?: number) {
