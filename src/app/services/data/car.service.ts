@@ -264,10 +264,9 @@ export class CarService {
                 if (chargingPower > 0) {
                     car.energySourceData.electric.chargingStartAt = new Date()
                     car.energySourceData.electric.chargingPower = chargingPower
-                }
-                if (chargingPower == 0 && car.energySourceData.electric.chargingStartAt !== null && car.energySourceData.electric.chargingPower !== null) {
+                } else if (chargingPower == 0 && car.energySourceData.electric.chargingStartAt !== null && car.energySourceData.electric.chargingPower !== null) {
                     const timeTillEndOfChargingInHours = Number((((new Date().getTime() - car.energySourceData.electric.chargingStartAt.getTime()) / 1000) / 3600).toFixed(4))
-                    const chargedAmount = Number((chargingPower / timeTillEndOfChargingInHours).toFixed(2))
+                    const chargedAmount = Number((car.energySourceData.electric.chargingPower * timeTillEndOfChargingInHours).toFixed(2))
                     if (car.engine.electric.energy_storage_volume < car.energySourceData.electric.avaibleAmount + chargedAmount) {
                         car.energySourceData.electric.avaibleAmount = car.engine.electric.energy_storage_volume
                     } else {
@@ -285,7 +284,7 @@ export class CarService {
                 } else {
                     throw new Error()
                 }
-                this.saveOne(car, true)
+                await this.saveOne(car, true)
                 resolve()
             } catch (err) {
                 console.error(err);

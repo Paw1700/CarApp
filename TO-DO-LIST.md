@@ -16,11 +16,11 @@
     - [ ] Routes List
     - [ ] Settings
     - [ ] Splash Screen
-- [ ] Symulowanie ładowania auta
-    - [ ] Interfejs ustalenia mocy ładowania
+- [x] Symulowanie ładowania auta
+    - [x] Interfejs ustalenia mocy ładowania
     - [x] Logika związana z ładowaniem auta
     - [x] Zmiana modelu danych auta pod ładowanie
-    - [ ] Interfejs pokazujący ładowanie auta
+    - [x] Interfejs pokazujący ładowanie auta
 - [x] Dynamiczne ustalenie współczynnika jazdy hydrydowej
 - [x] Pamiętanie całej historii auta
     - [x] Zmień CarDB model

@@ -1,7 +1,16 @@
 <div class="CHARGE_UP_BOX">
-    <p class="TITLE">Ilość do naładowania {{ amount_charge_up }} kWh</p>
-    <number-input (valueChange)="handleInput('charging_power', $event)" [title]="'Moc ładowania [kW]'" [type]="'buttons'" [show_fast_btns]="true" [fast_btns_settings]="{first_amount: 5, second_amount: 25}" [minValue]="0" [precision]="1"/>
-    @if (charging_time !== '') {
-        <p class="ESTIMETED">Przewydiwyany czas ładowania {{ charging_time }}</p>
+    @if (car.energySourceData.electric.chargingPower == null) {
+        <p class="TITLE">Ilość do naładowania {{ amount_charge_up }} kWh</p>
+        <number-input (valueChange)="handleInput('charging_power', $event)" [title]="'Moc ładowania [kW]'" [type]="'buttons'" [show_fast_btns]="true" [fast_btns_settings]="{first_amount: 5, second_amount: 25}" [minValue]="0" [precision]="1"/>
+        @if (charging_time !== '') {
+            <p class="ESTIMETED">Przewydiwyany czas ładowania {{ charging_time }}</p>
+        }
+    } @else {
+        <p class="TITLE">Trwa ładowanie</p>
+        <p class="DESC">Pozostały czas: {{ left_charging_time }}</p>
+        <div class="BTNs">
+            <button (click)="handleInput('stop_charging', null)">Przerwij</button>
+            <button (click)="handleInput('full_charge', null)">Doładuj</button>
+        </div>
     }
 </div>
