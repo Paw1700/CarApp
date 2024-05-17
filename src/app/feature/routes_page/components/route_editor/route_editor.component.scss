@@ -57,5 +57,14 @@
                 }
             }
         }
+
+        div.AFFECT_CAR {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            gap: 2.5vw;
+            justify-content: center;
+            align-content: center;
+        }
     }
 }

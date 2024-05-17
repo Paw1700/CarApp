@@ -12,10 +12,10 @@ export class RoutePageService {
     route_to_delete$ = new BehaviorSubject<Route | null>(null)
     car_routes_list$ = new BehaviorSubject<RoutePageList>({ list: [], isMore: false })
 
-    async saveRoute() {
+    async saveRoute(affectCar = false) {
         const route = this.route_to_edit$.value
         if (route) {
-            await this.APP.DATA.CAR.newRouteOperation(route.carID, route, true)
+            await this.APP.DATA.CAR.newRouteOperation(route.carID, route, true, affectCar)
             await this.getCarRoutes()
             this.route_to_edit$.next(null)
         }

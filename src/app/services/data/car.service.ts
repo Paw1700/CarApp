@@ -301,13 +301,13 @@ export class CarService {
      * @param updateMode if true it's not create new route data in DB
      * @returns 
      */
-    newRouteOperation(carID: string, newRoute: Route, updateMode = false): Promise<void> {
+    newRouteOperation(carID: string, newRoute: Route, updateMode = false, affectCar = false): Promise<void> {
         return new Promise(async (resolve, reject) => {
             try {
                 // * GET CAR DATA
                 const car = await this.getOne(carID, true) as CarDBModel
                 // * IF UPDATING RESET CAR ENERGY SOURCE STATE BEFORE ROAD ADDED
-                if (updateMode) {
+                if (affectCar) {
                     const old_route = (await this.ROUTE.getAll()).find(route => route.id === newRoute.id)
                     if (old_route) {
                         const old_route_distance = old_route.distance
@@ -332,18 +332,20 @@ export class CarService {
                 }
                 // * GIVE ROUTE carID
                 newRoute.carID = car.id
-                // * CALC ROUTE USAGE AMOUNT DEPEND ON FUEL CONFIG
-                // * UPDATE CAR ENERGY STATE
-                if (newRoute.usage.combustion.ratio !== 0) {
-                    newRoute.usage.combustion.amount = await this.calcAvgUsage(car.id, newRoute.original_avg_fuel_usage, 'Combustion')
-                    car.energySourceData.combustion.avaibleAmount -= newRoute.distance * ((newRoute.usage.combustion.amount * newRoute.usage.combustion.ratio) / 100)
+                if ((updateMode && affectCar) || (!updateMode && !affectCar)) {
+                    // * UPDATE CAR ENERGY STATE
+                    // * CALC ROUTE USAGE AMOUNT DEPEND ON FUEL CONFIG
+                    if (newRoute.usage.combustion.ratio !== 0) {
+                        newRoute.usage.combustion.amount = await this.calcAvgUsage(car.id, newRoute.original_avg_fuel_usage, 'Combustion')
+                        car.energySourceData.combustion.avaibleAmount -= newRoute.distance * ((newRoute.usage.combustion.amount * newRoute.usage.combustion.ratio) / 100)
+                    }
+                    if (newRoute.usage.electric.ratio !== 0) {
+                        newRoute.usage.electric.amount = await this.calcAvgUsage(car.id, newRoute.original_avg_fuel_usage, 'Electric')
+                        car.energySourceData.electric.avaibleAmount -= newRoute.distance * ((newRoute.usage.electric.amount * newRoute.usage.electric.ratio) / 100)
+                    }
+                    // * ADD ROUTE DISTANCE TO MILEAGE OF CAR
+                    car.mileage.actual! += newRoute.distance
                 }
-                if (newRoute.usage.electric.ratio !== 0) {
-                    newRoute.usage.electric.amount = await this.calcAvgUsage(car.id, newRoute.original_avg_fuel_usage, 'Electric')
-                    car.energySourceData.electric.avaibleAmount -= newRoute.distance * ((newRoute.usage.electric.amount * newRoute.usage.electric.ratio) / 100)
-                }
-                // * ADD ROUTE DISTANCE TO MILEAGE OF CAR
-                car.mileage.actual! += newRoute.distance
                 // * ADD ROUTE TO DB
                 await this.ROUTE.saveOne(newRoute, updateMode)
                 // * UPDATE CAR DATA IN DB

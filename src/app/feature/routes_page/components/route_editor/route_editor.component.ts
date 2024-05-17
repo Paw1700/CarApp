@@ -24,6 +24,7 @@ export class RouteEditor extends NgUnsubscriber implements OnInit{
     route_to_edit: Route | null = null
     car_type: CarType | null = null
     route_type_ratio: number | null = null
+    affectCar = false
 
     ngOnInit(): void {
         this.PS.car_type$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( type => {
@@ -40,6 +41,10 @@ export class RouteEditor extends NgUnsubscriber implements OnInit{
                 }
             }
         })
+    }
+
+    affectionOfCarState(e: any) {
+        this.affectCar = e.target.checked
     }
 
     cancelEdit() {
@@ -74,6 +79,6 @@ export class RouteEditor extends NgUnsubscriber implements OnInit{
     }
 
     saveEdit() {
-        this.PS.saveRoute()
+        this.PS.saveRoute(this.affectCar)
     }
 }

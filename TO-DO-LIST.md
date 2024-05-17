@@ -1,7 +1,7 @@
 # <r>BUGLISTA
 *EMPTY FOR NOW*
 
-# <lb>NEED FOR 2.2 <o>**WIP**</o>
+# <lb>NEED FOR 2.3 <o>**WIP**</o>
 - [ ] Pełna obsługa błędów
     - [ ] UI od belki błędów
 - [ ] Stworzenie skryptu sortującego błedy w pliku JSON jak i typach
@@ -17,7 +17,11 @@
     - [ ] Settings
     - [ ] Splash Screen
 - [ ] Symulowanie ładowania auta
-- [ ] Zmiana interfejsu dodawania tras i ładowania
+    - [ ] Interfejs ustalenia mocy ładowania
+    - [x] Logika związana z ładowaniem auta
+    - [x] Zmiana modelu danych auta pod ładowanie
+    - [ ] Interfejs pokazujący ładowanie auta
+- [x] Dynamiczne ustalenie współczynnika jazdy hydrydowej
 - [x] Pamiętanie całej historii auta
     - [x] Zmień CarDB model
     - [x] Dostosuj CarService to zmiany modelu
@@ -83,7 +87,7 @@
 
 # <g>FUTURE FEATURE
 
-### <o>2.3
+### <o>2.4
 - Synchronizacja danych aplikacji z serwerem backup, gdzie backup będzie bardziej zawansowany ponieważ podzielny na backup pełny jak i nie pełny
 - Dodawanie auta bez zdjęcia, oznacza ona również zmianę wygląd interfejsu
 - Filtrowanie tras
