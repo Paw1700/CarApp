@@ -1,7 +1,7 @@
 <div class="EDITOR">
     <p class="TITLE">Edycja trasy</p>
     @if (car_type === 'Hybrid') {    
-        <route-type-switch [value]="route_type" (routeTypeChanged)="handleInput('route_type', $event)"/>
+        <route-type-switch [value]="route_type_ratio" (routeTypeChanged)="handleInput('route_type', $event)"/>
     }
     <date-picker [title]="'Data trasy'" [value]="route_to_edit?.date!" (valueChange)="handleInput('date', $event)" />
     <number-input [title]="'Dystans'" [minValue]="0" [value]="route_to_edit?.distance!" [type]="'buttons'" [show_fast_btns]="true" [fast_btns_settings]="{first_amount: 5, second_amount: 25}" (valueChange)="handleInput('distance', $event)" />

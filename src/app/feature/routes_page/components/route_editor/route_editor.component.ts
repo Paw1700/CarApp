@@ -23,7 +23,7 @@ export class RouteEditor extends NgUnsubscriber implements OnInit{
     private PS = inject(RoutePageService)
     route_to_edit: Route | null = null
     car_type: CarType | null = null
-    route_type: CarType | null = null
+    route_type_ratio: number | null = null
 
     ngOnInit(): void {
         this.PS.car_type$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( type => {
@@ -32,12 +32,11 @@ export class RouteEditor extends NgUnsubscriber implements OnInit{
         this.PS.route_to_edit$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( route => {
             this.route_to_edit = route
             if (this.car_type === 'Hybrid') {
-                if (route?.usage.combustion.include && route?.usage.electric.include) {
-                    this.route_type = 'Hybrid'
-                } else if (!route?.usage.combustion.include && route?.usage.electric.include) {
-                    this.route_type = 'Electric'
-                } else if (route?.usage.combustion.include && !route?.usage.electric.include) {
-                    this.route_type = 'Combustion'
+                const ratio = route?.usage.combustion.ratio!
+                if (ratio > 0.16) {
+                    this.route_type_ratio = Number(((((ratio - 0.16) / 1.68) + 0.5) * 100).toFixed(0))
+                } else {
+                    this.route_type_ratio = Number(((ratio / 0.32) * 100).toFixed(0))
                 }
             }
         })
@@ -61,19 +60,12 @@ export class RouteEditor extends NgUnsubscriber implements OnInit{
                     route.original_avg_fuel_usage = payload
                     break
                 case 'route_type':
-                    switch(payload) {
-                        case 'Combustion':
-                            route.usage.combustion.include = true
-                            route.usage.electric.include = false
-                            break
-                        case 'Electric':
-                            route.usage.combustion.include = false
-                            route.usage.electric.include = true
-                            break
-                        case 'Hybrid':
-                            route.usage.combustion.include = true
-                            route.usage.electric.include = true
-                            break
+                    if (payload > 50) {
+                        route.usage.combustion.ratio = Number(((16 + ((payload - 50) * 1.68)) / 100).toFixed(2))
+                        route.usage.electric.ratio = Number(((84 - ((payload - 50) * 1.68)) / 100).toFixed(2))
+                    } else {
+                        route.usage.combustion.ratio = Number(((payload * 0.32) / 100).toFixed(2))
+                        route.usage.electric.ratio = Number(((100 - (payload * 0.32))/100).toFixed(2))
                     }
                     break
             }

@@ -14,16 +14,7 @@ export class RoutePageService {
     async saveRoute() {
         const route = this.route_to_edit$.value
         if (route) {
-            if (route.usage.combustion.include) {
-                route.usage.combustion.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Combustion')
-            } else {
-                route.usage.combustion.amount = 0
-            }
-            if (route.usage.electric.include) {
-                route.usage.electric.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Electric')
-            } else {
-                route.usage.electric.amount = 0
-            }
+            this.APP.DATA.CAR.newRouteOperation(route.carID, route, true)
             await this.APP.DATA.ROUTE.saveOne(route, true)
             await this.getCarRoutes()
             this.route_to_edit$.next(null)

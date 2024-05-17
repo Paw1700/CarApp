@@ -1,5 +1,4 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { routes } from './../../routing';
 import { Component, OnInit, inject } from "@angular/core";
 import { TitleBar } from "../../UI/title_bar/title_bar.component";
 import { AppService } from "../../service";
