@@ -1,5 +1,4 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { routes } from './../../routing';
 import { Component, OnInit, inject } from "@angular/core";
 import { TitleBar } from "../../UI/title_bar/title_bar.component";
 import { AppService } from "../../service";
@@ -12,6 +11,7 @@ import { RoutePageList, RoutePageService } from './routes_page.service';
 import { NgUnsubscriber } from '../../util/ngUnsubscriber';
 import { takeUntil } from 'rxjs';
 import { ButtonComponent } from '../../UI/button/button.component';
+import { RouteDeletionBox } from './components/route_deletion_box/route_deletion_box.component';
 
 @Component({
     selector: 'routes-page',
@@ -22,7 +22,8 @@ import { ButtonComponent } from '../../UI/button/button.component';
         RouteListItem,
         StringDate,
         RouteEditor,
-        ButtonComponent
+        ButtonComponent,
+        RouteDeletionBox
     ],
     providers: [
         RoutePageService
@@ -66,6 +67,7 @@ export class RoutesPage extends NgUnsubscriber implements OnInit{
     car_routes: RoutePageList = {list: [], isMore: false} 
     choosedCarID: string | null = null
     show_editor = false
+    show_deletion_box = false
     private routes_list_page = 1
 
     async ngOnInit() {
@@ -79,6 +81,9 @@ export class RoutesPage extends NgUnsubscriber implements OnInit{
             } else {
                 this.show_editor = false
             }
+        })
+        this.PS.route_to_delete$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( route => {
+            this.show_deletion_box = route !== null ? true : false
         })
         this.PS.car_routes_list$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( routes => {
             this.car_routes = routes
@@ -95,7 +100,7 @@ export class RoutesPage extends NgUnsubscriber implements OnInit{
     }
 
     deleteRoute(route: Route) {
-        this.PS.deleteRoute(route)
+        this.PS.route_to_delete$.next(route)
     }
 }
 

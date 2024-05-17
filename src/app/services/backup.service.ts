@@ -4,7 +4,7 @@ import { DatabaseManager } from '../util/db.driver';
 import { AppDataMajorVersions, AppVersion, AppVersionIteration } from '../models/app_version.model';
 import { AppEnvironment } from '../environment';
 import { Backup } from '../models/backup.model';
-import { Car, CarDBModel } from '../models/car.model';
+import { CarDBModel } from '../models/car.model';
 import { Backup_V2_0_5, Backup_V_2_1_3, Backup_V_2_2_0, CarBrand_V_2_0_5, CarBrand_V_2_1_3, CarBrand_V_2_2_0, CarDBModel_V_2_0_5, CarDBModel_V_2_1_3, CarDBModel_V_2_2_0, Engine_V_2_0_5, Gearbox_V_2_0_5, Insurance_V_2_0_5, Route_V_2_0_5, Route_V_2_1_3, Route_V_2_2_0 } from '../models/old_models.model';
 import { CarBrand } from '../models/car_brand.model';
 import { CombustionEngine, ElectricEngine } from '../models/engine.model';
@@ -210,8 +210,9 @@ export class AppBackup {
     convertOldBackupToActual(old_version: string, backup_version: AppDataMajorVersions): Backup {
         const return_backup = new Backup()
         switch (backup_version) {
-            case '2.0.5': // REMOVE GEARBOX, ENGINE, INSURANCE | CONVERT BRAND MODEL | CONVERT CARDBMODEL (ADDING GEARBOX, INSURANCE, ENGINES) | CONVERT ROUTE TO ROUTE WITH ELECTRIC DATA 
+            case '2.0.5':
                 const backup_2_0_5 = JSON.parse(old_version) as Backup_V2_0_5
+                // * REMOVE GEARBOX, ENGINE, INSURANCE 
                 const newIGD = backup_2_0_5.IGD.filter(
                     el => {
                         if (el.storeName === 'engines' || el.storeName === 'gearboxes' || el.storeName === 'insurances') {
@@ -220,6 +221,7 @@ export class AppBackup {
                         return true
                     }
                 )
+                // * CONVERT BRAND MODEL
                 const car_brands_2_0_5: CarBrand[] = []
                 backup_2_0_5.CarBrands.data.forEach(brand => {
                     let brandForDarkMode: string | null = null
@@ -228,12 +230,14 @@ export class AppBackup {
                     }
                     car_brands_2_0_5.push(new CarBrand(brand.id, brand.name, { default: brand.brandImage.light, for_dark_mode: brandForDarkMode }))
                 })
+                // * CONVERT ROUTE TO ROUTE WITH ELECTRIC DATA THERE IS NOT ELECTRIC CAR BEFORE
                 const routes_2_0_5: Route[] = []
                 backup_2_0_5.Routes.data.forEach(
                     route => {
-                        routes_2_0_5.push(new Route(route.id, route.carID, route.date, Number(route.originalAvgFuelUsage), Number(route.distance), { combustion: { include: true, amount: Number(route.avgFuelUsage) }, electric: { include: false, amount: 0 } }))
+                        routes_2_0_5.push(new Route(route.id, route.carID, route.date, Number(route.originalAvgFuelUsage), Number(route.distance), { combustion: { ratio: 1.0, amount: Number(route.avgFuelUsage) }, electric: { ratio: 0.0, amount: 0 } }))
                     }
                 )
+                // * CONVERT CARDBMODEL (ADDING GEARBOX, INSURANCE, ENGINES)
                 const cars_2_0_5: CarDBModel[] = []
                 backup_2_0_5.Cars.data.forEach(car => {
                     const oldCombustionEng = backup_2_0_5.Engines.data.filter(eng => eng.id === car.engineID).at(0)
@@ -270,18 +274,33 @@ export class AppBackup {
                 return_backup.igd = newIGD
                 return_backup.routes = routes_2_0_5
                 break
-            case '2.1.3': // CONVERT DATAs MODEL PROPERTY NAMING | MULTIPLY HYBRID ROUTES COMBUSTION USAGE WITH 6      
+            case '2.1.3':  
                 const backup_2_1_3 = JSON.parse(old_version) as Backup_V_2_1_3
+                // * CONVERT DATAs MODEL PROPERTY NAMING
                 const car_brands_2_1_3: CarBrand[] = []
                 backup_2_1_3.carBrands.forEach(brand => {
                     car_brands_2_1_3.push(new CarBrand(brand.id, brand.name, { default: brand.brandImageSet.default, for_dark_mode: brand.brandImageSet.forDarkMode }))
                 })
                 const routes_2_1_3: Route[] = []
                 backup_2_1_3.routes.forEach(route => {
+                    // * MULTIPLY HYBRID ROUTES COMBUSTION USAGE WITH 6 
                     if (route.usage.combustion.amount !== 0 && route.usage.electric.amount !== 0) {
                         route.usage.combustion.amount = route.usage.combustion.amount * 6
                     }
-                    routes_2_1_3.push(new Route(route.id, route.carID, route.date, route.originalAvgFuelUsage, route.distance, route.usage))
+                    // * CREATE RATIO FOR ROUTES
+                    let combustionRatio = 0.0
+                    let electricRatio = 0.0
+                    if (route.usage.combustion.include && route.usage.electric.include) {
+                        combustionRatio = 0.16
+                        electricRatio = 0.84
+                    } else if (route.usage.combustion.include && !route.usage.electric.include) {
+                        combustionRatio = 1.0
+                        electricRatio = 0.0
+                    } else if (!route.usage.combustion.include && route.usage.electric.include) {
+                        combustionRatio = 0.0
+                        electricRatio = 1.0
+                    }
+                    routes_2_1_3.push(new Route(route.id, route.carID, route.date, route.originalAvgFuelUsage, route.distance, {combustion: {ratio: combustionRatio, amount: route.usage.combustion.amount}, electric: {ratio: electricRatio, amount: route.usage.electric.amount}}))
                 })
                 const cars_2_1_3: CarDBModel[] = []
                 backup_2_1_3.cars.forEach(car => {
@@ -290,11 +309,11 @@ export class AppBackup {
                     const car_routes = routes_2_1_3.filter(route => route.carID == car.id)
                     let fuelUsed = 0, energyUsed = 0
                     car_routes.forEach( route => {
-                        if (route.usage.combustion.include) {
-                            fuelUsed += (route.distance / 100) * route.usage.combustion.amount
+                        if (route.usage.combustion.ratio !== 0) {
+                            fuelUsed += (route.distance / 100) * (route.usage.combustion.amount * route.usage.combustion.ratio)
                         }
-                        if (route.usage.electric.include) {
-                            energyUsed += (route.distance / 100) * route.usage.electric.amount
+                        if (route.usage.electric.ratio !== 0) {
+                            energyUsed += (route.distance / 100) * (route.usage.electric.amount * route.usage.electric.ratio)
                         }
                     })
                     cars_2_1_3.push(new CarDBModel(
@@ -339,9 +358,10 @@ export class AppBackup {
                 return_backup.igd = backup_2_1_3.igd
                 return_backup.routes = routes_2_1_3
                 break
-            case '2.2.0': // ADD ENERGY SOURCE STATUS TO CAR MODEL
+            case '2.2.0':
                 const backup_2_2_0 = JSON.parse(old_version) as Backup_V_2_2_0
                 const udpatedCars: CarDBModel[] = []
+                // * ADD ENERGY SOURCE STATUS TO CAR MODEL
                 backup_2_2_0.cars.forEach( car => {
                     const cars_routes = backup_2_2_0.routes.filter(route => route.carID === car.id)
                     let usedFuel = 0, usedEnergy = 0, newMileage = car.mileage.actual
@@ -382,6 +402,23 @@ export class AppBackup {
                         car.photo
                     ))
                 })
+                // * CREATE RATIO FOR ROUTES
+                const updatedRoutes: Route[] = []
+                backup_2_2_0.routes.forEach( route => {
+                    let combustionRatio = 0.0
+                    let electricRatio = 0.0
+                    if (route.usage.combustion.amount !== 0 && route.usage.electric.amount !== 0) {
+                        combustionRatio = 0.16
+                        electricRatio = 0.84
+                    } else if (route.usage.combustion.amount !== 0 && route.usage.electric.amount == 0) {
+                        combustionRatio = 1.0
+                        electricRatio = 0.0
+                    } else if (route.usage.combustion.amount == 0 && route.usage.electric.amount !== 0) {
+                        combustionRatio = 0.0
+                        electricRatio = 1.0
+                    }
+                    updatedRoutes.push(new Route(route.id, route.carID, route.date, route.original_avg_fuel_usage, route.distance, {combustion: {ratio: combustionRatio, amount: route.usage.combustion.amount}, electric: {ratio: electricRatio, amount: route.usage.electric.amount}}))
+                })
                 return_backup.appVersion = backup_2_2_0.appVersion
                 return_backup.carBrands = backup_2_2_0.carBrands
                 return_backup.cars = udpatedCars
@@ -389,7 +426,7 @@ export class AppBackup {
                 return_backup.creationDate = backup_2_2_0.creationDate
                 return_backup.fuelCalcConfig = backup_2_2_0.fuelCalcConfig
                 return_backup.igd = backup_2_2_0.igd
-                return_backup.routes = backup_2_2_0.routes
+                return_backup.routes = updatedRoutes
                 break
             case 'actual':
                 return JSON.parse(old_version)

@@ -261,10 +261,10 @@ export class AppValidator {
         if (!this.hasValue(route.original_avg_fuel_usage, 'number')) {
             return { pass: false, reason: 'Nie podano lub nieprawidłowy format oryginalnego spalania na trasie!', errCode: "ROUTE-VALIDATION-ERROR-ORIGINAL_AVG_USAGE" }
         }
-        if (route.usage.combustion.include && !this.hasValue(route.usage.combustion.amount, 'number')) {
+        if (route.usage.combustion.ratio && !this.hasValue(route.usage.combustion.amount, 'number')) {
             return { pass: false, reason: 'Spalanie silnika spalinowego zerowe chociaż uwzględniane w obliczeniach!', errCode: 'ROUTE-VALIDATION-ERROR-COMBUSTION_HAS_ZERO_VALUE' }
         }
-        if (route.usage.electric.include && !this.hasValue(route.usage.electric.amount, 'number')) {
+        if (route.usage.electric.ratio && !this.hasValue(route.usage.electric.amount, 'number')) {
             return { pass: false, reason: 'Zużycie energii silnika elektrycznego zerowe chociaż uwzględniane w obliczeniach!', errCode: 'ROUTE-VALIDATION-ERROR-COMBUSTION_HAS_ZERO_VALUE' }
         }
         return { pass: true }

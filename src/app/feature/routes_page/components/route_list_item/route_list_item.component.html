@@ -4,20 +4,20 @@
             <img>
             <p>{{ route.distance }}km</p>
         </div>
-        @if (route.usage.combustion.amount !== 0) {
+        @if (route.usage.combustion.ratio !== 0) {
             <div class="FUEL_USED">
                 <img>
                 <div class="DATA">
-                    <p>{{ (combustion_used).toFixed(1) }} L</p>
+                    <p>{{ combustion_used.toFixed(1) }} L</p>
                     <p>{{ combustion_usage.toFixed(1) }} L/100km</p>
                 </div>
             </div>
         }
-        @if (route.usage.electric.amount !== 0) {
+        @if (route.usage.electric.ratio !== 0) {
             <div class="ENERGY_USED">
                 <img>
                 <div class="DATA">
-                    <p>{{ (electric_used).toFixed(1) }} kWh</p>
+                    <p>{{ electric_used.toFixed(1) }} kWh</p>
                     <p>{{ electric_usage.toFixed(1) }} kWh/100km</p>
                 </div>
             </div>

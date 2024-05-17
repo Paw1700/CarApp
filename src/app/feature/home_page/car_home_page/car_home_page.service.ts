@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { Car } from "../../../models/car.model";
+import { Car, CarDBModel } from "../../../models/car.model";
 import { energySourceStatus } from "../../../services/data/car.service";
 import { Route } from "../../../models/route.model";
 import { AppService } from "../../../service";
@@ -19,6 +19,7 @@ export class CarHomePageService {
     route_data$ = new BehaviorSubject<Route>(new Route())
     tank_up_value$ = new BehaviorSubject<number>(0)
     charge_up_value$ = new BehaviorSubject<number>(0)
+    charging_power$ = new BehaviorSubject<number | null>(null)
 
     getCarData(carID: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
@@ -27,6 +28,12 @@ export class CarHomePageService {
                 const car_energy_state = await this.APP.DATA.CAR.getCarEnergySourceStatus(carID)
                 this.car$.next(car)
                 this.car_energy_state$.next(car_energy_state)
+                if (car.energySourceData.electric.chargingPower !== null && car.energySourceData.electric.chargingStartAt !== null) {
+                    if (this.checkIfCarFullyCharged(car)) {
+                        await this.APP.DATA.CAR.chargingOperation(carID, -1)
+                        this.car$.next(await this.APP.DATA.CAR.getOne(carID) as Car)
+                    }
+                }
                 resolve()
             } catch (err) {
                 console.error(err);
@@ -40,24 +47,15 @@ export class CarHomePageService {
             try {
                 switch (this.action_box_state$.value) {
                     case "add_route":
-                        const route = this.route_data$.value
-                        route.carID = this.car$.value.id
-                        if (route.usage.combustion.include) {
-                            route.usage.combustion.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Combustion')
-                        }
-                        if (route.usage.electric.include) {
-                            route.usage.electric.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Electric')
-                        }
-                        await this.APP.DATA.ROUTE.saveOne(route)
-                        const car = await this.APP.DATA.CAR.getOne(this.car$.value.id, true)
-                        car.mileage.actual = Number(car.mileage.actual) + route.distance
-                        await this.APP.DATA.CAR.saveOne(car, true)
+                        await this.APP.DATA.CAR.newRouteOperation(this.car$.value.id, this.route_data$.value)
                         break
                     case "tank_up":
                         await this.APP.DATA.CAR.tankingOperation(this.car$.value.id, -1)
                         break
                     case "charge_up":
-                        await this.APP.DATA.CAR.chargingOperation(this.car$.value.id, -1)
+                        if (this.charging_power$.value !== null) {
+                            await this.APP.DATA.CAR.chargingOperation(this.car$.value.id, this.charging_power$.value)
+                        }
                         break
                 }
                 await this.getCarData(this.car$.value.id)
@@ -92,6 +90,17 @@ export class CarHomePageService {
                 this.action_box_open$.next(true)
             }
         })
+    }
+
+    private checkIfCarFullyCharged(car: CarDBModel) {
+        const energy_before_charging = car.energySourceData.electric.avaibleAmount
+        const time_in_seconds_of_charging = (new Date().getTime() - car.energySourceData.electric.chargingStartAt!.getTime()) / 1000
+        const power_delivered = car.energySourceData.electric.chargingPower! * (time_in_seconds_of_charging / 3600)
+        if (energy_before_charging + power_delivered >= car.engine.electric.energy_storage_volume) {
+            return true
+        } else {
+            return false
+        }
     }
 }
 

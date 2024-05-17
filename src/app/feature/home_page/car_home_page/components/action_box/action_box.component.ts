@@ -89,18 +89,26 @@ import { ChargeUpBox } from "./charge_up/charge_up.component";
 export class ActionBox extends NgUnsubscriber implements OnInit{
     private PS = inject(CarHomePageService)
     box_state: ActionBoxState = 'closed'
+    is_charging = false
 
     ngOnInit(): void {
         this.readBoxState()
     }
 
     changeCompState(state: ActionBoxState) {
-        this.PS.action_box_state$.next(state)
+        if (state === 'add_route' && this.is_charging) {
+            this.PS.action_box_state$.next('charge_up')
+        } else {
+            this.PS.action_box_state$.next(state)
+        }
     }
 
     private readBoxState() {
         this.PS.action_box_state$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( state => {
             this.box_state = state
+        })
+        this.PS.car$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( car => {
+            this.is_charging = car.energySourceData.electric.chargingPower !== null ? true : false
         })
     }
 }

@@ -27,10 +27,19 @@
             font-weight: 700;
         }
 
-        route-type-switch,
-        date-picker,
-        number-input {
+        p.DESC {
+            font-size: 1rem;
             width: 100%;
+            font-weight: 500;
+        }
+
+        div.AFFECT_CAR {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            gap: 2.5vw;
+            justify-content: center;
+            align-content: center;
         }
 
         div.BTNs {
@@ -55,16 +64,12 @@
                     background-color: var(--app-elements-bg-light);
                     color: var(--font-color-light);
                 }
-            }
-        }
 
-        div.AFFECT_CAR {
-            display: flex;
-            width: 100%;
-            flex-direction: row;
-            gap: 2.5vw;
-            justify-content: center;
-            align-content: center;
+                &.DEL {
+                    background-color: red;
+                    color: white;
+                }
+            }
         }
     }
 }

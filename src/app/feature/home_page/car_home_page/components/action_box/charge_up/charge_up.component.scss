@@ -8,14 +8,37 @@ div.CHARGE_UP_BOX {
     gap: 2.5vw;
 
     p.TITLE {
-        width: 100%;
+        width: 95%;
         text-align: left;
         font-size: 1.25rem;
         font-weight: 600;
     }
 
-    amount-slider {
+    p.DESC {
+        width: 95%;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    number-input {
         width: 100%;
-        height: 12.5vw;
+    }
+
+    div.BTNs {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5vw;
+
+        button {
+            width: 45%;
+            height: 5vh;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 2.5vw;
+        }
     }
 }

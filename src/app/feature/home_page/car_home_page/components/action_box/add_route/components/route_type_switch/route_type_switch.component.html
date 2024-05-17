@@ -6,7 +6,7 @@
             <img class="HYBRID" [class.HIDE]="slider_value > 33 && slider_value <= 66">
             <img class="FUEL" [class.HIDE]="slider_value > 66">
         </div>
-        <input type="range" min="0" max="100" value="0" (input)="changeSliderPickerPos($event)" (change)="setRouteType()"/>
+        <input type="range" min="0" max="100" value="0" (input)="changeSliderPickerPos($event)"/>
         <div class="SLIDER_PICK" [ngStyle]="{'left': slider_picker_pos+'%'}">
             <img [class.POWER]="slider_value <= 33" [class.HYBRID]="slider_value > 33 && slider_value <= 66" [class.FUEL]="slider_value > 66"/>
         </div>
