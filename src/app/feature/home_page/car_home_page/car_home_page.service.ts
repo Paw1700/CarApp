@@ -40,18 +40,7 @@ export class CarHomePageService {
             try {
                 switch (this.action_box_state$.value) {
                     case "add_route":
-                        const route = this.route_data$.value
-                        route.carID = this.car$.value.id
-                        if (route.usage.combustion.include) {
-                            route.usage.combustion.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Combustion')
-                        }
-                        if (route.usage.electric.include) {
-                            route.usage.electric.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Electric')
-                        }
-                        await this.APP.DATA.ROUTE.saveOne(route)
-                        const car = await this.APP.DATA.CAR.getOne(this.car$.value.id, true)
-                        car.mileage.actual = Number(car.mileage.actual) + route.distance
-                        await this.APP.DATA.CAR.saveOne(car, true)
+                        await this.APP.DATA.CAR.newRouteOperation(this.car$.value.id, this.route_data$.value)
                         break
                     case "tank_up":
                         await this.APP.DATA.CAR.tankingOperation(this.car$.value.id, -1)

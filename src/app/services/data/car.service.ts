@@ -147,10 +147,7 @@ export class CarService {
             const return_diff_status = new energySourceStatus()
             if (new_route.usage.combustion.ratio !== 0) {
                 new_route.usage.combustion.amount = await this.calcAvgUsage(carID, new_route.original_avg_fuel_usage, 'Combustion')
-                return_diff_status.fuel.in_stock = Number((new_route.distance * (new_route.usage.combustion.amount / 100)).toFixed(1))
-                if (new_route.usage.electric.ratio !== 0) {
-                    return_diff_status.fuel.in_stock = return_diff_status.fuel.in_stock / AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
-                }
+                return_diff_status.fuel.in_stock = Number((new_route.distance * ((new_route.usage.combustion.amount * new_route.usage.combustion.ratio) / 100)).toFixed(1))
                 const new_fuel_amount_in_stock = car_energy_source_status.fuel.in_stock - return_diff_status.fuel.in_stock
                 const new_fuel_distance = Number(((new_fuel_amount_in_stock / (await this.actualAvgUsage(carID, 'Combustion', new_route.usage.combustion.amount))) * 100).toFixed(0))
                 return_diff_status.fuel.remain_distance = car_energy_source_status.fuel.remain_distance - new_fuel_distance
@@ -158,7 +155,7 @@ export class CarService {
             }
             if (new_route.usage.electric.ratio !== 0) {
                 new_route.usage.electric.amount = await this.calcAvgUsage(carID, new_route.original_avg_fuel_usage, 'Electric')
-                return_diff_status.electric.in_stock = Number((new_route.distance * (new_route.usage.electric.amount / 100)).toFixed(1))
+                return_diff_status.electric.in_stock = Number((new_route.distance * ((new_route.usage.electric.amount * new_route.usage.electric.ratio) / 100)).toFixed(1))
                 const new_energy_amount_in_stock = car_energy_source_status.electric.in_stock - return_diff_status.electric.in_stock
                 const new_energy_distance = Number(((new_energy_amount_in_stock / (await this.actualAvgUsage(carID, 'Electric', new_route.usage.electric.amount))) * 100).toFixed(0))
                 return_diff_status.electric.remain_distance = car_energy_source_status.electric.remain_distance - new_energy_distance
@@ -309,17 +306,16 @@ export class CarService {
             try {
                 // * GET CAR DATA
                 const car = await this.getOne(carID, true) as CarDBModel
-                // * GET FUEL CONFIG
-                const fuel_config = this.DB.LS_getData(this.FC_STORE)
-                if (!fuel_config) {
-                    throw new Error(`Fuel Config not set!`)
-                }
                 // * CALC ROUTE USAGE AMOUNT DEPEND ON FUEL CONFIG
-                newRoute.usage.combustion.amount = Number((newRoute.original_avg_fuel_usage * (car.engine.combustion.avg_fuel_usage / Number(fuel_config))).toFixed(1))
-                newRoute.usage.electric.amount = Number((newRoute.original_avg_fuel_usage * (car.engine.electric.energy_avg_usage / Number(fuel_config))).toFixed(1))
                 // * UPDATE CAR ENERGY STATE
-                car.energySourceData.combustion.avaibleAmount -= newRoute.distance * ((newRoute.usage.combustion.amount * newRoute.usage.combustion.ratio) / 100)
-                car.energySourceData.electric.avaibleAmount -= newRoute.distance * ((newRoute.usage.electric.amount * newRoute.usage.electric.ratio) / 100)
+                if (newRoute.usage.combustion.ratio !== 0) {
+                    newRoute.usage.combustion.amount = await this.calcAvgUsage(car.id, newRoute.original_avg_fuel_usage, 'Combustion')
+                    car.energySourceData.combustion.avaibleAmount -= newRoute.distance * ((newRoute.usage.combustion.amount * newRoute.usage.combustion.ratio) / 100)
+                } 
+                if (newRoute.usage.electric.ratio !== 0) {
+                    newRoute.usage.electric.amount = await this.calcAvgUsage(car.id, newRoute.original_avg_fuel_usage, 'Electric')
+                    car.energySourceData.electric.avaibleAmount -= newRoute.distance * ((newRoute.usage.electric.amount * newRoute.usage.electric.ratio) / 100)
+                }
                 // * ADD ROUTE DISTANCE TO MILEAGE OF CAR
                 car.mileage.actual! += newRoute.distance
                 // * ADD ROUTE TO DB
