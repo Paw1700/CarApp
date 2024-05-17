@@ -145,10 +145,10 @@ export class CarService {
             const car = await this.getOne(carID, true) as CarDBModel
             const car_energy_source_status = await this.getCarEnergySourceStatus(carID)
             const return_diff_status = new energySourceStatus()
-            if (new_route.usage.combustion.include) {
+            if (new_route.usage.combustion.ratio !== 0) {
                 new_route.usage.combustion.amount = await this.calcAvgUsage(carID, new_route.original_avg_fuel_usage, 'Combustion')
                 return_diff_status.fuel.in_stock = Number((new_route.distance * (new_route.usage.combustion.amount / 100)).toFixed(1))
-                if (new_route.usage.electric.include) {
+                if (new_route.usage.electric.ratio !== 0) {
                     return_diff_status.fuel.in_stock = return_diff_status.fuel.in_stock / AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
                 }
                 const new_fuel_amount_in_stock = car_energy_source_status.fuel.in_stock - return_diff_status.fuel.in_stock
@@ -156,7 +156,7 @@ export class CarService {
                 return_diff_status.fuel.remain_distance = car_energy_source_status.fuel.remain_distance - new_fuel_distance
                 return_diff_status.fuel.level = Number((return_diff_status.fuel.in_stock * 100 / car.engine.combustion.fuel_tank_volume).toFixed(0))
             }
-            if (new_route.usage.electric.include) {
+            if (new_route.usage.electric.ratio !== 0) {
                 new_route.usage.electric.amount = await this.calcAvgUsage(carID, new_route.original_avg_fuel_usage, 'Electric')
                 return_diff_status.electric.in_stock = Number((new_route.distance * (new_route.usage.electric.amount / 100)).toFixed(1))
                 const new_energy_amount_in_stock = car_energy_source_status.electric.in_stock - return_diff_status.electric.in_stock
@@ -201,7 +201,7 @@ export class CarService {
             try {
                 //!! CAN CAUSE PROBLEM 
                 const car_routes = (await this.ROUTE.getCarRoutes(carID))
-                    .filter(route => type === 'Combustion' ? route.usage.combustion.include : route.usage.electric.include)
+                    .filter(route => type === 'Combustion' ? route.usage.combustion.ratio !== 0 : route.usage.electric.ratio !== 0)
                     .slice(0, 9)
                 const car = await this.getOne(carID, true) as CarDBModel
                 const car_manufacture_avg_usage = type === 'Combustion' ? car.engine.combustion.avg_fuel_usage : car.engine.electric.energy_avg_usage
@@ -312,6 +312,43 @@ export class CarService {
         })
     }
 
+    /**
+     * Function add route to DB and modifies car energy state and mileage
+     * @param carID
+     * @param newRoute 
+     * @param updateMode if true it's not create new route data in DB
+     * @returns 
+     */
+    newRouteOperation(carID: string, newRoute: Route, updateMode = false): Promise<void> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // * GET CAR DATA
+                const car = await this.getOne(carID, true) as CarDBModel
+                // * GET FUEL CONFIG
+                const fuel_config = this.DB.LS_getData(this.FC_STORE)
+                if (!fuel_config) {
+                    throw new Error(`Fuel Config not set!`)
+                }
+                // * CALC ROUTE USAGE AMOUNT DEPEND ON FUEL CONFIG
+                newRoute.usage.combustion.amount = Number((newRoute.original_avg_fuel_usage * (car.engine.combustion.avg_fuel_usage / Number(fuel_config))).toFixed(1))
+                newRoute.usage.electric.amount = Number((newRoute.original_avg_fuel_usage * (car.engine.electric.energy_avg_usage / Number(fuel_config))).toFixed(1))
+                // * UPDATE CAR ENERGY STATE
+                car.energySourceData.combustion.avaibleAmount -= newRoute.distance * ((newRoute.usage.combustion.amount * newRoute.usage.combustion.ratio) / 100)
+                car.energySourceData.electric.avaibleAmount -= newRoute.distance * ((newRoute.usage.electric.amount * newRoute.usage.electric.ratio) / 100)
+                // * ADD ROUTE DISTANCE TO MILEAGE OF CAR
+                car.mileage.actual! += newRoute.distance
+                // * ADD ROUTE TO DB
+                await this.ROUTE.saveOne(newRoute, updateMode)
+                // * UPDATE CAR DATA IN DB
+                await this.saveOne(car, true)
+                resolve()
+            } catch (err) {
+                console.error(err)
+                reject()
+            }
+        })
+    }
+
     //* posiible not needed in future
     /**
      * @returns sum of fuel/energy used by car
@@ -327,7 +364,7 @@ export class CarService {
                 car_routes.forEach(route => {
                     switch (type) {
                         case "Combustion":
-                            if (route.usage.combustion.include) {
+                            if (route.usage.combustion.ratio !== 0) {
                                 let route_usage = route.usage.combustion.amount
                                 if (CCRCUTH && route.usage.electric.amount !== 0) {
                                     route_usage /= AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio
@@ -336,7 +373,7 @@ export class CarService {
                             }
                             break
                         case "Electric":
-                            if (route.usage.electric.include) {
+                            if (route.usage.electric.ratio !== 0) {
                                 sum_of_source += Number((route.distance * (route.usage.electric.amount / 100)).toFixed(1))
                             }
                             break
