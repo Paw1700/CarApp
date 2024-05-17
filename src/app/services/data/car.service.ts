@@ -271,11 +271,14 @@ export class CarService {
     }
 
     /**
-     * It's charge up car by deleting electric route or converting hybrid routes in to combustion one
+     * Function add information about chargin up electric/hybrid car to car data
      * @param carID 
-     * @param 
+     * @param chargingPower power of which car is charging, 
+     * IF equal to 0 charging is stop, then modifies car data about energy state
+     * IF -1 means abort charging operation and don't change energy source state
+     * IF less than -1 it's charge up car instantly by changing car energy source state
      */
-    chargingOperation(carID: string, chargingPower: number): Promise<void> {
+    chargingOperation(carID: string, chargingPower: -1 | 0 | number): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
                 const car = await this.getOne(carID, true)
@@ -296,8 +299,11 @@ export class CarService {
                     }
                     car.energySourceData.electric.chargingPower = null
                     car.energySourceData.electric.chargingStartAt = null
-                } else if (chargingPower < 0) {
+                } else if (chargingPower == -1) {
                     car.energySourceData.electric.avaibleAmount = car.engine.electric.energy_storage_volume
+                    car.energySourceData.electric.chargingPower = null
+                    car.energySourceData.electric.chargingStartAt = null
+                } else if (chargingPower < -1) {
                     car.energySourceData.electric.chargingPower = null
                     car.energySourceData.electric.chargingStartAt = null
                 } else {
