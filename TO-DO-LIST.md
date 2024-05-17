@@ -1,10 +1,39 @@
 # <r>BUGLISTA
 *EMPTY FOR NOW*
 
-# <lb>NEED FOR 2.2 <o>**WIP**</o> 
+# <lb>NEED FOR 2.3 <o>**WIP**</o>
+- [ ] Pełna obsługa błędów
+    - [ ] UI od belki błędów
+- [ ] Stworzenie skryptu sortującego błedy w pliku JSON jak i typach
+- [ ] Sprawdzenie poprawności stylów i dark modu
+    - [ ] About App
+    - [ ] Important Update
+    - [ ] App First Configuration (Start Configuration)
+    - [ ] Backup
+    - [ ] Brand List
+    - [ ] Brand Create
+    - [ ] Car 
+    - [ ] Routes List
+    - [ ] Settings
+    - [ ] Splash Screen
+- [x] Symulowanie ładowania auta
+    - [x] Interfejs ustalenia mocy ładowania
+    - [x] Logika związana z ładowaniem auta
+    - [x] Zmiana modelu danych auta pod ładowanie
+    - [x] Interfejs pokazujący ładowanie auta
+- [x] Dynamiczne ustalenie współczynnika jazdy hydrydowej
+- [x] Pamiętanie całej historii auta
+    - [x] Zmień CarDB model
+    - [x] Dostosuj CarService to zmiany modelu
+    - [x] Dostosuj CarHomePage
+    - [x] Stwórz algorytm przetwarzania starych danych aplikacji na nowszą wersje
+    - [x] Dostosuj RoutesPage
+    - [x] Dostosuj CarListPage
+
+# <lb>DONE IN 2.2
 
 - [x] <r>**Refaktoring modeli na null gdy pusty wyraz** </r>
-- [ ] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy (zwrócić szczególną uwagę na obsługę błędów)
+- [x] Kompletny refaktoring kodu na Angular 17, przejście na model komponentowy
     - [x] **CORE**
         - [x] **SERVICES**
             - [x] Refaktoring zgodnie z podejściem 
@@ -19,7 +48,7 @@
                 - [x] Validator 
             - [x] Sprawdź poprawność działania serwisu walidatora
             - [x] Ustandaryzuj działanie backupu w zakresie wersji i wczytywania danych backupu
-    - [ ] **FEATURE**
+    - [x] **FEATURE**
         - [x] Refaktoring zgodnie z podejściem 
                 Komponent => Serwis strony => Serwis aplikacji/podmiotu
         - [x] Rozbicie na mniejsze komponenty
@@ -35,12 +64,11 @@
             - [x] Settings
             - [x] Managed App Data
             - [x] Splash Screen
-        - [ ] Przepisanie HTML z optymalizacją CSS
-            - [ ] UI
+        - [x] Przepisanie HTML z optymalizacją CSS
+            - [x] UI
                 - [x] Upper Bar
                 - [x] Loading Screen
                 - [x] Navigation Bar
-                - [ ] Warning Prompt
                 - [x] Loaders 
             - [x] About App
             - [x] Important Update
@@ -49,39 +77,20 @@
             - [x] Brand List
             - [x] Brand Create
             - [x] Car List
-            - [x] Car Create <r>DON'T HAVE ERROR INFO</r>
+            - [x] Car Create
             - [x] Home Page 
             - [x] Routes List
             - [x] Settings
-            - [x] Managed App Data <r>DON'T HAVE ERROR INFO</r>
+            - [x] Managed App Data
             - [x] Splash Screen
-- [ ] Stworzenie skryptu sortującego błedy w pliku JSON jak i typach
-- [ ] Sprawdzenie poprawności stylów i dark modu
-    - [ ] About App
-    - [ ] Important Update
-    - [ ] App First Configuration (Start Configuration)
-    - [ ] Backup
-    - [ ] Brand List
-    - [ ] Brand Create
-    - [ ] Car 
-    - [ ] Routes List
-    - [ ] Settings
-    - [ ] Splash Screen
 - [x] Dodanie napisu wersji na ekranie startowym
-- [ ] Zamienie starych oddzielnych komponentów na komponenty z UI
 
 # <g>FUTURE FEATURE
-
-### <o>2.3
-- Symulowanie ładowania auta
-- Zmiana interfejsu dodawania tras i ładowania
 
 ### <o>2.4
 - Synchronizacja danych aplikacji z serwerem backup, gdzie backup będzie bardziej zawansowany ponieważ podzielny na backup pełny jak i nie pełny
 - Dodawanie auta bez zdjęcia, oznacza ona również zmianę wygląd interfejsu
-
-### <o>2.5
-- Historia auta, oznacza to zapisywane wszystkich tras auta i wyświetlanie różnych statystyk auta
+- Filtrowanie tras
 
 # <gr>WERSJONOWANIE
 

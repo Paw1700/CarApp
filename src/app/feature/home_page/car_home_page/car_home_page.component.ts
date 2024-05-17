@@ -150,7 +150,7 @@ export class CarHomePage implements OnInit, OnDestroy{
         })
         this.PS.car_energy_state$.pipe(takeUntil(this.unsubscriber$)).subscribe( energy_state => {
             this.car_energy_state = energy_state
-            if (energy_state.electric.level < 100 && (this.car.type === 'Electric' || this.car.type === 'Hybrid')) {
+            if ((energy_state.electric.level < 100 && this.car.energySourceData.electric.chargingPower == null ) && (this.car.type === 'Electric' || this.car.type === 'Hybrid')) {
                 this.charge_up_text = 'NAŁADUJ'
             } else {
                 this.charge_up_text = ''

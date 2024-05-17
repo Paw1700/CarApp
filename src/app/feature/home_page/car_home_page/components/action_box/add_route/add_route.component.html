@@ -1,6 +1,6 @@
 <div class="ADDING_ROUTE_BOX">
     @if (car.type === 'Hybrid') {
-        <route-type-switch (routeTypeChanged)="handleInput('route_type', $event)"/>
+        <route-type-switch (routeTypeRatio)="handleInput('route_type_ratio', $event)"/>
     }
     <date-picker [title]="'Data trasy'" [value]="start_date" (valueChange)="handleInput('date', $event)"/>
     <number-input [title]="'Dystans'" [minValue]="0" [type]="'buttons'" [show_fast_btns]="true" [fast_btns_settings]="{first_amount: 5, second_amount: 25}" (valueChange)="handleInput('distance', $event)"/>

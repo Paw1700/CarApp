@@ -1,0 +1,12 @@
+<div class="EDITOR">
+    <p class="TITLE">Usuwanie trasy</p>
+    <p class="DESC">Czy jesteś pewny? Nie mozna cofnąć tego działania!</p>
+    <div class="AFFECT_CAR">
+        <input type="checkbox" (change)="affectionOfCarState($event)">
+        <p>Zaktulizuj stan energetyczny o te trase</p>
+    </div>
+    <div class="BTNs">
+        <button (click)="cancelDeletion()">ANULUJ</button>
+        <button class="DEL" (click)="deleteRoute()">USUŃ</button>
+    </div>
+</div>

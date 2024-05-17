@@ -13,7 +13,6 @@ import { energySourceStatus } from "../../../../services/data/car.service";
 export class CarTile implements OnInit{
     @Input({required: true}) car: Car = new Car()
     @Input({required: true}) car_energy_source_state = new energySourceStatus()
-    @Input({required: true}) car_driven_distance = 0
     @Input({required: true}) car_is_selected = false
     @Output() car_is_choosed = new EventEmitter<string>()
     private readonly tile_posistions = {default: 0, energy_state: 46}
@@ -21,7 +20,7 @@ export class CarTile implements OnInit{
     car_mileage = 0 
 
     ngOnInit(): void {
-        this.car_mileage = Number((Number(this.car.mileage.actual) + this.car_driven_distance).toFixed(0))
+        this.car_mileage = Number(this.car.mileage.actual?.toFixed(0))
     }
 
     emitClick() {

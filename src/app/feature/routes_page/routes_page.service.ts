@@ -9,47 +9,50 @@ export class RoutePageService {
     constructor(private APP: AppService) { }
     car_type$ = new BehaviorSubject<CarType | null>(null)
     route_to_edit$ = new BehaviorSubject<Route | null>(null)
-    car_routes_list$ = new BehaviorSubject<RoutePageList[]>([])
+    route_to_delete$ = new BehaviorSubject<Route | null>(null)
+    car_routes_list$ = new BehaviorSubject<RoutePageList>({ list: [], isMore: false })
 
-    async saveRoute() {
+    async saveRoute(affectCar = false) {
         const route = this.route_to_edit$.value
         if (route) {
-            if (route.usage.combustion.include) {
-                route.usage.combustion.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Combustion')
-            } else {
-                route.usage.combustion.amount = 0
-            }
-            if (route.usage.electric.include) {
-                route.usage.electric.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Electric')
-            } else {
-                route.usage.electric.amount = 0
-            }
-            await this.APP.DATA.ROUTE.saveOne(route, true)
+            await this.APP.DATA.CAR.newRouteOperation(route.carID, route, true, affectCar)
             await this.getCarRoutes()
             this.route_to_edit$.next(null)
         }
     }
 
-    async deleteRoute(route: Route) {
-        await this.APP.DATA.ROUTE.delete([route.id])
+    async deleteRoute(route: Route, affectCarSourceStatus = false) {
+        if (affectCarSourceStatus) {
+            await this.APP.DATA.CAR.removeRouteOperation(route, true)
+        } else {
+            await this.APP.DATA.ROUTE.delete([route.id])
+        }
         await this.getCarRoutes()
+        this.route_to_delete$.next(null)
     }
 
-    async getCarRoutes() {
+    async getCarRoutes(page?: number) {
         const carID = this.APP.DATA.getChoosedCarID()
         if (carID) {
             this.car_type$.next((await this.APP.DATA.CAR.getOne(carID, true) as CarDBModel).type)
-            const unsorted_routes_list = await this.APP.DATA.ROUTE.getCarRoutes(carID)
-            this.car_routes_list$.next(this.sortRoutesByDate(unsorted_routes_list))
+            let unsorted_routes_list = await this.APP.DATA.ROUTE.getCarRoutes(carID), isMoreRoutes = false
+            if (page) {
+                const unsorted_routes_list_length = unsorted_routes_list.length
+                if (page * 12 < unsorted_routes_list_length) {
+                    isMoreRoutes = true
+                }
+                unsorted_routes_list = unsorted_routes_list.slice(0, page * 12)
+            }
+            this.car_routes_list$.next({ list: this.sortRoutesByDate(unsorted_routes_list), isMore: isMoreRoutes })
         }
     }
 
-    private sortRoutesByDate(routes: Route[]): RoutePageList[] {
-        const return_list: RoutePageList[] = []
+    private sortRoutesByDate(routes: Route[]): RoutePageListItem[] {
+        const return_list: RoutePageListItem[] = []
         let loop_date = new Date()
         let loop_routes: Route[] = []
 
-        routes.forEach( (route, index, array) => {
+        routes.forEach((route, index, array) => {
             if (index === 0 || loop_routes.length === 0) {
                 loop_date = new Date(route.date)
                 loop_routes = [route]
@@ -79,7 +82,7 @@ export class RoutePageService {
             }
 
             function endOfChapter() {
-                return_list.push({date: loop_date, route_list: loop_routes.reverse()})
+                return_list.push({ date: loop_date, route_list: loop_routes.reverse() })
                 loop_date = new Date()
                 loop_routes = []
             }
@@ -100,4 +103,5 @@ export class RoutePageService {
     }
 }
 
-export type RoutePageList = { date: Date, route_list: Route[] }
+export type RoutePageList = { list: RoutePageListItem[], isMore: boolean }
+export type RoutePageListItem = { date: Date, route_list: Route[] }

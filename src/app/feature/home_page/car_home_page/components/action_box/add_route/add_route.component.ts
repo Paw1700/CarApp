@@ -18,7 +18,7 @@ import { takeUntil } from "rxjs";
     templateUrl: './add_route.component.html',
     styleUrl: './add_route.component.scss'
 })
-export class AddRouteBox extends NgUnsubscriber implements OnInit{
+export class AddRouteBox extends NgUnsubscriber implements OnInit {
     private PS = inject(CarHomePageService)
     car = new Car()
     readonly start_date = new Date().toJSON().substring(0, 10)
@@ -27,15 +27,17 @@ export class AddRouteBox extends NgUnsubscriber implements OnInit{
         this.readCarDataState()
         this.handleInput('date', new Date().toJSON().substring(0, 10))
         if (this.car.type === 'Combustion') {
-            this.PS.route_data$.value.usage.combustion.include = true
+            this.PS.route_data$.value.usage.combustion.ratio = 1
+            this.PS.route_data$.value.usage.electric.ratio = 0
         } else if (this.car.type === 'Electric') {
-            this.PS.route_data$.value.usage.electric.include = true
+            this.PS.route_data$.value.usage.combustion.ratio = 0
+            this.PS.route_data$.value.usage.electric.ratio = 1
         }
     }
 
-    handleInput(type: 'date' | 'distance' | 'avg_usage' | 'route_type', payload: any) {
+    handleInput(type: 'date' | 'distance' | 'avg_usage' | 'route_type_ratio', payload: any) {
         const route = this.PS.route_data$.value
-        switch(type) {
+        switch (type) {
             case "date":
                 route.date = payload
                 break
@@ -45,20 +47,13 @@ export class AddRouteBox extends NgUnsubscriber implements OnInit{
             case "avg_usage":
                 route.original_avg_fuel_usage = payload
                 break
-            case 'route_type':
-                switch(payload) {
-                    case 'Combustion':
-                        route.usage.combustion.include = true
-                        route.usage.electric.include = false
-                        break
-                    case 'Electric':
-                        route.usage.combustion.include = false
-                        route.usage.electric.include = true
-                        break
-                    case 'Hybrid':
-                        route.usage.combustion.include = true
-                        route.usage.electric.include = true
-                        break
+            case 'route_type_ratio':
+                if (payload > 50) {
+                    route.usage.combustion.ratio = Number(((16 + ((payload - 50) * 1.68)) / 100).toFixed(2))
+                    route.usage.electric.ratio = Number(((84 - ((payload - 50) * 1.68)) / 100).toFixed(2))
+                } else {
+                    route.usage.combustion.ratio = Number(((payload * 0.32) / 100).toFixed(2))
+                    route.usage.electric.ratio = Number(((100 - (payload * 0.32))/100).toFixed(2))
                 }
                 break
         }
@@ -66,7 +61,7 @@ export class AddRouteBox extends NgUnsubscriber implements OnInit{
     }
 
     private readCarDataState() {
-        this.PS.car$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe( car => {
+        this.PS.car$.pipe(takeUntil(this.ngUnsubscriber$)).subscribe(car => {
             this.car = car
         })
     }

@@ -1,8 +1,13 @@
 <div class="ACTION_BOX">
     @if (box_state === 'closed') {
-        <button [@add_route_btn] (click)="changeCompState('add_route')" class="ADD_RT_BTN">
-            <img src="/assets/UI/add_route/white.webp" /> 
-            DODAJ TRASĘ
+        <button [@add_route_btn] (click)="changeCompState('add_route')" class="ADD_RT_BTN" [class.CHARGING]="is_charging">
+            @if(is_charging) {
+                <div class="GLOW_BOX"></div>
+                ŁADOWANIE...
+            } @else { 
+                <img src="/assets/UI/add_route/white.webp" /> 
+                DODAJ TRASĘ
+            }
         </button>
     } @else if (box_state === 'add_route') {
         <add-route-box [@add_route_box] />

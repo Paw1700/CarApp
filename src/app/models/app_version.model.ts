@@ -33,4 +33,4 @@ export class AppVersionIteration {
     ) { }
 }
 
-export type AppDataMajorVersions = '2.0.5' | '2.1.3' | 'actual'
+export type AppDataMajorVersions = '2.0.5' | '2.1.3' | '2.2.0' | 'actual'
