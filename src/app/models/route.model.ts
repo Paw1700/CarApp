@@ -6,24 +6,19 @@ export class Route {
         public original_avg_fuel_usage: number = 0,
         public distance: number = 0,
         public usage: {
-            combustion: {
-                include: boolean,
-                amount: number
-            },
-            electric: {
-                include: boolean,
-                amount: number
-            }
+            combustion: UsageData,
+            electric: UsageData
         } = {
             combustion: {
-                include: false,
+                ratio: 0,
                 amount: 0
             },
             electric: {
-                include: false,
+                ratio: 0,
                 amount: 0
             }
         }
     ) { }
 }
 
+export type UsageData = {ratio: number, amount: number}
