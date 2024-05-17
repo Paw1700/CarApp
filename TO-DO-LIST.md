@@ -18,7 +18,13 @@
     - [ ] Splash Screen
 - [ ] Symulowanie ładowania auta
 - [ ] Zmiana interfejsu dodawania tras i ładowania
-- [ ] Pamiętanie całej historii auta
+- [x] Pamiętanie całej historii auta
+    - [x] Zmień CarDB model
+    - [x] Dostosuj CarService to zmiany modelu
+    - [x] Dostosuj CarHomePage
+    - [x] Stwórz algorytm przetwarzania starych danych aplikacji na nowszą wersje
+    - [x] Dostosuj RoutesPage
+    - [x] Dostosuj CarListPage
 
 # <lb>DONE IN 2.2
 
@@ -80,6 +86,7 @@
 ### <o>2.3
 - Synchronizacja danych aplikacji z serwerem backup, gdzie backup będzie bardziej zawansowany ponieważ podzielny na backup pełny jak i nie pełny
 - Dodawanie auta bez zdjęcia, oznacza ona również zmianę wygląd interfejsu
+- Filtrowanie tras
 
 # <gr>WERSJONOWANIE
 

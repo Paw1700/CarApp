@@ -2,7 +2,7 @@
     @if (choosedCarID) {
         <title-bar [title_content]="'Trasy'" [title_mode]="'BIG'" />
         <div class="ROUTES_LIST">
-            @for (route_pack of car_routes; track route_pack.date) {
+            @for (route_pack of car_routes.list; track route_pack.date) {
                 <div [@show_up] class="ROUTE_DATE">
                     {{ route_pack.date.toJSON()| stringDate }}
                 </div>
@@ -12,7 +12,11 @@
             } @empty {
                 <p [@show_up] class="EMPTY_ROUTES">Brak tras</p>
             }
+            @if (car_routes.isMore) {
+                <btn (click)="getMoreRoutes()" [border_radius_in_vw]="2.5" [btn_type]="'accent'" [width_in_vw]="89" [height_in_vw]="10">WIĘCEJ</btn>
+            }
         </div>
+        
     } @else {
         <not-choosed-car (redirectToCarList)="APP.navigate('carsList')"/>
     }

@@ -3,7 +3,7 @@ import { AppVersion } from "./models/app_version.model";
 export class AppEnvironment {
     public static readonly APP_VERSION: AppVersion = {
         edition: 2,
-        version: 2,
+        version: 3,
         patch: 0,
         compilation: 0,
         compilationIteration: 'x',

@@ -49,12 +49,15 @@ export class CarHomePageService {
                             route.usage.electric.amount = await this.APP.DATA.CAR.calcAvgUsage(route.carID, route.original_avg_fuel_usage, 'Electric')
                         }
                         await this.APP.DATA.ROUTE.saveOne(route)
+                        const car = await this.APP.DATA.CAR.getOne(this.car$.value.id, true)
+                        car.mileage.actual = Number(car.mileage.actual) + route.distance
+                        await this.APP.DATA.CAR.saveOne(car, true)
                         break
                     case "tank_up":
-                        await this.APP.DATA.CAR.tankUp(this.car$.value.id)
+                        await this.APP.DATA.CAR.tankingOperation(this.car$.value.id, -1)
                         break
                     case "charge_up":
-                        await this.APP.DATA.CAR.chargeUp(this.car$.value.id)
+                        await this.APP.DATA.CAR.chargingOperation(this.car$.value.id, -1)
                         break
                 }
                 await this.getCarData(this.car$.value.id)
