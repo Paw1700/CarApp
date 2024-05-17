@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Route } from "../../../../models/route.model";
 import { ScrollAbleBar } from "../../../../UI/scroll_able_bar/scroll_able_bar.component";
-import { AppEnvironment } from "../../../../environment";
 
 @Component({
     selector: 'route-list-item',
@@ -20,12 +19,12 @@ export class RouteListItem implements OnInit{
     electric_used = 0
 
     ngOnInit(): void {
-        if (this.route.usage.combustion.amount !== 0) {
-            this.combustion_usage = this.route.usage.electric.amount !== 0 ? this.route.usage.combustion.amount / AppEnvironment.APP_FINAL_VARIABLES.combustion_engine_hybrid_usage_ratio : this.route.usage.combustion.amount
+        if (this.route.usage.combustion.ratio !== 0.0) {
+            this.combustion_usage = this.route.usage.combustion.amount * this.route.usage.combustion.ratio
             this.combustion_used = this.route.distance * (this.combustion_usage / 100)
         }
-        if (this.route.usage.electric.amount !== 0) {
-            this.electric_usage = this.route.usage.electric.amount
+        if (this.route.usage.electric.ratio !== 0.0) {
+            this.electric_usage = this.route.usage.electric.amount * this.route.usage.electric.ratio
             this.electric_used = this.route.distance * (this.electric_usage / 100)
         }
     }

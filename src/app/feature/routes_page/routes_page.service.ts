@@ -14,8 +14,8 @@ export class RoutePageService {
     async saveRoute() {
         const route = this.route_to_edit$.value
         if (route) {
-            this.APP.DATA.CAR.newRouteOperation(route.carID, route, true)
-            await this.APP.DATA.ROUTE.saveOne(route, true)
+            await this.APP.DATA.CAR.newRouteOperation(route.carID, route, true)
+            // await this.APP.DATA.ROUTE.saveOne(route, true)
             await this.getCarRoutes()
             this.route_to_edit$.next(null)
         }

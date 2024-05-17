@@ -1,6 +1,5 @@
 import { NgStyle } from "@angular/common";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { CarType } from "../../../../../../../../models/car.model";
 
 @Component({
     selector: 'route-type-switch',
@@ -18,12 +17,18 @@ export class RouteTypeSwitch implements OnInit {
     ngOnInit(): void {
         if (this.value === null) {
             this.routeTypeRatio.emit(0)
+        } else {
+            this.setSliderPosition(this.value)
         }
     }
 
     changeSliderPickerPos(e: any) {
-        this.slider_value = Number(e.target.value)
+        this.setSliderPosition(e.target.value)
+        this.routeTypeRatio.emit(e.target.value)
+    }
+
+    private setSliderPosition(value: number) {
+        this.slider_value = Number(value)
         this.slider_picker_pos = this.slider_value * 0.825 + 2.5
-        this.routeTypeRatio.emit(this.slider_value)
     }
 }

@@ -306,6 +306,32 @@ export class CarService {
             try {
                 // * GET CAR DATA
                 const car = await this.getOne(carID, true) as CarDBModel
+                // * IF UPDATING RESET CAR ENERGY SOURCE STATE BEFORE ROAD ADDED
+                if (updateMode) {
+                    const old_route = (await this.ROUTE.getAll()).find(route => route.id === newRoute.id)
+                    if (old_route) {
+                        const old_route_distance = old_route.distance
+                        car.mileage.actual! -= old_route_distance
+                        if (old_route.usage.combustion.ratio !== 0) {
+                            const fuelUsed = old_route.distance * ((old_route.usage.combustion.amount * old_route.usage.combustion.ratio) / 100)
+                            car.energySourceData.combustion.avaibleAmount += fuelUsed
+                            if (car.energySourceData.combustion.avaibleAmount > car.engine.combustion.fuel_tank_volume) {
+                                car.energySourceData.electric.avaibleAmount = car.engine.combustion.fuel_tank_volume
+                            }
+                        }
+                        if (old_route.usage.electric.ratio !== 0) {
+                            const energyUsed = old_route.distance * ((old_route.usage.electric.amount * old_route.usage.electric.ratio) / 100)
+                            car.energySourceData.electric.avaibleAmount += energyUsed
+                            if (car.energySourceData.electric.avaibleAmount > car.engine.electric.energy_storage_volume) {
+                                car.energySourceData.electric.avaibleAmount = car.engine.electric.energy_storage_volume
+                            }
+                        }
+                    } else {
+                        throw new Error()
+                    }
+                }
+                // * GIVE ROUTE carID
+                newRoute.carID = car.id
                 // * CALC ROUTE USAGE AMOUNT DEPEND ON FUEL CONFIG
                 // * UPDATE CAR ENERGY STATE
                 if (newRoute.usage.combustion.ratio !== 0) {

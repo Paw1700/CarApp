@@ -407,13 +407,13 @@ export class AppBackup {
                 backup_2_2_0.routes.forEach( route => {
                     let combustionRatio = 0.0
                     let electricRatio = 0.0
-                    if (route.usage.combustion.include && route.usage.electric.include) {
+                    if (route.usage.combustion.amount !== 0 && route.usage.electric.amount !== 0) {
                         combustionRatio = 0.16
                         electricRatio = 0.84
-                    } else if (route.usage.combustion.include && !route.usage.electric.include) {
+                    } else if (route.usage.combustion.amount !== 0 && route.usage.electric.amount == 0) {
                         combustionRatio = 1.0
                         electricRatio = 0.0
-                    } else if (!route.usage.combustion.include && route.usage.electric.include) {
+                    } else if (route.usage.combustion.amount == 0 && route.usage.electric.amount !== 0) {
                         combustionRatio = 0.0
                         electricRatio = 1.0
                     }
