@@ -5,6 +5,7 @@ import { CarBrand } from "../../models/car_brand.model";
 import { BrandListItem } from "./components/brand_list_item.component";
 import { ButtonComponent } from "../../UI/button/button.component";
 import { ScrollAbleBar, ScrollBarOption } from "../../UI/scroll_able_bar/scroll_able_bar.component";
+import { ErrorID } from "../../models/error.model";
 
 @Component({
     selector: 'brand-list-page',
@@ -36,8 +37,8 @@ export class BrandListPage implements OnInit{
             await this.APP.DATA.CAR_BRAND.deleteOne(brandID)
             this.brands = await this.APP.DATA.CAR_BRAND.getAll()
         } catch (err) {
-            //!!! SEND ERROR TO APP SERVICES !!!
             console.error(err)
+            this.APP.errorHappend(err as ErrorID)
         }
     }
 

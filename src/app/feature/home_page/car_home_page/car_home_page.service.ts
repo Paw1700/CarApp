@@ -4,6 +4,7 @@ import { Car, CarDBModel } from "../../../models/car.model";
 import { energySourceStatus } from "../../../services/data/car.service";
 import { Route } from "../../../models/route.model";
 import { AppService } from "../../../service";
+import { ErrorID } from "../../../models/error.model";
 
 @Injectable()
 export class CarHomePageService {
@@ -38,6 +39,7 @@ export class CarHomePageService {
             } catch (err) {
                 console.error(err);
                 reject(err)
+                this.APP.errorHappend(err as ErrorID)
             }
         })
     }
@@ -63,6 +65,7 @@ export class CarHomePageService {
             } catch (err) {
                 console.error(err);
                 reject(err)
+                this.APP.errorHappend(err as ErrorID)
             }
         })
     }

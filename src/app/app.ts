@@ -13,6 +13,7 @@ import { RouteService } from './services/data/routes.service';
 import { NavBar } from './UI/navbar/navbar.component';
 import { AppBackup } from './services/backup.service';
 import { LoadingScreen, LoadingScreenInputData } from './UI/loading_screen/loading_screen.component';
+import { ErrorBarComponent } from './UI/error_bar/error_bar.component';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,8 @@ import { LoadingScreen, LoadingScreenInputData } from './UI/loading_screen/loadi
     CommonModule,
     RouterOutlet,
     NavBar,
-    LoadingScreen
+    LoadingScreen,
+    ErrorBarComponent
   ],
   providers: [
     AppService,
@@ -95,6 +97,7 @@ import { LoadingScreen, LoadingScreenInputData } from './UI/loading_screen/loadi
   </div>
   <navbar />
   <loading-screen [loading_state_data]="loading_screen_data"/>
+  <error-bar />
   `,
   styles: ``
 })

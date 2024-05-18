@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { AppService } from "../../service";
 import { CarBrand } from "../../models/car_brand.model";
+import { ErrorID } from "../../models/error.model";
 
 @Injectable()
 export class CreateBrandPageService {
@@ -30,6 +31,7 @@ export class CreateBrandPageService {
         } catch (err) {
             //!!! SEND ERROR TO APP SERVICES
             Promise.reject()
+            this.APP.errorHappend(err as ErrorID)
         }
     }
 }

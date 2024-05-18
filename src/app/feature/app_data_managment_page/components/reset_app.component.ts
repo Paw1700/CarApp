@@ -1,5 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { AppService } from "../../../service";
+import { ErrorID } from "../../../models/error.model";
 
 @Component({
     selector: 'reset-app',
@@ -100,6 +101,7 @@ export class ResetAppComponent {
                 await this.APP.startApp()
             } catch (err) {
                 console.error(err);
+                this.APP.errorHappend(err as ErrorID)
             }
         }, 2000)
     }

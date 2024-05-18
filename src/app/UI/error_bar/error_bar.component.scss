@@ -1,0 +1,51 @@
+div.BAR {
+    width: 89vw;
+    padding-block: 5vw;
+    position: absolute;
+    top: 2.5vh;
+    left: 5.5vw;
+    z-index: 5;
+    border-radius: 2.5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5vw;
+    background-color: yellow;
+
+    &.FATAL {
+        background-color: red;
+    }
+
+    &.MAIN {
+        background-color: orange;
+    }
+
+    img {
+        width: 15%;
+
+    }
+
+    div.ERROR {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        p {
+            width: 100%;
+            text-align: left;
+
+            &.TITLE {
+                font-size: 1.25rem;
+                font-weight: 700;
+            }
+
+            &.DESC {
+                font-size: 0.9rem;
+                font-weight: 400;
+            }
+        }
+    }
+}
