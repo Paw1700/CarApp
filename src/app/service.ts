@@ -192,14 +192,12 @@ export class AppService {
                 this.APPERANCE.setNavBarSelectedElement(null);
                 this.APPERANCE.hideNavBar(true);
                 break
-                break;
         }
     }
 
-    errorHappend(errID: ErrorID) {
-        const errorObject = this.DATA.getError(errID)
+    errorHappend(errID: ErrorID | string) {
+        const errorObject = this.DATA.getError(errID as ErrorID)
         if (errorObject === undefined) {
-            // * SEND LACK OF ERROR CODE MESSAGE
             this.active_error$.next({id: '', type: 'FATAL', title: 'Błąd krytyczny aplikacji'})
             return
         }
@@ -207,7 +205,7 @@ export class AppService {
         if (errorObject.type !== 'FATAL') {
             setTimeout(() => {
                 this.active_error$.next(null)
-            }, 2250)
+            }, 3000)
         }
     }
 }

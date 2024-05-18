@@ -1,7 +1,7 @@
 export class ErrorModel {
     constructor(
         public id: string,
-        public type: ErrorType,
+        public type: ErrorType | string,
         public title: string,
         public desc?: string
     ) { }
