@@ -6,10 +6,13 @@ import { AppBackup } from './services/backup.service';
 import { Car } from './models/car.model';
 import { AppEnvironment } from './environment';
 import { AppVersionIteration } from './models/app_version.model';
+import { ErrorID, ErrorModel } from './models/error.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class AppService {
     private ROUTER = inject(Router);
+    active_error$ = new BehaviorSubject<ErrorModel | null>(null)
     constructor(
         public APPERANCE: AppApperance,
         public DATA: AppData,
@@ -190,6 +193,21 @@ export class AppService {
                 this.APPERANCE.hideNavBar(true);
                 break
                 break;
+        }
+    }
+
+    errorHappend(errID: ErrorID) {
+        const errorObject = this.DATA.getError(errID)
+        if (errorObject === undefined) {
+            // * SEND LACK OF ERROR CODE MESSAGE
+            this.active_error$.next({id: '', type: 'FATAL', title: 'Błąd krytyczny aplikacji'})
+            return
+        }
+        this.active_error$.next(errorObject)
+        if (errorObject.type !== 'FATAL') {
+            setTimeout(() => {
+                this.active_error$.next(null)
+            }, 2250)
         }
     }
 }
