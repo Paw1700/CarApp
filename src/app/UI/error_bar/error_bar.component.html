@@ -1,0 +1,11 @@
+@if(errorObject !== null) {
+    <div class="BAR" [@bar] [class.FATAL]="errorObject.type === 'FATAL'" [class.MAIN]="errorObject.type === 'MAIN'">
+        <img src="../../../assets/UI/warning/black.webp" />
+        <div class="ERROR">
+            <p class="TITLE">{{ errorObject.title }}</p>
+            @if(errorObject.desc) {
+                <p class="DESC">{{errorObject.desc}}</p>
+            }
+        </div>
+    </div>
+}

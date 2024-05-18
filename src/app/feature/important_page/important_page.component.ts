@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from "@angular/core";
 import { AppService } from "../../service";
 import { ExportBackupComponent } from "../export_backup/export_backup.component";
 import { AppDataMajorVersions, AppVersionIteration } from "../../models/app_version.model";
+import { ErrorID } from "../../models/error.model";
 
 @Component({
     selector: 'important-page',
@@ -32,6 +33,7 @@ export class ImportantPage implements OnInit{
                 this.APP.APPERANCE.loading_screen_state$.next({show: false, loading_stage_text: ''})
             } catch (err) {
                 console.error(err);
+                this.APP.errorHappend(err as ErrorID)
             }
         }, 1250)
     }

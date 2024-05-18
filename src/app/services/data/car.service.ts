@@ -196,7 +196,7 @@ export class CarService {
                 }
             } catch (err) {
                 console.error(err);
-                reject()
+                reject(err)
             }
         })
     }
@@ -352,7 +352,7 @@ export class CarService {
                 resolve()
             } catch (err) {
                 console.error(err)
-                reject()
+                reject(err)
             }
         })
     }
@@ -388,7 +388,7 @@ export class CarService {
                 }
                 resolve()
             } catch (err) {
-                reject()
+                reject(err)
             }
         })
     }

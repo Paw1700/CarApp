@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from "@angular
 import { Backup } from "../../models/backup.model";
 import { AppService } from "../../service";
 import { AppVersionIteration } from "../../models/app_version.model";
+import { ErrorID } from "../../models/error.model";
 
 @Component({
     selector: 'import-backup',
@@ -47,9 +48,14 @@ export class ImportBackupComponent implements OnInit{
             this.APP.APPERANCE.loading_screen_state$.next({show: true, loading_stage_text: 'Importowanie kopii zaposowej...'})
             setTimeout(async () => {
                 if (this.backup) {
-                    await this.APP.BACKUP.implementBackup(this.backup)
-                    this.APP.APPERANCE.loading_screen_state$.next({show: false, loading_stage_text: ''})
-                    this.APP.startApp()
+                    try {
+                        await this.APP.BACKUP.implementBackup(this.backup)
+                        this.APP.APPERANCE.loading_screen_state$.next({show: false, loading_stage_text: ''})
+                        this.APP.startApp()
+                    } catch (err) {
+                        this.APP.errorHappend(err as ErrorID)
+                        console.error(err)
+                    }
                 }
             }, 2500)
         }

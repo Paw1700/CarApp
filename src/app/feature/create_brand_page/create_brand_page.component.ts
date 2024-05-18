@@ -9,6 +9,7 @@ import { NgUnsubscriber } from "../../util/ngUnsubscriber";
 import { ActivatedRoute } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { CreateBrandPageService } from "./create_brand_page.service";
+import { ErrorID } from "../../models/error.model";
 
 @Component({
     selector: 'create-brand-page',
@@ -62,6 +63,7 @@ export class CreateBrandPage extends NgUnsubscriber implements OnInit {
                     err => {
                         this.data_fetching = false;
                         this.toogleError(true);
+                        this.APP.errorHappend(err as ErrorID)
                         setTimeout(() => {
                             this.toogleError(false);
                         }, 1500)

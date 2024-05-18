@@ -7,6 +7,7 @@ import { Car } from "../../models/car.model";
 import { ScrollAbleBar, ScrollBarOption } from "../../UI/scroll_able_bar/scroll_able_bar.component";
 import { energySourceStatus } from "../../services/data/car.service";
 import { animate, style, transition, trigger } from "@angular/animations";
+import { ErrorID } from "../../models/error.model";
 
 @Component({
     selector: 'cars-list',
@@ -61,6 +62,7 @@ export class CarsListPage implements OnInit{
             this.getCarsData(true)
         } catch (err) {
             console.error(err);
+            this.APP.errorHappend(err as ErrorID)
         }
     }
 
@@ -104,6 +106,7 @@ export class CarsListPage implements OnInit{
             this.cars_data = list_to_set
         } catch (err) {
             console.error(err);
+            this.APP.errorHappend(err as ErrorID)
         }
     }
 }

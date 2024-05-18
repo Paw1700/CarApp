@@ -2,8 +2,9 @@
 *EMPTY FOR NOW*
 
 # <lb>NEED FOR 2.3 <o>**WIP**</o>
-- [ ] Pełna obsługa błędów
-    - [ ] UI od belki błędów
+- [x] Pełna obsługa błędów
+    - [x] UI od belki błędów
+    - [x] Obsługa błędów w kodzie
 - [ ] Stworzenie skryptu sortującego błedy w pliku JSON jak i typach
 - [ ] Sprawdzenie poprawności stylów i dark modu
     - [ ] About App
