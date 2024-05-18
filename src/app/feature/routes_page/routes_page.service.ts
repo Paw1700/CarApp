@@ -3,6 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { CarDBModel, CarType } from "../../models/car.model";
 import { Route } from "../../models/route.model";
 import { AppService } from "../../service";
+import { ErrorID } from "../../models/error.model";
 
 @Injectable()
 export class RoutePageService {
@@ -15,20 +16,30 @@ export class RoutePageService {
     async saveRoute(affectCar = false) {
         const route = this.route_to_edit$.value
         if (route) {
-            await this.APP.DATA.CAR.newRouteOperation(route.carID, route, true, affectCar)
-            await this.getCarRoutes()
-            this.route_to_edit$.next(null)
+            try {
+                await this.APP.DATA.CAR.newRouteOperation(route.carID, route, true, affectCar)
+                await this.getCarRoutes()
+                this.route_to_edit$.next(null)
+            } catch (err) {
+                this.APP.errorHappend(err as ErrorID)
+                console.error(err);
+            }
         }
     }
 
     async deleteRoute(route: Route, affectCarSourceStatus = false) {
-        if (affectCarSourceStatus) {
-            await this.APP.DATA.CAR.removeRouteOperation(route, true)
-        } else {
-            await this.APP.DATA.ROUTE.delete([route.id])
+        try {
+            if (affectCarSourceStatus) {
+                await this.APP.DATA.CAR.removeRouteOperation(route, true)
+            } else {
+                await this.APP.DATA.ROUTE.delete([route.id])
+            }
+            await this.getCarRoutes()
+            this.route_to_delete$.next(null)
+        } catch (err) {
+            this.APP.errorHappend(err as ErrorID)
+            console.error(err)
         }
-        await this.getCarRoutes()
-        this.route_to_delete$.next(null)
     }
 
     async getCarRoutes(page?: number) {

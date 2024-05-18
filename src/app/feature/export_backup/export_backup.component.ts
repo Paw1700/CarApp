@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SecurityContext, inject
 import { AppService } from "../../service";
 import { AppEnvironment } from "../../environment";
 import { AppDataMajorVersions } from "../../models/app_version.model";
+import { ErrorID } from "../../models/error.model";
 
 @Component({
     selector: 'export-backup',
@@ -29,6 +30,10 @@ export class ExportBackupComponent implements OnInit{
         this.APP.BACKUP.createBackup(this.app_version)
         .then( backup => {
             this.backup_string = JSON.stringify(backup)
+        })
+        .catch(err => {
+            console.error(err)
+            this.APP.errorHappend(err as ErrorID)
         })
     }
 
