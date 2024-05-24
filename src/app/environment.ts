@@ -8,7 +8,7 @@ export class AppEnvironment {
         compilation: 0,
         compilationIteration: 'x',
         beta: true,
-        build: '2',
+        build: 'GM',
         features: [
             {
                 "id": 1,

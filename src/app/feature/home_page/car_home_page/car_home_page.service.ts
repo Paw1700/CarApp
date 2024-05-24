@@ -22,19 +22,35 @@ export class CarHomePageService {
     charge_up_value$ = new BehaviorSubject<number>(0)
     charging_power$ = new BehaviorSubject<number | null>(null)
 
-    getCarData(carID: string): Promise<void> {
+    updateCarStatus(carID: string): Promise<void> {
+        return new Promise(async resolve => {
+            await this.endChargingIfNeeded(carID)
+            this.car$.next(await this.getCarData(carID))
+            this.car_energy_state$.next(await this.getCarEnergyState(carID))
+            resolve()
+        })
+    }
+
+    saveAction() {
         return new Promise<void>(async (resolve, reject) => {
             try {
-                const car = await this.APP.DATA.CAR.getOne(carID) as Car
-                const car_energy_state = await this.APP.DATA.CAR.getCarEnergySourceStatus(carID)
-                this.car$.next(car)
-                this.car_energy_state$.next(car_energy_state)
-                if (car.energySourceData.electric.chargingPower !== null && car.energySourceData.electric.chargingStartAt !== null) {
-                    if (this.checkIfCarFullyCharged(car)) {
-                        await this.APP.DATA.CAR.chargingOperation(carID, -1)
-                        this.car$.next(await this.APP.DATA.CAR.getOne(carID) as Car)
-                    }
+                const carID = this.car$.value.id
+                const route = this.route_data$.value
+                const charging_power = this.charging_power$.value
+                switch (this.action_box_state$.value) {
+                    case "add_route":
+                        await this.APP.DATA.CAR.newRouteOperation(carID, route)
+                        break
+                    case "tank_up":
+                        await this.APP.DATA.CAR.tankingOperation(carID, -1)
+                        break
+                    case "charge_up":
+                        if (charging_power !== null) {
+                            await this.APP.DATA.CAR.chargingOperation(carID, charging_power)
+                        }
+                        break
                 }
+                await this.updateCarStatus(carID)
                 resolve()
             } catch (err) {
                 console.error(err);
@@ -44,28 +60,40 @@ export class CarHomePageService {
         })
     }
 
-    saveAction() {
-        return new Promise<void>(async (resolve, reject) => {
+    private getCarData(carID: string): Promise<Car> {
+        return new Promise(async (resolve, reject) => {
             try {
-                switch (this.action_box_state$.value) {
-                    case "add_route":
-                        await this.APP.DATA.CAR.newRouteOperation(this.car$.value.id, this.route_data$.value)
-                        break
-                    case "tank_up":
-                        await this.APP.DATA.CAR.tankingOperation(this.car$.value.id, -1)
-                        break
-                    case "charge_up":
-                        if (this.charging_power$.value !== null) {
-                            await this.APP.DATA.CAR.chargingOperation(this.car$.value.id, this.charging_power$.value)
-                        }
-                        break
+                resolve(await this.APP.DATA.CAR.getOne(carID) as Car)
+            } catch (err) {
+                reject()
+            }
+        })
+    }
+
+    private getCarEnergyState(carID: string): Promise<energySourceStatus> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                resolve(await this.APP.DATA.CAR.getCarEnergySourceStatus(carID))
+            } catch (err) {
+                reject()
+                this.handleError(err as string)
+            }
+        })
+    }
+
+    private endChargingIfNeeded(carID: string): Promise<void> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const car = await this.APP.DATA.CAR.getOne(carID, true) as CarDBModel
+                if (car.type !== 'Combustion' && (car.energySourceData.electric.chargingPower !== null || car.energySourceData.electric.chargingPower !== null)) {
+                    if (this.isCarFullyCharged(car)) {
+                        await this.APP.DATA.CAR.chargingOperation(car.id, -1)
+                    }
                 }
-                await this.getCarData(this.car$.value.id)
                 resolve()
             } catch (err) {
-                console.error(err);
-                reject(err)
-                this.APP.errorHappend(err as ErrorID)
+                reject()
+                this.handleError(err as string)
             }
         })
     }
@@ -95,7 +123,7 @@ export class CarHomePageService {
         })
     }
 
-    private checkIfCarFullyCharged(car: CarDBModel) {
+    private isCarFullyCharged(car: CarDBModel): boolean {
         const energy_before_charging = car.energySourceData.electric.avaibleAmount
         const time_in_seconds_of_charging = (new Date().getTime() - car.energySourceData.electric.chargingStartAt!.getTime()) / 1000
         const power_delivered = car.energySourceData.electric.chargingPower! * (time_in_seconds_of_charging / 3600)
@@ -104,6 +132,11 @@ export class CarHomePageService {
         } else {
             return false
         }
+    }
+
+    private handleError(err: string | ErrorID): void {
+        console.error(err)
+        this.APP.errorHappend(err as ErrorID)
     }
 }
 

@@ -5,18 +5,18 @@
 - [x] Pełna obsługa błędów
     - [x] UI od belki błędów
     - [x] Obsługa błędów w kodzie
-- [ ] Stworzenie skryptu sortującego błedy w pliku JSON jak i typach
-- [ ] Sprawdzenie poprawności stylów i dark modu
-    - [ ] About App
-    - [ ] Important Update
-    - [ ] App First Configuration (Start Configuration)
-    - [ ] Backup
-    - [ ] Brand List
-    - [ ] Brand Create
-    - [ ] Car 
-    - [ ] Routes List
-    - [ ] Settings
-    - [ ] Splash Screen
+- [x] Sprawdzenie poprawności stylów i dark modu
+    - [x] About App
+    - [x] Important Update
+    - [x] App First Configuration (Start Configuration)
+    - [x] Backup
+    - [x] Brand List
+    - [x] Brand Create
+    - [x] Car Create
+    - [x] Car 
+    - [x] Routes List
+    - [x] Settings
+    - [x] Splash Screen
 - [x] Symulowanie ładowania auta
     - [x] Interfejs ustalenia mocy ładowania
     - [x] Logika związana z ładowaniem auta
