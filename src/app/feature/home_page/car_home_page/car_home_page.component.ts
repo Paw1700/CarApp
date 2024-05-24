@@ -103,17 +103,15 @@ export class CarHomePage implements OnInit, OnDestroy{
     charge_up_text = ''
 
     async ngOnInit(): Promise<void> {
-        this.readActionBoxState()
-        this.readCarDataState()
-        await this.PS.getCarData(this.carID)
+        this.listenToPageState()
+        // await this.PS.getCarData(this.carID)
+        await this.PS.updateCarStatus(this.carID)
         this.show_page = true
         this.APP.APPERANCE.setStatusBarColor(false, this.car.color.theme)
     }
 
     ngOnDestroy(): void {
-        this.APP.APPERANCE.setStatusBarColor(true)
-        this.unsubscriber$.next()
-        this.unsubscriber$.complete()
+        this.leavingPage()
     }
 
     closeActionBox() {
@@ -138,13 +136,18 @@ export class CarHomePage implements OnInit, OnDestroy{
         }
     }
 
-    private readActionBoxState() {
+    private listenToPageState() {
+        this.listenToState_CarData()
+        this.listenToState_readActionBoxState()
+    }
+
+    private listenToState_readActionBoxState() {
         this.PS.action_box_open$.pipe(takeUntil(this.unsubscriber$)).subscribe( bool => {
             this.add_route_open = bool
         })
     }
 
-    private readCarDataState() {
+    private listenToState_CarData() {
         this.PS.car$.pipe(takeUntil(this.unsubscriber$)).subscribe( car => {
             this.car = car
         })
@@ -164,5 +167,11 @@ export class CarHomePage implements OnInit, OnDestroy{
         this.PS.diff_energy_state$.pipe(takeUntil(this.unsubscriber$)).subscribe( diff_energy_state => {
             this.diff_energy_state = diff_energy_state
         })
+    }
+
+    private leavingPage() {
+        this.APP.APPERANCE.setStatusBarColor(true)
+        this.unsubscriber$.next()
+        this.unsubscriber$.complete()
     }
 }
