@@ -104,7 +104,6 @@ export class CarHomePage implements OnInit, OnDestroy{
 
     async ngOnInit(): Promise<void> {
         this.listenToPageState()
-        // await this.PS.getCarData(this.carID)
         await this.PS.updateCarStatus(this.carID)
         this.show_page = true
         this.APP.APPERANCE.setStatusBarColor(false, this.car.color.theme)

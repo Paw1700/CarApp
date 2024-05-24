@@ -34,20 +34,23 @@ export class CarHomePageService {
     saveAction() {
         return new Promise<void>(async (resolve, reject) => {
             try {
+                const carID = this.car$.value.id
+                const route = this.route_data$.value
+                const charging_power = this.charging_power$.value
                 switch (this.action_box_state$.value) {
                     case "add_route":
-                        await this.APP.DATA.CAR.newRouteOperation(this.car$.value.id, this.route_data$.value)
+                        await this.APP.DATA.CAR.newRouteOperation(carID, route)
                         break
                     case "tank_up":
-                        await this.APP.DATA.CAR.tankingOperation(this.car$.value.id, -1)
+                        await this.APP.DATA.CAR.tankingOperation(carID, -1)
                         break
                     case "charge_up":
-                        if (this.charging_power$.value !== null) {
-                            await this.APP.DATA.CAR.chargingOperation(this.car$.value.id, this.charging_power$.value)
+                        if (charging_power !== null) {
+                            await this.APP.DATA.CAR.chargingOperation(carID, charging_power)
                         }
                         break
                 }
-                await this.getCarData(this.car$.value.id)
+                await this.updateCarStatus(carID)
                 resolve()
             } catch (err) {
                 console.error(err);
