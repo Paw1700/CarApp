@@ -385,3 +385,7 @@ div.LIST {
 	align-items: center;
 	justify-content: center;
 }
+
+button {
+    touch-action: manipulation;
+}

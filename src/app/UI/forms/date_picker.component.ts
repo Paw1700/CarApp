@@ -18,11 +18,10 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
             justify-content: space-evenly;
 
             input[type="date"] {
-                width: 40%;
+                width: 60%;
                 height: 100%;
                 font-size: 1.5rem;
-                display: flex;
-                align-items: center;
+                text-align: center;
             }
 
             p {
