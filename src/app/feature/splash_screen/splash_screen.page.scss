@@ -4,11 +4,7 @@ div.PAGE {
     img.APP_LOGO {
         width: 50.89vw;
         object-fit: contain;
-        content: url('/assets/UI/car/black.webp');
-
-        @media (prefers-color-scheme: dark){
-            content: url('/assets/UI/car/white.webp');
-        }
+        content: url('/assets/UI/car/car.webp');
     }
 
     p.APP_TITLE {

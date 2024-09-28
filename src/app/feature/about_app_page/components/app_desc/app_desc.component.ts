@@ -28,11 +28,7 @@ import { Component, Input } from "@angular/core";
             img.APP_LOGO {
                 width: 38.17vw;
                 object-fit: contain;
-                content: url('/assets/UI/car/black.webp');
-
-                @media (prefers-color-scheme: dark) {
-                    content: url('/assets/UI/car/white.webp');
-                }
+                content: url('/assets/UI/car/car.webp');
             }
 
             div.APP_DESC {
